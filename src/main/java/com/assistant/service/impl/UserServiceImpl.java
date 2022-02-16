@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private DoctorService doctorService;
 
     @Override
-    public UserLevel checkUser(String username, String password) {
+    public String checkUser(String username, String password) {
 
         if (StringUtils.equals(doctorService.password(username), password)) {
             return UserLevel.DOCTOR;
@@ -34,20 +34,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String password;
 
         password = doctorService.password(username);
         if (!StringUtils.isEmptyOrWhitespace(password)) {
-            return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList("doctor"));
+            return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList(UserLevel.DOCTOR));
         }
 
         password = adminService.password(username);
         if (!StringUtils.isEmptyOrWhitespace(password)) {
-            return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+            return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList(UserLevel.ADMIIN));
         }
 
         return null;
