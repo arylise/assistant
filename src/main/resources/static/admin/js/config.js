@@ -4,7 +4,9 @@ const level = {
     PATIENT: "PATIENT",
     UNKNOWN: "UNKNOWN"
 }
-const menu = [{
+
+
+const admin = [{
     "name": "首页",
     "icon": "&#xe68e;",
     "url": "index",
@@ -93,6 +95,76 @@ const menu = [{
     "url": "logout",
     "list": []
 }];
+
+const doctor = [{
+    "name": "首页",
+    "icon": "&#xe68e;",
+    "url": "index",
+    "hidden": false,
+    "list": [],
+    "level": level.ADMIN
+}, {
+    "name": "文章管理",
+    "icon": "&#xe609;",
+    "url": "",
+    "hidden": false,
+    "list": [{
+        "name": "栏目管理",
+        "url": "type_index.html"
+    }, {
+        "name": "文章管理",
+        "url": "article_index.html"
+    }]
+}, {
+    "name": "退出登录",
+    "icon": "&#xe65c;",
+    "url": "logout",
+    "list": []
+}];
+
+
+const patient = [{
+    "name": "首页",
+    "icon": "&#xe68e;",
+    "url": "index",
+    "hidden": false,
+    "list": [],
+    "level": level.PATIENT
+}, {
+    "name": "退出登录",
+    "icon": "&#xe65c;",
+    "url": "logout",
+    "list": []
+}];
+
+let menu;
+
+function getLevel() {
+    const oAjax = new XMLHttpRequest();
+    oAjax.open('GET', '/user/level', false);//false表示同步请求
+    oAjax.onreadystatechange = function () {
+        //6,通过状态确认完成
+        if (oAjax.readyState === 4 && oAjax.status === 200) {
+            //7,获取返回值，解析json格式字符串为对象
+            var data = oAjax.responseText;
+            if (data === level.ADMIN) {
+                menu = admin;
+            }
+            if (data === level.DOCTOR) {
+                menu = doctor;
+            }
+            if (data === level.PATIENT) {
+                menu = patient;
+            }
+        } else {
+            console.log(oAjax);
+        }
+    };
+    oAjax.send();
+}
+
+getLevel();
+
 
 const config = {
     name: "检查助手",

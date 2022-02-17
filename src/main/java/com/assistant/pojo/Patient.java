@@ -4,17 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Doctor implements Serializable {
+public class Patient {
     private String username;
     private String password;
     private String name;
-    private String department;
     private String sex;
     private int age;
     private int phone;
+    private int exception;
 }

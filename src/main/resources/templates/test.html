@@ -33,12 +33,54 @@
                 <li>layui 是一套开源的 Web UI（界面）组件库。这是一个极其简洁的演示页面</li>
             </ul>
         </div>
-    </blockquote>
+    </blockquote><div id="showmetxt">???</div>
+    <button class="layui-btn" type="button" test-active="myfun"></button>
 </div>
+
+
+
 
 
 <!-- 引入 layui.js 的 <script> 标签最好放置在 html 末尾 -->
 <script src="layui/layui.js"></script>
+
+<script>
+    function myfun() {
+        $("#showmetxt").html("hihi")
+    }
+</script>
+<script>
+
+    //1,new
+    var oAjax = new XMLHttpRequest();
+
+    //2,open
+    oAjax.open('POST', '/user/level', false);//false表示同步请求
+
+
+    //3,setHeader,get请求不需要
+    oAjax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    //4，定义返回触发的函数，定义在send之前，不然同步请求就出问题
+    oAjax.onreadystatechange = function () {
+        // alert(">>>")
+        //6,通过状态确认完成
+        if (oAjax.readyState == 4 && oAjax.status == 200) {
+            //7,获取返回值，解析json格式字符串为对象
+            var data = oAjax.responseText;
+            if(data=="ADMIN"){
+                alert(data);
+            }
+        } else {
+            console.log(oAjax);
+        }
+    };
+    //，5发送，发送内容格式"a=1&b=2"，而不是json
+
+    oAjax.send();
+
+</script>
+
 <script>
     layui.use(function () {
         var layer = layui.layer
@@ -99,6 +141,10 @@
                         });
                     }
                 });
+            },
+            "myfun":function (){
+                alert()
+
             }
         });
     });

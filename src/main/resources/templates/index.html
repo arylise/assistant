@@ -25,6 +25,7 @@
                 <li v-for="vo in address">
                     <a v-text="vo.name" :href="vo.url"></a> <span>/</span>
                 </li>
+                <li>当前版本: <b id="version"></b></li>
             </ul>
         </div>
     </header>
@@ -59,9 +60,11 @@
 </div>
 
 <script src="admin/js/script.js"></script>
-<script>
-    layui.use('form', function () {
 
+<script>
+    console.log(config);
+    $(function() {
+        $('#version').html(config.version);
     });
 </script>
 </body>

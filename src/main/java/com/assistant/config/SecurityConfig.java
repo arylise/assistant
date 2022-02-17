@@ -3,6 +3,7 @@ package com.assistant.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +20,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private AuthenticationProvider authenticationProvider;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -45,8 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests() // 授权配置
                 //无需权限访问
-                .antMatchers("admin/css/login.css","/layui/**").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/admin/**","/echarts/**", "/js/**","/layui/**","/iconfont/**","/ueditor/**","/webuploader/**").permitAll()
+//                .antMatchers("/user/**").hasRole("USER")
                 //其他接口需要登录后才能访问
                 .anyRequest().authenticated()
                 .and();
@@ -59,10 +63,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws  Exception{
+//        auth
+//                //用户认证处理
+//                .userDetailsService(userDetailsService)
+//                //密码处理
+//                .passwordEncoder(NoOpPasswordEncoder.getInstance());
         auth
-                //用户认证处理
-                .userDetailsService(userDetailsService)
-                //密码处理
-                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+                // 自己的用户验证
+                .authenticationProvider(authenticationProvider);
     }
 }
