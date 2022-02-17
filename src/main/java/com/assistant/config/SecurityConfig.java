@@ -1,10 +1,12 @@
 package com.assistant.config;
 
+import com.assistant.service.functionService.LogoutSuccessHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,25 +15,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private AuthenticationProvider authenticationProvider;
+    private LogoutSuccessHandler logoutSuccessHandler;
+
+//    @Autowired
+//    private AuthenticationProvider authenticationProvider;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        // Configure HttpSecurity as needed (e.g. enable http basic).
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
-//        http.csrf().disable().headers().frameOptions().disable();
-//        //注意：为了可以使用 http://${user}:${password}@${host}:${port}/eureka/ 这种方式登录,所以必须是httpBasic,
-//        // 如果是form方式,不能使用url格式登录
-//        http.authorizeRequests().anyRequest().authenticated().and().httpBasic();
         http
                 // 关闭csrf防护
                 .csrf().disable()
@@ -49,11 +50,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests() // 授权配置
                 //无需权限访问
-                .antMatchers("/menu/**","/echarts/**", "/js/**","/layui/**","/iconfont/**","/ueditor/**","/webuploader/**").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers(
+                        "/menu/**",
+                        "/echarts/**",
+                        "/js/**",
+                        "/layui/**",
+                        "/iconfont/**",
+                        "/ueditor/**",
+                        "/webuploader/**").permitAll()
+//                .antMatchers(
+//                        "/admin/**").hasRole("ADMIN")
                 //其他接口需要登录后才能访问
                 .anyRequest().authenticated()
                 .and();
+
+        http
+                //登出处理
+                .logout()
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .deleteCookies("JSESSIONID")
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .and();
+
+
     }
 
     @Bean
@@ -62,14 +82,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(AuthenticationManagerBuilder auth) throws  Exception{
-//        auth
-//                //用户认证处理
-//                .userDetailsService(userDetailsService)
-//                //密码处理
-//                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                // 自己的用户验证
-                .authenticationProvider(authenticationProvider);
+                //用户认证处理
+                .userDetailsService(userDetailsService)
+                //密码处理
+                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+//        auth
+//                // 自己的用户验证
+//                .authenticationProvider(authenticationProvider);
     }
 }

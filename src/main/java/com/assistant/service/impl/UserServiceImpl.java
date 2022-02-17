@@ -1,6 +1,6 @@
 package com.assistant.service.impl;
 
-import com.assistant.config.UserLevel;
+import static com.assistant.config.Role.*;
 import com.assistant.service.AdminService;
 import com.assistant.service.DoctorService;
 import com.assistant.service.PatientService;
@@ -18,18 +18,18 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PatientService patientService;
 
-    @Override
-    public String checkUser(String username, String password) {
-
-        if(StringUtils.equals(patientService.password(username),password)){
-            return UserLevel.PATIENT;
-        }
-        if (StringUtils.equals(doctorService.password(username), password)) {
-            return UserLevel.DOCTOR;
-        }
-        if (StringUtils.equals(adminService.password(username), password)) {
-            return UserLevel.ADMIIN;
-        }
-        return UserLevel.NEITHER;
-    }
+//    @Override
+//    public String checkUser(String username, String password) {
+//
+//        if(StringUtils.equals(patientService.password(username),password)){
+//            return Role.PATIENT;
+//        }
+//        if (StringUtils.equals(doctorService.password(username), password)) {
+//            return Role.DOCTOR;
+//        }
+//        if (StringUtils.equals(adminService.password(username), password)) {
+//            return Role.ADMIIN;
+//        }
+//        return Role.NEITHER;
+//    }
 }

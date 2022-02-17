@@ -3,6 +3,7 @@ package com.assistant.controller;
 import com.assistant.pojo.Admin;
 import com.assistant.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminController {
     @Autowired
     private AdminService adminService;
@@ -27,15 +29,5 @@ public class AdminController {
         return adminService.findAll();
     }
 
-    @RequestMapping("/whoim")
-    @ResponseBody
-    public Object whoIm() {
-        Set level =  AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        Iterator iter = level.iterator();
-        while (iter.hasNext()) {
-            return iter.next();
-        }
-        return null;
-    }
 
 }

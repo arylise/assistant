@@ -1,8 +1,7 @@
-const level = {
-    ADMIN: "ADMIN",
-    DOCTOR: "DOCTOR",
-    PATIENT: "PATIENT",
-    UNKNOWN: "UNKNOWN"
+const ROLE = {
+    ROLE_ADMIN: "ROLE_ADMIN",
+    ROLE_DOCTOR: "ROLE_DOCTOR",
+    ROLE_PATIENT: "ROLE_PATIENT"
 }
 
 
@@ -12,7 +11,7 @@ const admin = [{
     "url": "index",
     "hidden": false,
     "list": [],
-    "level": level.UNKNOWN
+    "level": ROLE.ROLE_ADMIN
 }, {
     "name": "基本组件",
     "icon": "&#xe653;",
@@ -102,7 +101,7 @@ const doctor = [{
     "url": "index",
     "hidden": false,
     "list": [],
-    "level": level.ADMIN
+    "level": ROLE.ROLE_ADMIN
 }, {
     "name": "文章管理",
     "icon": "&#xe609;",
@@ -129,7 +128,7 @@ const patient = [{
     "url": "index",
     "hidden": false,
     "list": [],
-    "level": level.PATIENT
+    "level": ROLE.ROLE_PATIENT
 }, {
     "name": "退出登录",
     "icon": "&#xe65c;",
@@ -141,19 +140,19 @@ let menu;
 
 function getLevel() {
     const oAjax = new XMLHttpRequest();
-    oAjax.open('GET', '/user/level', false);//false表示同步请求
+    oAjax.open('GET', '/user/checkRole', false);//false表示同步请求
     oAjax.onreadystatechange = function () {
         //6,通过状态确认完成
         if (oAjax.readyState === 4 && oAjax.status === 200) {
             //7,获取返回值，解析json格式字符串为对象
             var data = oAjax.responseText;
-            if (data === level.ADMIN) {
+            if (data === ROLE.ROLE_ADMIN) {
                 menu = admin;
             }
-            if (data === level.DOCTOR) {
+            if (data === ROLE.ROLE_DOCTOR) {
                 menu = doctor;
             }
-            if (data === level.PATIENT) {
+            if (data === ROLE.ROLE_PATIENT) {
                 menu = patient;
             }
         } else {
