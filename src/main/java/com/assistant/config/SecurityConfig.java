@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/index") //成功登陆后跳转页面
                 .failureUrl("/loginError")
                 .permitAll()
-                .and();
+                .and().csrf().disable();
         http
                 .authorizeRequests() // 授权配置
                 //无需权限访问
@@ -58,7 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/layui/**",
                         "/iconfont/**",
                         "/ueditor/**",
-                        "/webuploader/**").permitAll()
+                        "/webuploader/**",
+                        "/signup").permitAll()
 //                .antMatchers(
 //                        "/admin/**").hasRole("ADMIN")
                 //其他接口需要登录后才能访问

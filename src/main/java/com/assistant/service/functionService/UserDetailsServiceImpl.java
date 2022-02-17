@@ -1,6 +1,7 @@
 package com.assistant.service.functionService;
 
 import static com.assistant.config.Role.*;
+
 import com.assistant.service.AdminService;
 import com.assistant.service.DoctorService;
 import com.assistant.service.PatientService;
@@ -31,37 +32,37 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        try {
 
-        String password;
+            String password;
 
-        password = patientService.password(username);
-        if (!StringUtils.isEmptyOrWhitespace(password)) {
-
-
-            return new User(username, password,
-                    new ArrayList<>() {{
-                        add(new SimpleGrantedAuthority(ROLE_PATIENT));
-                    }}
-            );
+            password = patientService.password(username);
+            if (!StringUtils.isEmptyOrWhitespace(password)) {
+                return new User(username, password,
+                        new ArrayList<>() {{
+                            add(new SimpleGrantedAuthority(ROLE_PATIENT));
+                        }}
+                );
+            }
+            password = doctorService.password(username);
+            if (!StringUtils.isEmptyOrWhitespace(password)) {
+                return new User(username, password,
+                        new ArrayList<>() {{
+                            add(new SimpleGrantedAuthority(ROLE_DOCTOR));
+                        }}
+                );
+            }
+            password = adminService.password(username);
+            if (!StringUtils.isEmptyOrWhitespace(password)) {
+                return new User(username, password,
+                        new ArrayList<>() {{
+                            add(new SimpleGrantedAuthority(ROLE_ADMIIN));
+                        }}
+                );
+            }
+        } catch (UsernameNotFoundException e) {
+            TestClass.showMe("用户名或密码错误");
         }
-        password = doctorService.password(username);
-        if (!StringUtils.isEmptyOrWhitespace(password)) {
-            return new User(username, password,
-                    new ArrayList<>() {{
-                        add(new SimpleGrantedAuthority(ROLE_DOCTOR));
-                    }}
-            );
-        }
-        password = adminService.password(username);
-        if (!StringUtils.isEmptyOrWhitespace(password)) {
-//            TestClass.showMe(ROLE_ADMIIN);
-            return new User(username, password,
-                    new ArrayList<>() {{
-                        add(new SimpleGrantedAuthority(ROLE_ADMIIN));
-                    }}
-            );
-        }
-
         return null;
     }
 }

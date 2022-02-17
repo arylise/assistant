@@ -37,4 +37,9 @@ public class IndexController {
     public String signup() {
         return "signup";
     }
+
+    @RequestMapping("/loginError")
+    public String loginError() {
+        return "loginError";
+    }
 }
