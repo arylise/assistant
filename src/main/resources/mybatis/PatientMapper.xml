@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.assistant.mapper.PatientMapper">
+    <insert id="insert">
+        insert into patient(username, password, exception)
+        values (#{username}, #{password}, 0)
+    </insert>
 
     <select id="password" resultType="java.lang.String">
         select patient.password

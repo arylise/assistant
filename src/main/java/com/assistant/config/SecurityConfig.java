@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //登录处理
                 .formLogin() //表单方式，或httpBasic
                 .loginPage("/login")
-                .loginProcessingUrl("/form")
+                .loginProcessingUrl("/doLogin")
                 .defaultSuccessUrl("/index") //成功登陆后跳转页面
                 .failureUrl("/loginError")
                 .permitAll()
@@ -59,7 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/iconfont/**",
                         "/ueditor/**",
                         "/webuploader/**",
-                        "/signup").permitAll()
+                        "/signup",
+                        "/user/**").permitAll()
 //                .antMatchers(
 //                        "/admin/**").hasRole("ADMIN")
                 //其他接口需要登录后才能访问
@@ -89,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //用户认证处理
                 .userDetailsService(userDetailsService)
                 //密码处理
-                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+                .passwordEncoder(new BCryptPasswordEncoder());
 //        auth
 //                // 自己的用户验证
 //                .authenticationProvider(authenticationProvider);
