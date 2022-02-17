@@ -49,8 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests() // 授权配置
                 //无需权限访问
-                .antMatchers("/admin/**","/echarts/**", "/js/**","/layui/**","/iconfont/**","/ueditor/**","/webuploader/**").permitAll()
-//                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/menu/**","/echarts/**", "/js/**","/layui/**","/iconfont/**","/ueditor/**","/webuploader/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 //其他接口需要登录后才能访问
                 .anyRequest().authenticated()
                 .and();
