@@ -1,7 +1,7 @@
 package com.assistant.service.impl;
 
 import com.assistant.mapper.PatientMapper;
-import com.assistant.service.PatientService;
+import com.assistant.service.intf.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.assistant.pojo;
+package com.assistant.model.enity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,13 +1,11 @@
 package com.assistant.service.impl;
 
-import static com.assistant.config.Role.*;
-import com.assistant.service.AdminService;
-import com.assistant.service.DoctorService;
-import com.assistant.service.PatientService;
-import com.assistant.service.UserService;
+import com.assistant.service.intf.AdminService;
+import com.assistant.service.intf.DoctorService;
+import com.assistant.service.intf.PatientService;
+import com.assistant.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.thymeleaf.util.StringUtils;
 
 @Component
 public class UserServiceImpl implements UserService {

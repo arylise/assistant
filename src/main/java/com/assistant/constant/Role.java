@@ -1,4 +1,4 @@
-package com.assistant.config;
+package com.assistant.constant;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.assistant.service.impl;
 
 import com.assistant.mapper.AdminMapper;
-import com.assistant.pojo.Admin;
-import com.assistant.service.AdminService;
+import com.assistant.model.enity.Admin;
+import com.assistant.service.intf.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

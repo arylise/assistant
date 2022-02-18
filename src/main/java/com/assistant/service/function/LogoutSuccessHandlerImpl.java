@@ -1,6 +1,6 @@
-package com.assistant.service.functionService;
+package com.assistant.service.function;
 
-import com.assistant.temp.TestClass;
+import com.assistant.utils.TestClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;

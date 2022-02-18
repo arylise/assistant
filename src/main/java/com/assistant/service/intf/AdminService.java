@@ -1,6 +1,6 @@
-package com.assistant.service;
+package com.assistant.service.intf;
 
-import com.assistant.pojo.Admin;
+import com.assistant.model.enity.Admin;
 
 import java.util.List;
 

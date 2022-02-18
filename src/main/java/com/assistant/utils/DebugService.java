@@ -1,9 +1,7 @@
-package com.assistant.temp;
+package com.assistant.utils;
 
-import com.assistant.service.AdminService;
-import com.assistant.service.DoctorService;
-import com.assistant.service.impl.AdminServiceImpl;
-import com.assistant.service.impl.DoctorServiceImpl;
+import com.assistant.service.intf.AdminService;
+import com.assistant.service.intf.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

@@ -1,14 +1,11 @@
-package com.assistant.service.functionService;
+package com.assistant.service.function;
 
-import static com.assistant.config.Role.*;
+import static com.assistant.constant.Role.*;
 
-import com.assistant.service.AdminService;
-import com.assistant.service.DoctorService;
-import com.assistant.service.PatientService;
-import com.assistant.temp.TestClass;
+import com.assistant.service.intf.AdminService;
+import com.assistant.service.intf.DoctorService;
+import com.assistant.service.intf.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -60,8 +55,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         }}
                 );
             }
+
+            if (StringUtils.isEmpty(password)) {
+                throw new UsernameNotFoundException("用户名或密码错误！");
+            }
+
         } catch (UsernameNotFoundException e) {
-            TestClass.showMe("用户名或密码错误");
+            throw e;
         }
         return null;
     }

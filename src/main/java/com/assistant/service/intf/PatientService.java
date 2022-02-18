@@ -1,4 +1,4 @@
-package com.assistant.service;
+package com.assistant.service.intf;
 
 public interface PatientService {
     String password(String username);

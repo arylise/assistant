@@ -1,7 +1,7 @@
 package com.assistant.service.impl;
 
 import com.assistant.mapper.DoctorMapper;
-import com.assistant.service.DoctorService;
+import com.assistant.service.intf.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
