@@ -3,8 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <style>
+        .hide-button {
+            width: 100%;
+            height: 100%;
+            line-height: 40px;
+            border: 2px;
+            padding: 0;
+            margin: 0;
+            white-space: nowrap;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+            outline: 0;
+            -webkit-appearance: none;
+            -webkit-transition: all .3s;
+            box-sizing: border-box;
+            display: inline-block;
+            -webkit-user-select: none;
+            vertical-align: middle;
+            background-color: #FBFBFB;
+            border-color: #C1C1C1;
+            z-index: 101;
+        }
+
+
+        .hide-li {
+            border-bottom-width: 1px;
+            border-color: #C1C1C1;
+        }
+
+        .hide-li li {
+            width: 80px;
+            padding: 0;
+        }
+
+        /*.hide-button:hover {*/
+        /*    opacity: .8;*/
+        /*    color: #282b33;*/
+        /*}*/
+
+        .hide-top {
+            padding-top: 0;
+            margin-top: 0;
+
+        }
+    </style>
 </head>
 <body>
-doctor manage
+
+<div class="layui-tab hide-top" lay-filter="demo">
+    <ul class="layui-tab-title hide-li">
+        <li class="layui-this" lay-id="11">11111</li>
+        <li lay-id="22">用户管理</li>
+        <li lay-id="33">
+            <button class="site-demo-active hide-button" data-type="createTable">测试</button>
+        </li>
+        <li lay-id="44">商品管理</li>
+        <li lay-id="55">订单管理</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <div class="site-demo-button" style="margin-bottom: 0;">
+                <button class="layui-btn site-demo-active" data-type="tabAdd">新增Tab项</button>
+                <button class="layui-btn site-demo-active" data-type="tabDelete">删除：商品管理</button>
+                <button class="layui-btn site-demo-active" data-type="tabChange">切换到：用户管理</button>
+                <button class="layui-btn site-demo-active" data-type="tabAdd">测试</button>
+            </div>
+        </div>
+        <div class="layui-tab-item">内容2</div>
+        <div class="layui-tab-item">
+            <table id="demo2" lay-filter="test">1112</table>
+        </div>
+        <div class="layui-tab-item">内容4</div>
+        <div class="layui-tab-item">内容5</div>
+    </div>
+</div>
+
+
+<script src="layui/layui.js"></script>
+<script th:inline="none">
+    layui.use(['table', 'element'], function () {
+        var $ = layui.jquery
+            , element = layui.element //Tab的切换功能，切换事件监听等，需要依赖element模块
+            , table = layui.table;
+
+        //触发事件
+        var active = {
+            createTable: function () {
+                table.render({
+                    elem: '#demo2'
+                    ,
+                    height: 312
+                    ,
+                    url: '/js/tabledata.js' //数据接口
+                    ,
+                    page: true //开启分页
+                    ,
+                    cols: [[ //表头
+                        {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left'}
+                        , {field: 'username', title: '用户名', width: 80}
+                        , {field: 'sex', title: '性别', width: 80, sort: true}
+                        , {field: 'city', title: '城市', width: 80}
+                        , {field: 'sign', title: '签名', width: 177}
+                        , {field: 'experience', title: '积分', width: 80, sort: true}
+                        , {field: 'score', title: '评分', width: 80, sort: true}
+                        , {field: 'classify', title: '职业', width: 80}
+                        , {field: 'wealth', title: '财富', width: 135, sort: true}
+                    ]]
+                });
+            }
+
+            , tabTest: function () {
+                this.tabAdd();
+                this.createTable();
+            },
+
+            tabAdd: function () {
+                //新增一个Tab项
+                element.tabAdd('demo', {
+                    title: '<button class="hide-button site-demo-active" data-type="tabAdd">新增Tab项</button>' //用于演示
+                    , content: "aaa"
+                    , id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
+                })
+            }
+
+            , tabDelete: function (othis) {
+                //删除指定Tab项
+                element.tabDelete('demo', '44'); //删除：“商品管理”
+
+
+                othis.addClass('layui-btn-disabled');
+            }
+            , tabChange: function () {
+                //切换到指定Tab项
+                element.tabChange('demo', '22'); //切换到：用户管理
+            }
+
+
+        };
+
+
+        $('.site-demo-active').on('click', function () {
+            var othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        });
+
+
+        vue = new Vue({
+            methods: {}
+        })
+    });
+</script>
+
 </body>
 </html>

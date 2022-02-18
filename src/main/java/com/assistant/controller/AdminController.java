@@ -24,8 +24,8 @@ public class AdminController {
     }
 
 
-    @RequestMapping("/doctor_manage")
-    public String doctorManage(){
-        return "admin/doctor_manage";
-    }
+//    @RequestMapping("/doctor_manage")
+//    public String doctorManage(){
+//        return "redirect:/admin_doctor_manage";
+//    }
 }

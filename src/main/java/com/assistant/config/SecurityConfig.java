@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 // 关闭csrf防护
                 .csrf().disable()
-                .headers().frameOptions().disable()
+                .headers().frameOptions().sameOrigin()
                 .and();
         http
                 //登录处理

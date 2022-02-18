@@ -59,4 +59,10 @@ public class IndexController {
     public String loginError() {
         return "loginError";
     }
+
+    @RequestMapping("/doctor_manage")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String adminDoctorManage(){
+        return "/admin/doctor_manage";
+    }
 }

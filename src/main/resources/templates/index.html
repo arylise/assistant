@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>后台首页</title>
+    <title>检查助手</title>
 
     <link rel="stylesheet" href="layui/css/layui.css">
     <link rel="stylesheet" href="menu/css/style.css">
@@ -18,37 +18,72 @@
 <div id="app">
     <!--顶栏-->
     <header>
-        <h1 v-text="webname" style="font-size: 20px"></h1>
-        <div class="breadcrumb">
-            <i class="layui-icon">&#xe715;</i>
-            <ul>
-                <li v-for="vo in address">
-                    <a v-text="vo.name" :href="vo.url"></a> <span>/</span>
+        <h1 v-text="webname" style="font-size: 20px;width:200px"></h1>
+        <div>
+            <ul class="breadcrumb-left">
+                <li>
+                    <span class="layui-breadcrumb">
+                        <a id="a1">首页</a>
+                        <a id="a2"></a>
+                    </span>
                 </li>
                 <li>
-                    当前版本: <b id="version"></b>
+                    <!--                    <div class="layui-form layui-hide-xxs component" lay-filter="LAY-site-header-component">-->
+                    <!--                        <select lay-search="" lay-filter="component">-->
+                    <!--                            <option value="">搜索组件模块</option>-->
+                    <!--                            <option value="element/layout.html">grid 栅格布局</option>-->
+                    <!--                        </select>-->
+                    <!--                        <div class="layui-form-select">-->
+                    <!--                            <div class="layui-select-title"><input type="text" placeholder="搜索组件模块" value="" class="layui-input"><i-->
+                    <!--                                    class="layui-edge"></i></div>-->
+                    <!--                            <dl class="layui-anim layui-anim-upbit">-->
+                    <!--                                <dd lay-value="" class="layui-select-tips">搜索组件模块</dd>-->
+                    <!--                            </dl>-->
+                    <!--                        </div>-->
+                    <!--                        <i class="layui-icon layui-icon-search"></i>-->
+                    <!--                    </div>-->
                 </li>
             </ul>
+
+
+            <ul class="layui-nav breadcrumb-right" lay-bar="disabled">
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><img src="menu/img/pic.png" class="layui-nav-img" alt=""></a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">子级菜单</a></dd>
+                        <dd><a href="javascript:;">横线隔断</a></dd>
+                        <hr>
+                        <dd style="text-align: center;"><a href="">退出</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">小圆点<span class="layui-badge-dot"></span></a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">带徽章<span class="layui-badge">9</span></a>
+                </li>
+            </ul>
+
         </div>
     </header>
 
     <div class="main">
-        <!--左栏-->
+
         <div class="left">
-            <ul class="cl">
+            <ul class="layui-nav layui-nav-tree layui-inline">
                 <!--顶级分类-->
-                <li v-for="vo,index in menu" :class="{hidden:vo.hidden}">
-                    <a href="" :class="{active:vo.active}" @click="onActive(index)">
+                <li v-for="vo,index in menu" class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;" @click="onActive(index)">
                         <i class="layui-icon" v-html="vo.icon"></i>
                         <span v-text="vo.name"></span>
-                        <i class="layui-icon arrow" v-show="vo.url.length==0">&#xe61a;</i> <i v-show="vo.active"
-                                                                                              class="layui-icon active">&#xe623;</i>
                     </a>
                     <!--子级分类-->
-                    <div v-for="vo2,index2 in vo.list">
-                        <a target="main" :href="vo2.url" :class="{active:vo2.active}" v-text="vo2.name" id="vo2.id"></a>
-                        <i v-show="vo2.active" class="layui-icon active">&#xe623;</i>
-                    </div>
+                    <dl v-if="vo.list != ''" class="layui-nav-child">
+                        <dd v-for="vo2,index2 in vo.list">
+                            <a href="javascript:;" target="main" v-text="vo2.name"
+                               @click="onActive(index,index2)"></a>
+                        </dd>
+                    </dl>
                 </li>
             </ul>
         </div>
@@ -62,11 +97,5 @@
 </div>
 
 <script src="menu/js/script.js"></script>
-<script>
-    console.log(config);
-    $(function() {
-        $('#version').html(config.version);
-    });
-</script>
 </body>
 </html>

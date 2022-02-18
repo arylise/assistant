@@ -8,17 +8,15 @@ const ROLE = {
 const admin = [{
     "name": "首页",
     "icon": "&#xe68e;",
-    "url": "/main",
-    "hidden": false,
+    "url": "/",
     "list": [],
 }, {
     "name": "用户管理",
     "icon": "&#xe612;",
     "url": "",
-    "hidden": false,
     "list": [{
         "name": "医生用户",
-        "url": "/admin/doctor_manage"
+        "url": "/doctor_manage"
     }, {
         "name": "患者用户",
         "url": "/admin/patient_manage"
@@ -26,32 +24,30 @@ const admin = [{
 }, {
     "name": "退出登录",
     "icon": "&#xe65c;",
-    "url": "logout",
+    "url": "/logout",
     "list": []
 }];
 
 const doctor = [{
     "name": "首页",
     "icon": "&#xe68e;",
-    "url": "index",
-    "hidden": false,
+    "url": "/index",
     "list": [],
 }, {
     "name": "文章管理",
     "icon": "&#xe609;",
     "url": "",
-    "hidden": false,
     "list": [{
         "name": "栏目管理",
-        "url": "type_index.html"
+        "url": "/type_index.html"
     }, {
         "name": "文章管理",
-        "url": "article_index.html"
+        "url": "/article_index.html"
     }]
 }, {
     "name": "退出登录",
     "icon": "&#xe65c;",
-    "url": "logout",
+    "url": "/logout",
     "list": []
 }];
 
@@ -59,13 +55,12 @@ const doctor = [{
 const patient = [{
     "name": "首页",
     "icon": "&#xe68e;",
-    "url": "index",
-    "hidden": false,
+    "url": "/index",
     "list": [],
 }, {
     "name": "退出登录",
     "icon": "&#xe65c;",
-    "url": "logout",
+    "url": "/logout",
     "list": []
 }];
 
@@ -101,8 +96,6 @@ getLevel();
 const config = {
     name: "检查助手",
     menu: menu,
-    version: 'v0.1',
-    official: ''
 };
 
 try {
