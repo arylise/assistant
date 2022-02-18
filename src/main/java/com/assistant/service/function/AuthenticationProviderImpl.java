@@ -23,7 +23,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if (StringUtils.equals(userDetails.getPassword(), password)) {
-            TestClass.showMe(username + ":" + password);
+//            TestClass.showMe(username + ":" + password);
             return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         }
         return null;

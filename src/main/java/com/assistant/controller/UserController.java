@@ -40,19 +40,12 @@ public class UserController {
         return "null";
     }
 
-    //   TODO 继续完成注册
     @PostMapping("/signup.do")
     public String signupPatient(@RequestParam("username") String username, @RequestParam("password") String password) {
         boolean ans = userService.insertPatient(username, password);
         if(ans){
-//            RedirectAttributes attr = new RedirectAttributesModelMap();
-//            attr.addAttribute("username",username);
-//            attr.addAttribute("password",password);
-
-//            return "redirect:/user/doLogin"+"?username:"+username+"&password:"+password;
             return "signupSuccess";
         }
-
         return "signupError";
     }
 

@@ -93,6 +93,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
             boolean ans = patientService.insert(username, password);
             if (ans) {
                 return true;
+                // TODO 实现注册后立即登录
 //                UserDetails user = new User(username, password,
 //                        new ArrayList<>() {{
 //                            add(new SimpleGrantedAuthority(ROLE_PATIENT));
