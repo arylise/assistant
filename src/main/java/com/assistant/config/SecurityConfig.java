@@ -49,12 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //无需权限访问
                 .antMatchers(
                         "/menu/**",
-                        "/echarts/**",
                         "/js/**",
                         "/layui/**",
-                        "/iconfont/**",
-                        "/ueditor/**",
-                        "/webuploader/**",
                         "/signup**" ).permitAll()
 //                .antMatchers(
 //                        "/admin/**").hasRole("ADMIN")
