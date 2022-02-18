@@ -140,7 +140,7 @@ let menu;
 
 function getLevel() {
     const oAjax = new XMLHttpRequest();
-    oAjax.open('GET', '/user/checkRole', false);//false表示同步请求
+    oAjax.open('GET', '/checkRole', false);//false表示同步请求
     oAjax.onreadystatechange = function () {
         //6,通过状态确认完成
         if (oAjax.readyState === 4 && oAjax.status === 200) {

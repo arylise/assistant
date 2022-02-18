@@ -14,5 +14,4 @@ public class Role {
         add(ROLE_DOCTOR);
         add(ROLE_PATIENT);
     }};
-
 }

@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //登录处理
                 .formLogin() //表单方式，或httpBasic
                 .loginPage("/login")
-                .loginProcessingUrl("/doLogin")
+                .loginProcessingUrl("/login.do")
                 .defaultSuccessUrl("/index") //成功登陆后跳转页面
                 .failureUrl("/loginError")
                 .permitAll()
@@ -55,8 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/iconfont/**",
                         "/ueditor/**",
                         "/webuploader/**",
-                        "/signup",
-                        "/user/**").permitAll()
+                        "/signup**" ).permitAll()
 //                .antMatchers(
 //                        "/admin/**").hasRole("ADMIN")
                 //其他接口需要登录后才能访问
