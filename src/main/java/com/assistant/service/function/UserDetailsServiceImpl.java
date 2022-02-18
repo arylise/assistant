@@ -11,6 +11,7 @@ import io.netty.util.internal.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -23,10 +24,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService, UserService {
@@ -84,6 +82,17 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
             return map;
         }
         return map;
+    }
+
+    @Override
+    public String checkRole() {
+        Set roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        for (Object o : roles) {
+            if (ALL_ROLES.contains(o)) {
+                return (String) o;
+            }
+        }
+        return null;
     }
 
     @Override

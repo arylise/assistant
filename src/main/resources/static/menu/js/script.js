@@ -44,7 +44,7 @@ var vue = new Vue({
             this.updateStorage();
             if (data.url.length > 0) {
                 if (data.target) {
-                    if (data.target === '_blank') {
+                    if (data.target == '_blank') {
                         window.open(data.url);
                     } else {
                         window.location.href = data.url;
@@ -68,18 +68,18 @@ var vue = new Vue({
             this.menu.forEach((v, k) => {
                 let url = v.url;
                 if (url.length > 0) {
-                    if (url[0] !== '/' && url.substr(0, 4) !== 'http') {
+                    if (url[0] != '/' && url.substr(0, 4) != 'http') {
                         url = '/' + url;
                     }
                 }
-                if (pathname === url) {
+                if (pathname == url) {
                     pid = k;
                 }
                 v.list.forEach((v2, k2) => {
                     let url = v2.url;
 
                     if (url.length > 0) {
-                        if (url[0] !== '/' && url.substr(0, 4) !== 'http') {
+                        if (url[0] != '/' && url.substr(0, 4) != 'http') {
                             url = '/' + url;
                         }
                     }
@@ -107,7 +107,7 @@ var vue = new Vue({
             //当前位置
             let address = [{
                 name: '首页',
-                url: 'index'
+                url: '/main'
             }];
             this.menu.forEach((v, k) => {
                 v.list.forEach((v2, k2) => {
@@ -131,7 +131,7 @@ var vue = new Vue({
 
 $(document).ready(function () {
     //删除
-    $(".del").click(function () {
+    $("#del").click(function () {
         var url = $(this).attr("href");
         var id = $(this).attr("data-id");
 
@@ -139,7 +139,7 @@ $(document).ready(function () {
             btn: ['确定', '取消']
         }, function () {
             $.get(url, function (data) {
-                if (data.code === 1) {
+                if (data.code == 1) {
                     $(id).fadeOut();
                     layer.msg(data.msg, {icon: 1});
                 } else {
@@ -153,6 +153,32 @@ $(document).ready(function () {
     });
 })
 
+
+$(function() {
+    $('#del').click(function() {
+        delCache();
+
+        layui.use('layer', function() {
+            layer.msg('<h2>清除成功</h2> <p id="">页面自动  <a id="href" href="index.html">跳转</a> 等待时间： <b id="wait">3</b></p> ', {
+                icon: 1,
+                shade: 0.5,
+            });
+        });
+
+        !(function run(wait) {
+            if (wait <= 0) {
+                location.href = 'index.html';
+            } else {
+                wait--;
+                setTimeout(function() {
+                    document.getElementById('wait').innerHTML = wait;
+                    run(wait);
+                }, 1000);
+            }
+        })(3);
+    });
+});
+
 function delCache() {
     sessionStorage.clear();
     localStorage.clear();
@@ -165,14 +191,24 @@ function msg(code = 1, msg = '', url = '', s = 3) {
         s = code.s || 3;
         code = code.code;
     }
-    code = code === 1 ? 1 : 2;
+    code = code == 1 ? 1 : 2;
     layer.msg(msg, {icon: code, offset: 't', shade: [0.4, '#000']});
-    if (url !== '') {
+    if (url != '') {
         setTimeout(function () {
             window.location.href = url;
         }, s * 1000);
     }
 }
+
+
+//百度统计,使用时请去掉
+var _hmt = _hmt || [];
+(function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2b45cf3bb7ac4664bb612c10feebf85d";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
 
 
 

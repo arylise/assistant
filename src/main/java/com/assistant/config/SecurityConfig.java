@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .loginProcessingUrl("/login.do")
                 .defaultSuccessUrl("/index") //成功登陆后跳转页面
-                .failureUrl("/loginError")
+                .failureUrl("/login_error")
                 .permitAll()
                 .and().csrf().disable();
         http

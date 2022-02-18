@@ -31,22 +31,16 @@ public class UserController {
     @RequestMapping("/checkRole")
     @ResponseBody
     public Object checkRole() {
-        Set roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        for (Object o : roles) {
-            if (ALL_ROLES.contains(o)) {
-                return o;
-            }
-        }
-        return "null";
+        return userService.checkRole();
     }
 
     @PostMapping("/signup.do")
     public String signupPatient(@RequestParam("username") String username, @RequestParam("password") String password) {
         boolean ans = userService.insertPatient(username, password);
         if(ans){
-            return "signupSuccess";
+            return "signup_success";
         }
-        return "signupError";
+        return "signup_error";
     }
 
 }
