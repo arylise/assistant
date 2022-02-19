@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import static com.assistant.constant.Role.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Iterator;
-import java.util.List;
 
 @Controller
 public class IndexController {
@@ -21,11 +19,6 @@ public class IndexController {
     @RequestMapping("/")
     public String voidRequest() {
         return "index";
-    }
-
-    @RequestMapping("/test")
-    public String test() {
-        return "test";
     }
 
     @RequestMapping("/index")
@@ -55,14 +48,10 @@ public class IndexController {
         return "signup";
     }
 
-    @RequestMapping("/loginError")
+    @RequestMapping("/login_error")
     public String loginError() {
-        return "loginError";
+        return "login_error";
     }
 
-    @RequestMapping("/doctor_manage")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String adminDoctorManage(){
-        return "/admin/doctor_manage";
-    }
+
 }

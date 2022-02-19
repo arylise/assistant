@@ -1,0 +1,111 @@
+/*.hide-button {*/
+/*    width: 80%;*/
+/*    height: 80%;*/
+/*    line-height: 38px;*/
+/*    border: 0px;*/
+/*    padding: 0;*/
+/*    margin: 0;*/
+/*    white-space: nowrap;*/
+/*    text-align: center;*/
+/*    font-size: 14px;*/
+/*    cursor: pointer;*/
+/*    outline: 0;*/
+/*    -webkit-appearance: none;*/
+/*    -webkit-transition: all .3s;*/
+/*    box-sizing: border-box;*/
+/*    display: inline-block;*/
+/*    -webkit-user-select: none;*/
+/*    vertical-align: middle;*/
+/*    background-color: #FBFBFB;*/
+/*    color: inherit;*/
+/*}*/
+
+/*滚动条*/
+::-webkit-scrollbar-corner {
+    background: #009688;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #009688;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: #009688;
+}
+
+.my-tab {
+    position: absolute;
+    padding-top: 0;
+    margin-top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.my-tab ul {
+    width: 100%;
+    background: #FBFBFB;
+    border-bottom-width: 1px;
+    border-color: #C1C1C1;
+    position: fixed !important;
+    z-index: 1000;
+}
+
+.my-tab ul li {
+    width: 100px;
+    padding: 0;
+}
+
+.layui-tab-content {
+    width: inherit;
+    height: auto;
+    margin-top: 40px;
+}
+
+.layui-tab-item {
+    width: inherit;
+    height: inherit;
+}
+
+.layui-form {
+    width: 100% !important;
+    /*height:inherit !important;*/
+    height: 100% !important;
+    display: inline-table !important;
+}
+
+.layui-form .layui-table-box {
+    width: 100% !important;
+    height: 100% !important;
+    display: inline-table !important;
+}
+
+.layui-table-box .layui-table-body {
+    width: 100% !important;
+    height: 100% !important;
+    display: inline-table !important;
+}
+
+.layui-table-body .layui-table {
+    width: 100% !important;
+    height: 100% !important;
+    display: inline-table !important;
+}
+
+.layui-table-header .layui-table {
+
+    width: 100% !important;
+    height: 100% !important;
+    display: inline-table !important;
+}
+
+.unshow-i i {
+    display: none !important;
+}
+
+.layui-table-fixed-l {
+    display: none !important;
+}

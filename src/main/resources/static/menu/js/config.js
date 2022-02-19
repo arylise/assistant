@@ -16,10 +16,18 @@ const admin = [{
     "url": "",
     "list": [{
         "name": "医生用户",
-        "url": "/doctor_manage"
+        "url": "/admin/doctor_manage"
     }, {
         "name": "患者用户",
         "url": "/admin/patient_manage"
+    }]
+},{
+    "name": "测试页面",
+    "icon": "&#xe612;",
+    "url": "",
+    "list": [{
+        "name": "表格",
+        "url": "/test/datatable"
     }]
 }, {
     "name": "退出登录",

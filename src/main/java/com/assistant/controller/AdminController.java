@@ -2,6 +2,7 @@ package com.assistant.controller;
 
 import com.assistant.model.enity.Admin;
 import com.assistant.service.intf.AdminService;
+import com.assistant.utils.TestClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -24,8 +25,10 @@ public class AdminController {
     }
 
 
-//    @RequestMapping("/doctor_manage")
-//    public String doctorManage(){
-//        return "redirect:/admin_doctor_manage";
-//    }
+    @RequestMapping("/doctor_manage")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @ResponseBody
+    public String adminDoctorManage(){
+        return "/admin/doctor_manage.html";
+    }
 }

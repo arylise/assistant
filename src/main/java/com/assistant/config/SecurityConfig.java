@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 关闭csrf防护
                 .csrf().disable()
                 .headers().frameOptions().sameOrigin()
+                .httpStrictTransportSecurity().disable()
                 .and();
         http
                 //登录处理
@@ -51,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/menu/**",
                         "/js/**",
                         "/layui/**",
-                        "/signup**" ).permitAll()
+                        "/signup**").permitAll()
 //                .antMatchers(
 //                        "/admin/**").hasRole("ADMIN")
                 //其他接口需要登录后才能访问
