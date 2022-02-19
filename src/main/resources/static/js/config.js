@@ -26,8 +26,11 @@ const admin = [{
     "icon": "&#xe612;",
     "url": "",
     "list": [{
-        "name": "表格",
-        "url": "/test/datatable"
+        "name": "测试1",
+        "url": "/test?n=1"
+    },{
+        "name": "测试2",
+        "url": "/test?n=2"
     }]
 }, {
     "name": "退出登录",

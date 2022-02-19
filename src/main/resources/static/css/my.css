@@ -52,6 +52,7 @@
     border-color: #C1C1C1;
     position: fixed !important;
     z-index: 1000;
+    text-align: center;
 }
 
 .my-tab ul li {
@@ -63,6 +64,8 @@
     width: inherit;
     height: auto;
     margin-top: 40px;
+    text-align: center;
+    padding: 0;
 }
 
 .layui-tab-item {
@@ -71,41 +74,56 @@
 }
 
 .layui-form {
-    width: 100% !important;
+    /*width: 100% !important;*/
     /*height:inherit !important;*/
-    height: 100% !important;
-    display: inline-table !important;
+    margin: 0;
+    height: 100%;
+    display: inline-table;
 }
 
-.layui-form .layui-table-box {
-    width: 100% !important;
-    height: 100% !important;
-    display: inline-table !important;
+.layui-table-box {
+    /*width: 100% !important;*/
+    height: 100%;
+    display: inline-table;
 }
 
-.layui-table-box .layui-table-body {
-    width: 100% !important;
-    height: 100% !important;
-    display: inline-table !important;
+.layui-table-body {
+    /*width: 100% !important;*/
+    height: 100%;
+    display: inline-table;
 }
 
-.layui-table-body .layui-table {
-    width: 100% !important;
-    height: 100% !important;
-    display: inline-table !important;
-}
+/*.layui-table-body .layui-table {*/
+/*    !*width: 100% !important;*!*/
+/*    height: 100% !important;*/
+/*    display: inline-table !important;*/
+/*}*/
 
-.layui-table-header .layui-table {
+/*.layui-table-header .layui-table {*/
 
-    width: 100% !important;
-    height: 100% !important;
-    display: inline-table !important;
-}
+/*    width: 100% !important;*/
+/*    height: 100% !important;*/
+/*    display: inline-table !important;*/
+/*}*/
 
 .unshow-i i {
     display: none !important;
 }
 
-.layui-table-fixed-l {
-    display: none !important;
+.layui-table-header {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.layui-table-page {
+    background-color: #FBFBFB;
+    left: 0;
+    z-index: 101;
+    text-align: center;
+    width: 100%;
+    bottom: 0;
+    position: -webkit-sticky;
+    position: sticky;
 }

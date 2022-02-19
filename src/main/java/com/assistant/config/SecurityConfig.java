@@ -49,7 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // 授权配置
                 //无需权限访问
                 .antMatchers(
-                        "/menu/**",
+                        "/css/**",
+                        "/img/**",
                         "/js/**",
                         "/layui/**",
                         "/signup**").permitAll()
