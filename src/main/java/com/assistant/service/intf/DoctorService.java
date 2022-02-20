@@ -8,4 +8,6 @@ public interface DoctorService {
 
     String password(String username);
     int insertDocs(List<Doctor> doctorList);
+    List<Doctor> selectAllDocs();
+    long count();
 }

@@ -25,7 +25,7 @@
 
 <script src="../layui/layui.js"></script>
 
-<script type="text/html" id="toolbarDemo">
+<script type="text/html" id="toolbar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
@@ -33,7 +33,7 @@
     </div>
 </script>
 
-<script type="text/html" id="barDemo">
+<script type="text/html" id="bar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" @click="detail">查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -103,7 +103,7 @@
                     })
                     table.render({
                         elem: '#doctor-list'
-                        , toolbar: '#toolbarDemo'
+                        , toolbar: '#toolbar'
                         , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
                             title: '提示'
                             , layEvent: 'LAYTABLE_TIPS'
@@ -114,22 +114,20 @@
                         , title: '用户数据表'
                         , even: true
                         , skin: 'row'
-                        , url: '/js/tabledata.js'
+                        , url: '/admin/doctor_list'
+                        , limit: 20
                         , id: 'doctorList'
                         , page: true //开启分页
                         , cols: [[ //表头
                             {type: 'numbers', fixed: "left"}
-                            , {field: 'id', title: 'ID', width: 100, sort: true, fixed: "left"}
-                            , {field: 'username', title: '用户名', width: 80}
-                            , {field: 'sex', title: '性别', width: 80, sort: true}
-                            , {field: 'city', title: '城市', width: 100}
-                            , {field: 'sign', title: '签名', width: 180}
-                            , {field: 'experience', title: '积分', width: 80, sort: true}
-                            , {field: 'score', title: '评分', width: 80, sort: true}
-                            , {field: 'classify', title: '职业', width: 80}
-                            , {field: 'wealth', title: '财富', width: 135, sort: true}
+                            , {field: 'username', title: '用户名', width: 100, sort: true, fixed: "left"}
+                            , {field: 'name', title: '姓名', width: 100}
+                            , {field: 'department', title: '科室', width: 180}
+                            , {field: 'sex', title: '性别', width: 80}
+                            , {field: 'age', title: '年龄', width: 80}
+                            , {field: 'phone', title: '电话', width: 135}
                             , {fixed: 'right', type: 'checkbox'}
-                            , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#barDemo'}
+                            , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
                         ]]
                     });
 

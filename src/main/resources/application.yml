@@ -65,10 +65,24 @@ spring:
       # 登录密码
       login-password: 123456
 
+  freemarker:
+    cache: false
+    suffix: .ftl
+    template-loader-path: classpath:/templates
+    content-type: text/html; charset=utf-8
+    settings:
+      number_format: 0   #数字格式，比较大的数字会带有逗号，如1,000
+
 mybatis:
   type-aliases-package: com.assistant.pojo
   mapper-locations: classpath:mybatis/*.xml
 #  configuration:
 #    map-underscore-to-camel-case: true
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 打印sql语句
+
+#pagehelper分页配置 第二种和第三种不需要 重点讲的第一种需要
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

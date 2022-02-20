@@ -22,4 +22,14 @@ public class DoctorServiceImpl implements DoctorService {
     public int insertDocs(List<Doctor> doctorList) {
         return doctorMapper.insertDocs(doctorList);
     }
+
+    @Override
+    public List<Doctor> selectAllDocs() {
+        return doctorMapper.selectAllDocs();
+    }
+
+    @Override
+    public long count() {
+        return doctorMapper.count();
+    }
 }

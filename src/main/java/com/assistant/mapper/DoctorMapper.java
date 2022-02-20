@@ -9,4 +9,6 @@ import java.util.List;
 public interface DoctorMapper {
     String password(String username);
     int insertDocs(List<Doctor> doctorList);
+    List<Doctor> selectAllDocs();
+    long count();
 }
