@@ -7,10 +7,7 @@ import com.assistant.service.intf.AdminService;
 import com.assistant.service.intf.DoctorService;
 import com.assistant.service.intf.PatientService;
 import com.assistant.service.intf.UserService;
-import io.netty.util.internal.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,8 +15,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -99,7 +94,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     public boolean insertPatient(String username, String password) {
         Map<String, String> map = checkUsername(username);
         if (map.isEmpty()) {
-            boolean ans = patientService.insert(username, password);
+            boolean ans = patientService.insertFast(username, password);
             if (ans) {
                 return true;
                 // TODO 实现注册后立即登录

@@ -3,6 +3,23 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.assistant.mapper.DoctorMapper">
+
+    <insert id="insertDocs" parameterType="com.assistant.model.enity.Doctor">
+        insert into doctor (`username`, `password`, `name`, `department`, `sex`, `age`, `phone`)
+        values
+        <foreach collection="list" item="doctor" index="index" separator=",">
+            (
+            #{doctor.username,jdbcType=VARCHAR},
+            #{doctor.password,jdbcType=VARCHAR},
+            #{doctor.name,jdbcType=VARCHAR},
+            #{doctor.department,jdbcType=VARCHAR},
+            #{doctor.sex,jdbcType=VARCHAR},
+            #{doctor.age,jdbcType=INTEGER},
+            #{doctor.phone,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
     <select id="password" resultType="java.lang.String">
         select doctor.password
         from doctor

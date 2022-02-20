@@ -17,7 +17,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public boolean insert(String username, String password) {
+    public boolean insertFast(String username, String password) {
         //md5加密
         password = new BCryptPasswordEncoder().encode(password);
         return patientMapper.insert(username, password);
