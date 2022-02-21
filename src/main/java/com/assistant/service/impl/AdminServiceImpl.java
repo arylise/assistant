@@ -43,6 +43,5 @@ public class AdminServiceImpl implements AdminService {
         return JSON.toJSONString(doctorList);
     }
 
-    @Override
-    public boolean
+
 }

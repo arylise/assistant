@@ -8,16 +8,13 @@
 </head>
 <body>
 
-<div class="layui-tab layui-tab-brief my-tab" lay-filter="manage-doctor" lay-allowclose="true">
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="manage-doctor">
     <ul class="layui-tab-title">
-        <li class="layui-this unshow-i">用户管理</li>
+        <li class="layui-this">医生列表</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            <div class="layui-btn-group">
-                <button class="layui-btn manage-active" data-type="list_doctor">医生列表</button>
-                <button class="layui-btn manage-active" data-type="insert_insert">注册医生</button>
-            </div>
+            <table id="doctor-list" lay-filter="list-listener"></table>
         </div>
     </div>
 </div>
@@ -37,73 +34,41 @@
 
 <script src="../layui/layui.js"></script>
 <script th:inline="none"> <!--src="../js/assistant.js">-->
-    layui.use(['table', 'element', 'dropdown', 'util'], function () {
+    layui.use(['table'], function () {
 
-        var $ = layui.jquery
-            , element = layui.element //Tab的切换功能，切换事件监听等，需要依赖element模块
-            , table = layui.table
-            , dropdown = layui.dropdown
-            , util = layui.util
+        var table = layui.table ;
 
-            , active = {
-                list_doctor: function () {
-                    if ($("#doctor-list").length <= 0) {
-                        element.tabAdd('manage-doctor', {
-                            title: '医生列表' //用于演示
-                            , content:
-                                '<table id="doctor-list" lay-filter="list-listener"></table>'
-                            , id: 'doctor-list-tab'
-                        })
-                        table.render({
-                            elem: '#doctor-list'
-                            , toolbar: '#toolbar'
-                            , defaultToolbar: [
-                                {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
-                                , {title: '获取选中数目', layEvent: 'getCheckLength', icon: 'layui-icon-tips'}
-                                , {title: '验证是否全选', layEvent: 'isAll', icon: 'layui-icon-tips'}
-                                ,'filter'
-                                , 'exports'
-                                , 'print'
-                            ]
-                            , height: '100%'
-                            , width: '100%'
-                            , title: '用户数据表'
-                            , even: true
-                            , skin: 'row'
-                            , url: '/admin/list_doctor'
-                            , limit: 20
-                            , page: true //开启分页
-                            , cols: [[ //表头
-                                {type: 'numbers', fixed: "left"}
-                                , {field: 'username', title: '用户名', width: 100, sort: true, fixed: "left"}
-                                , {field: 'name', title: '姓名', width: 100}
-                                , {field: 'department', title: '科室', width: 180}
-                                , {field: 'sex', title: '性别', width: 80}
-                                , {field: 'age', title: '年龄', width: 80}
-                                , {field: 'phone', title: '电话', width: 135}
-                                , {fixed: 'right', type: 'checkbox'}
-                                , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
-                            ]]
-                        })
-
-                    }
-                    element.tabChange('manage-doctor', 'doctor-list-tab');
-                }
-
-                ,doctor_insert: function(){
-                    element.tabAdd('manage-doctor', {
-                        title: '注册医生' //用于演示
-                        , content:
-                            '<form class="layui-form" action="">' +
-                            ''+
-                            '</form>'
-                        , id: 'doctor-insert-tab'
-                    })
-                    element.tabChange('manage-doctor', 'doctor-list-tab');
-                }
-            }
-        ;
-
+        table.render({
+            elem: '#doctor-list'
+            , toolbar: '#toolbar'
+            , defaultToolbar: [
+                {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
+                , {title: '获取选中数目', layEvent: 'getCheckLength', icon: 'layui-icon-tips'}
+                , {title: '验证是否全选', layEvent: 'isAll', icon: 'layui-icon-tips'}
+                ,'filter'
+                , 'exports'
+                , 'print'
+            ]
+            , height: '100%'
+            , width: '100%'
+            , title: '用户数据表'
+            , even: true
+            , skin: 'row'
+            , url: '/admin/list_doctor'
+            , limit: 20
+            , page: true //开启分页
+            , cols: [[ //表头
+                {type: 'numbers', fixed: "left"}
+                , {field: 'username', title: '用户名', width: 100, sort: true, fixed: "left"}
+                , {field: 'name', title: '姓名', width: 100}
+                , {field: 'department', title: '科室', width: 180}
+                , {field: 'sex', title: '性别', width: 80}
+                , {field: 'age', title: '年龄', width: 80}
+                , {field: 'phone', title: '电话', width: 135}
+                , {fixed: 'right', type: 'checkbox'}
+                , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
+            ]]
+        })
 
         //监听表格复选框选择
         table.on('checkbox(list-listener)', function (obj) {
@@ -148,85 +113,6 @@
             } else if (obj.event === 'edit') {
                 layer.alert('编辑行：<br>' + JSON.stringify(data))
             }
-        });
-
-
-        // //右键菜单
-        // dropdown.render({
-        //     elem: '#doctor-list-background' //document 也可绑定到 document，从而重置整个右键
-        //     , trigger: 'contextmenu' //contextmenu
-        //     , isAllowSpread: false //禁止菜单组展开收缩
-        //     , style: 'width: 200px' //定义宽度，默认自适应
-        //     , id: 'test777' //定义唯一索引
-        //     , data: [{
-        //         title: 'menu item 1'
-        //         , id: 'test'
-        //     }, {
-        //         title: 'Printing'
-        //         , id: 'print'
-        //     }, {
-        //         title: 'Reload'
-        //         , id: 'reload'
-        //     }, {type: '-'}, {
-        //         title: 'menu item 3'
-        //         , id: '#3'
-        //         , child: [{
-        //             title: 'menu item 3-1'
-        //             , id: '#1'
-        //         }, {
-        //             title: 'menu item 3-2'
-        //             , id: '#2'
-        //         }, {
-        //             title: 'menu item 3-3'
-        //             , id: '#3'
-        //         }]
-        //     }, {type: '-'}, {
-        //         title: 'menu item 4'
-        //         , id: ''
-        //     }, {
-        //         title: 'menu item 5'
-        //         , id: '#1'
-        //     }, {
-        //         title: 'menu item 6'
-        //         , id: '#1'
-        //     }]
-        //     , click: function (obj, othis) {
-        //         if (obj.id === 'test') {
-        //             layer.msg('click');
-        //         } else if (obj.id === 'print') {
-        //             window.print();
-        //         } else if (obj.id === 'reload') {
-        //             location.reload();
-        //         }
-        //     }
-        // });
-
-        //其他操作
-        // util.event('lay-demoactive', {
-        //     //全局右键菜单
-        //     rightclick: function(othis){
-        //         if(!othis.data('open')){
-        //             dropdown.reload('test777', {
-        //                 elem: document //将事件直接绑定到 document
-        //             });
-        //             layer.msg('已开启全局右键菜单，请尝试在页面任意处单击右键。')
-        //             othis.html('取消全局右键菜单');
-        //             othis.data('open', true);
-        //         } else {
-        //             dropdown.reload('test777', {
-        //                 elem: '#' //重新绑定到指定元素上
-        //             });
-        //             layer.msg('已取消全局右键菜单，恢复默认右键菜单')
-        //             othis.html('开启全局右键菜单');
-        //             othis.data('open', false);
-        //         }
-        //     }
-        // })
-
-        $('.manage-active').on('click', function () {
-            var othis = $(this),
-                type = othis.data('type');
-            active[type] ? active[type].call(this, othis) : '';
         });
 
     });
