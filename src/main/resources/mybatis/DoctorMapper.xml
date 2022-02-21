@@ -19,6 +19,11 @@
             )
         </foreach>
     </insert>
+    <delete id="delete">
+        delete
+        from doctor
+        where username = #{username}
+    </delete>
 
     <select id="password" resultType="java.lang.String">
         select doctor.password

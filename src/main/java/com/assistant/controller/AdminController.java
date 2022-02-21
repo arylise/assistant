@@ -25,23 +25,20 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-
-    @RequestMapping("/findAll")
-    @ResponseBody
-    public List<Admin> findAll() {
-        return adminService.findAll();
+    @RequestMapping("/manage_doctor")
+    public String manageDoctor() {
+        return "/admin/manage_doctor.html";
     }
 
-
-    @RequestMapping("/doctor_manage")
-    public String adminDoctorManage() {
-        return "/admin/doctor_manage.html";
-    }
-
-    @RequestMapping("/doctor_list")
+    @RequestMapping("/list_doctor")
     @ResponseBody
     public String doctorList(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "limit", defaultValue = "20") int limit) {
 //        TestClass.showMe("" + page + limit);
         return adminService.doctorList(page, limit);
+    }
+
+    @RequestMapping("/delete_doctor")
+    public boolean deleteDoctor(){
+        return false;
     }
 }

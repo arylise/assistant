@@ -10,4 +10,5 @@ public interface DoctorService {
     int insertDocs(List<Doctor> doctorList);
     List<Doctor> selectAllDocs();
     long count();
+    boolean delete(String username);
 }

@@ -32,4 +32,9 @@ public class DoctorServiceImpl implements DoctorService {
     public long count() {
         return doctorMapper.count();
     }
+
+    @Override
+    public boolean delete(String username) {
+        return doctorMapper.delete(username);
+    }
 }

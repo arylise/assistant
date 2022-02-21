@@ -42,4 +42,7 @@ public class AdminServiceImpl implements AdminService {
         doctorList.setCount(doctorService.count());
         return JSON.toJSONString(doctorList);
     }
+
+    @Override
+    public boolean
 }

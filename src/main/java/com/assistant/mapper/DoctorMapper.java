@@ -11,4 +11,5 @@ public interface DoctorMapper {
     int insertDocs(List<Doctor> doctorList);
     List<Doctor> selectAllDocs();
     long count();
+    boolean delete(String username);
 }

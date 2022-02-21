@@ -16,10 +16,10 @@ const admin = [{
     "url": "",
     "list": [{
         "name": "医生用户",
-        "url": "/admin/doctor_manage"
+        "url": "/admin/manage_doctor"
     }, {
         "name": "患者用户",
-        "url": "/admin/patient_manage"
+        "url": ""
     }]
 },{
     "name": "测试页面",

@@ -130,6 +130,7 @@ header h1 {
 }
 
 header .breadcrumb-left {
+    position: fixed;
     margin-left: 200px;
     padding-left: 20px;
     margin-right: 50%;
@@ -153,9 +154,12 @@ header .breadcrumb-left li {
 }
 
 header .breadcrumb-right {
-    margin-left: 50%;
-    margin-right: 20px;
-    padding-right: 20px;
+    background-color:#282B33;
+    right:0;
+    position:fixed;
+    /*margin-left: 50%;*/
+    /*margin-right: 20px;*/
+    /*padding-right: 20px;*/
 }
 
 header .breadcrumb-right i {
@@ -344,4 +348,3 @@ header .breadcrumb-right li {
 .page li span {
     background-color: #999;
 }
-
