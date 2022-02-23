@@ -24,7 +24,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<Doctor> selectAllDocs() {
+    public List<Doctor> selectAll() {
         return doctorMapper.selectAllDocs();
     }
 

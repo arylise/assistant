@@ -40,7 +40,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
 
             return new User(username, map.get(PASSWORD),
                     new ArrayList<>() {{
-                        add(new SimpleGrantedAuthority(map.get(ROLE)));
+                        add(new SimpleGrantedAuthority(map.get(ROLE_)));
                     }}
             );
 
@@ -61,19 +61,19 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
         password = patientService.password(username);
         if (!StringUtils.isEmptyOrWhitespace(password)) {
             map.put(PASSWORD, password);
-            map.put(ROLE, ROLE_PATIENT);
+            map.put(ROLE_, ROLE_PATIENT);
             return map;
         }
         password = doctorService.password(username);
         if (!StringUtils.isEmptyOrWhitespace(password)) {
             map.put(PASSWORD, password);
-            map.put(ROLE, ROLE_DOCTOR);
+            map.put(ROLE_, ROLE_DOCTOR);
             return map;
         }
         password = adminService.password(username);
         if (!StringUtils.isEmptyOrWhitespace(password)) {
             map.put(PASSWORD, password);
-            map.put(ROLE, ROLE_ADMIIN);
+            map.put(ROLE_, ROLE_ADMIN);
             return map;
         }
         return map;

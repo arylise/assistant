@@ -5,11 +5,12 @@ import com.assistant.mapper.AdminMapper;
 import com.assistant.model.dto.UserList;
 import com.assistant.model.enity.Admin;
 import com.assistant.model.enity.Doctor;
+import com.assistant.model.enity.Patient;
 import com.assistant.service.intf.AdminService;
 import com.assistant.service.intf.DoctorService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.assistant.service.intf.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private DoctorService doctorService;
 
+    @Autowired
+    private PatientService patientService;
+
     @Override
     public List<Admin> findAll() {
         return adminMapper.findAll();
@@ -33,14 +37,23 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public String doctorList(int page, int limit) {
-        PageHelper.startPage(page,limit);
-        List<Doctor> doctors = doctorService.selectAllDocs();
-        UserList<Doctor> doctorList = new UserList<>();
-        doctorList.setData(doctors);
-        doctorList.setCode(0);
-        doctorList.setCount(doctorService.count());
-        return JSON.toJSONString(doctorList);
+    public UserList doctorList() {
+        List<Doctor> list = doctorService.selectAll();
+        UserList<Doctor> users = new UserList<>();
+        users.setData(list);
+        users.setCode(0);
+        users.setCount(doctorService.count());
+        return users;
+    }
+
+    @Override
+    public UserList patientList() {
+        List<Patient> list = patientService.selectAll();
+        UserList<Patient> users = new UserList<>();
+        users.setData(list);
+        users.setCode(0);
+        users.setCount(patientService.count());
+        return users;
     }
 
 

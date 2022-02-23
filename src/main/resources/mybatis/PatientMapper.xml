@@ -13,4 +13,12 @@
         from patient
         where username = #{username}
     </select>
+    <select id="selectAll" resultType="com.assistant.model.enity.Patient">
+        select  `username`, `name`, `sex`, `age`, `phone`, `exception`
+        from patient
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        select count(*)
+        from patient
+    </select>
 </mapper>

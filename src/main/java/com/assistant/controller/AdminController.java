@@ -1,6 +1,8 @@
 package com.assistant.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
+import com.assistant.constant.Role;
 import com.assistant.model.dto.UserList;
 import com.assistant.model.enity.Admin;
 import com.assistant.model.enity.Doctor;
@@ -25,20 +27,32 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @RequestMapping("/manage_doctor")
-    public String manageDoctor() {
-        return "/admin/manage_doctor.html";
+    @RequestMapping("/management")
+    public String manageDoctor(@RequestParam("role") String role) {
+        return "/admin/management_" + role + ".html";
     }
 
-    @RequestMapping("/list_doctor")
+    @RequestMapping("/list")
     @ResponseBody
-    public String doctorList(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "limit", defaultValue = "20") int limit) {
-//        TestClass.showMe("" + page + limit);
-        return adminService.doctorList(page, limit);
+    public String doctorList(@RequestParam("role") String role, @RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "limit", defaultValue = "20") int limit) {
+        PageHelper.startPage(page, limit);
+        UserList list = null;
+        if (StringUtils.equalsIgnoreCase(role, Role.DOCTOR)) {
+            list = adminService.doctorList();
+        }
+        if (StringUtils.equalsIgnoreCase(role, Role.PATIENT)) {
+            list = adminService.patientList();
+        }
+
+        if (list != null) {
+            return JSON.toJSONString(list);
+        } else {
+            return "ERROR";
+        }
     }
 
     @RequestMapping("/delete_doctor")
-    public boolean deleteDoctor(){
+    public boolean deleteDoctor() {
         return false;
     }
 }
