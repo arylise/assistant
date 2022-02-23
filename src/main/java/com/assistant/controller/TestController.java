@@ -15,7 +15,7 @@ public class TestController {
 
     @RequestMapping("/test")
     public String test(@RequestParam("n") String n) {
-        return "/test/test" + n + ".html";
+        return "/test/test_" + n + ".html";
     }
 
     @RequestMapping("/redis")

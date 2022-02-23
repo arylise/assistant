@@ -21,19 +21,19 @@ const admin = [{
         "name": "患者用户",
         "url": "/admin/management?role=patient"
     }]
-},{
+}, {
     "name": "测试页面",
     "icon": "&#xe612;",
     "url": "",
     "list": [{
+        "name": "redis测试",
+        "url": "/test/test?n=redis"
+    }, {
         "name": "测试1",
         "url": "/test/test?n=1"
-    },{
+    }, {
         "name": "测试2",
         "url": "/test/test?n=2"
-    },{
-        "name": "测试3",
-        "url": "/test/test?n=3"
     }]
 }, {
     "name": "退出登录",

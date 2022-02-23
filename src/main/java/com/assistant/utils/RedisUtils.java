@@ -4,25 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
 public class RedisUtils {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    /**
-     * 读取缓存
-     *
-     * @param key
-     * @return
-     */
+    public Set<String> getAll(String key){
+        return redisTemplate.keys(key);
+    }
+
     public String get(final String key) {
         return redisTemplate.opsForValue().get(key);
     }
 
-    /**
-     * 写入缓存
-     */
     public boolean set(final String key, String value) {
         boolean result = false;
         try {
@@ -34,9 +31,6 @@ public class RedisUtils {
         return result;
     }
 
-    /**
-     * 更新缓存
-     */
     public boolean update(final String key, String value) {
         boolean result = false;
         try {
@@ -48,9 +42,6 @@ public class RedisUtils {
         return result;
     }
 
-    /**
-     * 删除缓存
-     */
     public boolean del(final String key) {
         boolean result = false;
         try {
