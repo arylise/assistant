@@ -7,6 +7,21 @@
         insert into patient(username, password, exception)
         values (#{username}, #{password}, 0)
     </insert>
+    <insert id="insertPats">
+        insert into patient (`username`, `password`, `name`, `sex`, `age`, `phone`, `exception`)
+        values
+        <foreach collection="list" item="patient" index="index" separator=",">
+            (
+            #{patient.username,jdbcType=VARCHAR},
+            #{patient.password,jdbcType=VARCHAR},
+            #{patient.name,jdbcType=VARCHAR},
+            #{patient.sex,jdbcType=VARCHAR},
+            #{patient.age,jdbcType=INTEGER},
+            #{patient.phone,jdbcType=INTEGER},
+            #{patient.exception,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
 
     <select id="password" resultType="java.lang.String">
         select patient.password

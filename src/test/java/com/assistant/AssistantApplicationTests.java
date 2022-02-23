@@ -1,7 +1,9 @@
 package com.assistant;
 
 import com.assistant.mapper.DoctorMapper;
+import com.assistant.mapper.PatientMapper;
 import com.assistant.model.enity.Doctor;
+import com.assistant.model.enity.Patient;
 import com.assistant.utils.TestClass;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ class AssistantApplicationTests {
     @Autowired
     private DoctorMapper doctorMapper;
 
+    @Autowired
+    private PatientMapper patientMapper;
+
     @Test
     void createDocTest() {
         List<Doctor> doctors = new ArrayList<>();
@@ -28,6 +33,19 @@ class AssistantApplicationTests {
             doctors.add(new Doctor(username + i, encoder.encode(username + i), username + i, "department0" + (random < 0.33 ? "1" : random < 0.66 ? "2" : "3"), "m", i, i));
         }
         System.out.println(doctorMapper.insertDocs(doctors));
+    }
+
+    @Test
+    void createPatTest() {
+        List<Patient> patients = new ArrayList<>();
+        String username = "patient";
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        int i = 0;
+        while (++i < 100) {
+            double random = Math.random();
+            patients.add(new Patient(username + i, encoder.encode(username + i), username + i, "m", i, i, 0));
+        }
+        System.out.println(patientMapper.insertPats(patients));
     }
 
     @Test
@@ -44,7 +62,6 @@ class AssistantApplicationTests {
         str = "admin";
         TestClass.showMe(encoder.encode(str));
     }
-
 
 
     @Test
