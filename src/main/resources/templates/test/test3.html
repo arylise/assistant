@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../layui/css/layui.css"   media="all">
+</head>
+<body>
+
+<form class="layui-form" action="/test/redis" form="get">
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">act</label>-->
+<!--        <div class="layui-input-block">-->
+<!--            <input type="radio" name="act" value="set" title="set">-->
+<!--            <input type="radio" name="act" value="get" title="get">-->
+<!--            <input type="radio" name="act" value="del" title="del">-->
+<!--            <input type="radio" name="act" value="update" title="update">-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">key</label>
+        <div class="layui-input-block">
+            <input type="text" name="key" lay-verify="title" autocomplete="off" placeholder="key" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">value</label>
+        <div class="layui-input-block">
+            <input type="text" name="value" placeholder="value" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" name="act" value="set">set</button>
+            <button type="submit" class="layui-btn" lay-submit="" name="act" value="get">get</button>
+            <button type="submit" class="layui-btn" lay-submit="" name="act" value="del">del</button>
+            <button type="submit" class="layui-btn" lay-submit="" name="act" value="update">update</button>
+        </div>
+    </div>
+</form>
+
+<script src="../layui/layui.js" charset="utf-8"></script>
+</body>
+</html>

@@ -27,10 +27,13 @@ const admin = [{
     "url": "",
     "list": [{
         "name": "测试1",
-        "url": "/test?n=1"
+        "url": "/test/test?n=1"
     },{
         "name": "测试2",
-        "url": "/test?n=2"
+        "url": "/test/test?n=2"
+    },{
+        "name": "测试3",
+        "url": "/test/test?n=3"
     }]
 }, {
     "name": "退出登录",

@@ -24,7 +24,8 @@ class AssistantApplicationTests {
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         int i = 0;
         while (++i < 100) {
-            doctors.add(new Doctor(username + i, encoder.encode(username + i), username + i, String.valueOf(i), "m", i, i));
+            double random = Math.random();
+            doctors.add(new Doctor(username + i, encoder.encode(username + i), username + i, "department0" + (random < 0.33 ? "1" : random < 0.66 ? "2" : "3"), "m", i, i));
         }
         System.out.println(doctorMapper.insertDocs(doctors));
     }
