@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Department {
-
     private String department;
     private String mapnode;
     private String location;

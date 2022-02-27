@@ -16,10 +16,21 @@ const admin = [{
     "url": "",
     "list": [{
         "name": "医生用户",
-        "url": "/admin/management?role=doctor"
+        "url": "/admin/page?to=doctor"
     }, {
         "name": "患者用户",
-        "url": "/admin/management?role=patient"
+        "url": "/admin/page?to=patient"
+    }]
+}, {
+    "name": "医院管理",
+    "icon": "&#xe612;",
+    "url": "",
+    "list": [{
+        "name": "检查科室",
+        "url": "/admin/page?to=department"
+    }, {
+        "name": "检查项目",
+        "url": "/admin/page?to=project"
     }]
 }, {
     "name": "测试页面",
@@ -28,6 +39,12 @@ const admin = [{
     "list": [{
         "name": "redis测试",
         "url": "/test/test?n=redis"
+    }, {
+        "name": "医生管理测试",
+        "url": "/test/test?n=page_doctor"
+    },{
+        "name": "科室管理测试",
+        "url": "/test/test?n=page_department"
     }, {
         "name": "测试1",
         "url": "/test/test?n=1"

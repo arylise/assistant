@@ -10,6 +10,5 @@ import java.util.List;
 public interface AdminService {
     List<Admin> findAll();
     String password(String username);
-    UserList doctorList();
-    UserList patientList();
+    UserList list(String listName);
 }

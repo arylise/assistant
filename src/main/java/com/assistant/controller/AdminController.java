@@ -1,24 +1,14 @@
 package com.assistant.controller;
 
-import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
-import com.assistant.constant.Role;
-import com.assistant.model.dto.UserList;
-import com.assistant.model.enity.Admin;
-import com.assistant.model.enity.Doctor;
 import com.assistant.service.intf.AdminService;
-import com.assistant.service.intf.DoctorService;
-import com.assistant.utils.TestClass;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -27,28 +17,18 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @RequestMapping("/management")
-    public String manageDoctor(@RequestParam("role") String role) {
-        return "/admin/management_" + role + ".html";
+    @RequestMapping("/page")
+    public String manageDoctor(@RequestParam("to") String role) {
+        return "/admin/page_" + role + ".html";
     }
 
     @RequestMapping("/list")
     @ResponseBody
-    public String doctorList(@RequestParam("role") String role, @RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "limit", defaultValue = "20") int limit) {
+    public String list(@RequestParam("name") String name,
+                       @RequestParam(value = "page", defaultValue = "1") int page,
+                       @RequestParam(value = "limit", defaultValue = "20") int limit) {
         PageHelper.startPage(page, limit);
-        UserList list = null;
-        if (StringUtils.equalsIgnoreCase(role, Role.DOCTOR)) {
-            list = adminService.doctorList();
-        }
-        if (StringUtils.equalsIgnoreCase(role, Role.PATIENT)) {
-            list = adminService.patientList();
-        }
-
-        if (list != null) {
-            return JSON.toJSONString(list);
-        } else {
-            return "ERROR";
-        }
+        return JSON.toJSONString(adminService.list(name));
     }
 
     @RequestMapping("/delete_doctor")

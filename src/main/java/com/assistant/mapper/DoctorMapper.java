@@ -9,7 +9,7 @@ import java.util.List;
 public interface DoctorMapper {
     String password(String username);
     int insertDocs(List<Doctor> doctorList);
-    List<Doctor> selectAllDocs();
+    List<Doctor> selectAll();
     long count();
     boolean delete(String username);
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../css/assistant.css">
+</head>
+<body>
+
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-patient">
+    <ul class="layui-tab-title">
+        <li class="layui-this">患者列表</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <table id="project-list" lay-filter="list-listener"></table>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script src="../layui/layui.js"></script>
+<script>
+    var page_config = {
+        elem: '#project-list'
+        , toolbar: '#toolbar'
+        , title: '用户数据表'
+        , url: '/admin/list?name=project'
+        , cols: [
+            [
+                {type: 'numbers', fixed: "left"}
+                , {field: 'name', title: '检查项目', width: 180}
+                , {field: 'department', title: '科室', width: 135}
+                , {field: 'avetime', title: '平均用时', width: 135}
+                , {fixed: 'right', type: 'checkbox'}
+                , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
+            ]
+        ]
+    };
+</script>
+<script src="../js/table.js"></script>
+
+</body>
+</html>

@@ -30,7 +30,7 @@
         from doctor
         where username = #{username}
     </select>
-    <select id="selectAllDocs" resultType="com.assistant.model.enity.Doctor">
+    <select id="selectAll" resultType="com.assistant.model.enity.Doctor">
         select `username`, `name`, `department`, `sex`, `age`, `phone`
         from doctor
     </select>

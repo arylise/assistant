@@ -1,39 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="../layui/css/layui.css">
-    <link rel="stylesheet" href="../css/assistant.css">
-</head>
-<body>
-
-<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-doctor">
-    <ul class="layui-tab-title">
-        <li class="layui-this">医生列表</li>
-    </ul>
-    <div class="layui-tab-content">
-        <div class="layui-tab-item layui-show">
-            <table id="doctor-list" lay-filter="list-listener"></table>
-        </div>
-    </div>
-</div>
-
-<script type="text/html" id="bar">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
-
-<script src="../layui/layui.js"></script>
-<script th:inline="none"> <!--src="../js/assistant.js">-->
 layui.use(['table'], function () {
 
     var table = layui.table;
 
     table.render({
-        elem: '#doctor-list'
-        , toolbar: '#toolbar'
+        elem: page_config.elem
+        , toolbar: page_config.toolbar
         , defaultToolbar: [
             {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
             , {title: '获取选中数目', layEvent: 'getCheckLength', icon: 'layui-icon-tips'}
@@ -43,27 +14,17 @@ layui.use(['table'], function () {
             , 'print'
         ]
         // , request: {
-        //     role: "doctor"
+        //     of: "doctor"
         // }
         , height: '100%'
         , width: '100%'
-        , title: '用户数据表'
+        , title: page_config.title
         , even: true
         , skin: 'row'
-        , url: '/admin/list?role=doctor'
+        , url: page_config.url
         , limit: 20
         , page: true //开启分页
-        , cols: [[ //表头
-            {type: 'numbers', fixed: "left"}
-            , {field: 'username', title: '用户名', width: 100, sort: true, fixed: "left"}
-            , {field: 'name', title: '姓名', width: 100}
-            , {field: 'department', title: '科室', width: 180}
-            , {field: 'sex', title: '性别', width: 80}
-            , {field: 'age', title: '年龄', width: 80}
-            , {field: 'phone', title: '电话', width: 135}
-            , {fixed: 'right', type: 'checkbox'}
-            , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
-        ]]
+        , cols: page_config.cols
     })
 
     //监听表格复选框选择
@@ -112,7 +73,3 @@ layui.use(['table'], function () {
     });
 
 });
-</script>
-
-</body>
-</html>
