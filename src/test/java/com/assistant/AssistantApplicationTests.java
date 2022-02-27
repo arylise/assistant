@@ -63,12 +63,13 @@ class AssistantApplicationTests {
         TestClass.showMe(encoder.encode(str));
     }
 
+    int inf = Integer.MAX_VALUE;
+    int n = 7;
+    int[][] e = new int[n][n];
+    int showCount = 0;
 
     @Test
     public void testFloyd() {
-        int inf = Integer.MAX_VALUE;
-        int n = 7;
-        int[][] e = new int[n][n];
 
         String[] points = {
                 "1 5 2 3",
@@ -106,13 +107,9 @@ class AssistantApplicationTests {
 //                System.out.println("");
 //            }
         }
-        for (int ii = 0; ii < n; ii++) {
-            for (int j = 0; j < n; j++) {
-                System.out.print("" + (e[ii][j] == inf ? " " : e[ii][j]) + " ");
-            }
-            System.out.println("");
-        }
-        System.out.println("__________________________");
+
+        showMeE();
+
 
         //Floyd-Warshall算法核心语句
         for (int k = 0; k < n; k++) {
@@ -120,28 +117,26 @@ class AssistantApplicationTests {
                 for (int j = 0; j < n; j++) {
                     if (e[i][k] != inf && e[k][j] != inf && e[i][j] > e[i][k] + e[k][j]) {
                         e[i][j] = e[i][k] + e[k][j];
+                        System.out.println("k = " + k + "\ni = " + i + "\nj = " + j + "\n");
+                        showMeE();
                     }
                 }
             }
         }
 
+        showMeE();
+
+
+    }
+
+    public void showMeE() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 System.out.print("" + (e[i][j] == inf ? " " : e[i][j]) + " ");
             }
             System.out.println();
         }
-//        //输出最终的结果
-//        for(int i=1;i<=n;i++)
-//        {
-//            for(int j=1;j<=n;j++)
-//            {
-//                printf("%10d",e[i][j]);
-//            }
-//            printf("\n");
-//        }
-
-
+        System.out.println("__________________________" + showCount++);
     }
 
 }
