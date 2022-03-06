@@ -67,22 +67,20 @@ class AssistantApplicationTests {
     int n = 7;
     int[][] e = new int[n][n];
     int showCount = 0;
+    String[][] eStr = new String[n][n];
+
+    String[] points = {
+            "1 5 2 3",
+            "3 4 5 1 0 5",
+            "0 3 4 5",
+            "1 4 5 2 6 3",
+            "2 5 5 3 6 4",
+            "1 1 3 2 4 3",
+            "3 3 4 4"
+    };
 
     @Test
     public void testFloyd() {
-
-        String[] points = {
-                "1 5 2 3",
-                "3 4 5 1 0 5",
-                "0 3 4 5",
-                "1 4 5 2 6 3",
-                "2 5 5 3 6 4",
-                "1 1 3 2 4 3",
-                "3 3 4 4"
-        };
-//        for (String point : points) {
-//            System.out.println(point);
-//        }
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -92,41 +90,25 @@ class AssistantApplicationTests {
 
         for (int i = 0; i < points.length; i++) {
             String[] strs = points[i].split(" ");
-//            for (String str : strs) {
-//                System.out.println(str);
-//            }
             for (int j = 0; j < strs.length / 2; j++) {
-//                System.out.println(strs[j] + " " + strs[2 * j + 1]);
-//                System.out.println("" + Integer.parseInt(strs[j]) + " " + Integer.parseInt(strs[2 * j + 1]));
-                e[i][Integer.parseInt(strs[2 * j])] = Integer.parseInt(strs[2 * j + 1]);
+                int jj = Integer.parseInt(strs[2 * j]);
+                e[i][jj] = Integer.parseInt(strs[2 * j + 1]);
+                eStr[i][jj] = "" + i + "->" + strs[2 * j];
             }
-//            for (int ii = 0; ii < n; ii++) {
-//                for (int j = 0; j < n; j++) {
-//                    System.out.print("" + (e[ii][j] == inf ? " " : e[ii][j]) + " ");
-//                }
-//                System.out.println("");
-//            }
         }
+        showMeEStr();
 
-        showMeE();
-
-
-        //Floyd-Warshall算法核心语句
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     if (e[i][k] != inf && e[k][j] != inf && e[i][j] > e[i][k] + e[k][j]) {
                         e[i][j] = e[i][k] + e[k][j];
-                        System.out.println("k = " + k + "\ni = " + i + "\nj = " + j + "\n");
-                        showMeE();
+                        eStr[i][j] = eStr[i][k].substring(0, eStr[i][k].length() - 1) + eStr[k][j];
+                        showMeEStr(k, i, j);
                     }
                 }
             }
         }
-
-        showMeE();
-
-
     }
 
     public void showMeE() {
@@ -139,4 +121,18 @@ class AssistantApplicationTests {
         System.out.println("__________________________" + showCount++);
     }
 
+    public void showMeEStr(int k, int i, int j) {
+        System.out.print("_______k = " + k + " i = " + i + " j = " + j);
+        showMeEStr();
+    }
+
+    public void showMeEStr() {
+        System.out.println("__________________________" + showCount++);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                System.out.print("" + (e[i][j] == inf ? "inf " : (i == j ? "null " : "(" + i + "," + j + " " + eStr[i][j] + " " + e[i][j] + ") ")));
+            }
+            System.out.println();
+        }
+    }
 }

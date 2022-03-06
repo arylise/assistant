@@ -9,10 +9,7 @@ import com.assistant.model.enity.Admin;
 import com.assistant.model.enity.Department;
 import com.assistant.model.enity.Doctor;
 import com.assistant.model.enity.Patient;
-import com.assistant.service.intf.AdminService;
-import com.assistant.service.intf.DoctorService;
-import com.assistant.service.intf.HospitalService;
-import com.assistant.service.intf.PatientService;
+import com.assistant.service.intf.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -33,6 +30,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private HospitalService hospitalService;
 
+    @Autowired
+    private MapNodeService mapNodeService;
+
     @Override
     public List<Admin> findAll() {
         return adminMapper.findAll();
@@ -47,7 +47,7 @@ public class AdminServiceImpl implements AdminService {
     public UserList list(String listName) {
         long count;
         List list;
-        switch (listName.toUpperCase()) {
+        switch (listName) {
             case Role.DOCTOR -> {
                 list = doctorService.selectAll();
                 count = doctorService.count();
@@ -64,6 +64,10 @@ public class AdminServiceImpl implements AdminService {
             case StaticString.PROJECT -> {
                 list = hospitalService.projectList();
                 count = hospitalService.countPros();
+            }
+            case StaticString.MAP_NODE -> {
+                list = mapNodeService.findAll();
+                count = mapNodeService.count();
             }
             default -> {
                 return new UserList(-1, "");

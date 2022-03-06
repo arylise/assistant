@@ -31,6 +31,9 @@ const admin = [{
     }, {
         "name": "检查项目",
         "url": "/admin/page?to=project"
+    }, {
+        "name": "节点管理",
+        "url": "/admin/page?to=mapnode"
     }]
 }, {
     "name": "测试页面",

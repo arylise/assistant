@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class Department {
     private String department;
-    private String mapnode;
-    private String location;
+    private int nodeId;
 }

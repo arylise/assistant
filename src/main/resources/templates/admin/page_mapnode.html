@@ -7,13 +7,13 @@
 </head>
 <body>
 
-<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-department">
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-mapnode">
     <ul class="layui-tab-title">
-        <li class="layui-this">科室列表</li>
+        <li class="layui-this">节点列表</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            <table id="department-list" lay-filter="list-listener"></table>
+            <table id="mapnode-list" lay-filter="list-listener"></table>
         </div>
     </div>
 </div>
@@ -27,16 +27,21 @@
 <script src="../layui/layui.js"></script>
 <script>
     var page_config = {
-        elem: '#department-list'
+        elem: '#mapnode-list'
         , toolbar: '#toolbar'
         , title: '用户数据表'
-        , url: '/admin/list?name=department'
+        , url: '/admin/list?name=mapnode'
         , cols: [
             [
                 {type: 'numbers', fixed: "left"}
-                , {field: 'department', title: '科室', width: 180}
-                , {field: 'nodeId', title: '地图节点', width: 135}
-                // , {field: 'location', title: '位置', width: 135}
+                , {field: 'nodeId', title: '节点ID', width: 180}
+                , {field: 'level', title: '层', width: 135}
+                , {field: 'x', title: '水平', width: 135}
+                , {field: 'y', title: '垂直', width: 135}
+                , {field: 'nextNode', title: '连接节点', width: 135}
+                , {field: 'span', title: '跨层', width: 135}
+                , {field: 'stairNode', title: '楼梯上下', width: 135}
+                , {field: 'elevatorId', title: '电梯群组ID', width: 135}
                 , {fixed: 'right', type: 'checkbox'}
                 , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
             ]
