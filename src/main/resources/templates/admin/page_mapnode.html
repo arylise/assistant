@@ -7,13 +7,14 @@
 </head>
 <body>
 
+<div id="test2"><h1>12313231fsgrger</h1></div>
 <div class="layui-tab layui-tab-brief my-tab" lay-filter="management-mapnode">
     <ul class="layui-tab-title">
         <li class="layui-this">节点列表</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            <table id="mapnode-list" lay-filter="list-listener"></table>
+            <table id="mapnode-list" lay-filter="mapnode-list-listener"></table>
         </div>
     </div>
 </div>
@@ -23,10 +24,23 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
+<script type="text/html" id="node-form">
+    <form class="layui-form" action="" lay-filter="example">
+        <div class="layui-input-block layui-form-text" style="width:400px;height:500px">
+            <textarea placeholder="请输入内容" class="layui-textarea" name="desc" style="height:500px"></textarea>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn layui-btn-normal" id="LAY-component-form-getval">取值</button>
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+    </form>
+</script>
 
 <script src="../layui/layui.js"></script>
 <script>
-    var page_config = {
+    const page_config = {
         elem: '#mapnode-list'
         , toolbar: '#toolbar'
         , title: '用户数据表'
@@ -49,6 +63,31 @@
     };
 </script>
 <script src="../js/table.js"></script>
+<script>
+    layui.use(['table', 'form'], function () {
+        var $ = layui.jquery,
+            form = layui.form
+
+        //监听工具条
+        layui.table.on('tool(mapnode-list-listener)', function (obj) {
+            const data = obj.data;
+            if (obj.event === 'detail') {
+                layer.msg('ID：' + data.nodeId + ' 的查看操作');
+            } else if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if (obj.event === 'edit') {
+                layer.alert($('#node-form').html())
+                form.val('example', {
+                    'desc': JSON.stringify(data, null, 4)
+                })
+            }
+        });
+
+    });
+</script>
 
 </body>
 </html>
