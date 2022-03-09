@@ -2,7 +2,7 @@ new Vue({
     el: '#app',
     data: {
         webname: config.name,
-        menu: config.menu
+        menu: menu,
     },
     methods: {
         onActive: function (pid1, pid2) {
@@ -16,7 +16,7 @@ new Vue({
             } else {
                 let data = this.menu[pid1].list[pid2];
                 // if (data.url.length > 0) {
-                window.open(data.url, "main");
+                window.open(this.menu[pid1].baseUrl + data.url, "main");
                 $("#a1").text(this.menu[pid1].name);
                 $("#a2").text(data.name);
                 // }

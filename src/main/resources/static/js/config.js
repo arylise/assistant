@@ -14,46 +14,49 @@ const admin = [{
     "name": "用户管理",
     "icon": "&#xe612;",
     "url": "",
+    "baseUrl":"/admin",
     "list": [{
         "name": "医生用户",
-        "url": "/admin/page_doctor"
+        "url": "/page_doctor"
     }, {
         "name": "患者用户",
-        "url": "/admin/page_patient"
+        "url": "/page_patient"
     }]
 }, {
     "name": "医院管理",
     "icon": "&#xe612;",
     "url": "",
+    "baseUrl":"/admin",
     "list": [{
         "name": "检查科室",
-        "url": "/admin/page_department"
+        "url": "/page_department"
     }, {
         "name": "检查项目",
-        "url": "/admin/page_project"
+        "url": "/page_project"
     }, {
         "name": "节点管理",
-        "url": "/admin/page_mapnode"
+        "url": "/page_mapnode"
     }]
 }, {
     "name": "测试页面",
     "icon": "&#xe612;",
     "url": "",
+    "baseUrl":"/test",
     "list": [{
         "name": "redis测试",
-        "url": "/test/test_redis"
+        "url": "/test_redis"
     }, {
         "name": "医生管理测试",
-        "url": "/test/test_page_doctor"
+        "url": "/test_page_doctor"
     },{
         "name": "科室管理测试",
-        "url": "/test/test_page_department"
+        "url": "/test_page_department"
     }, {
         "name": "测试1",
-        "url": "/test/test_1"
+        "url": "/test_1"
     }, {
         "name": "测试2",
-        "url": "/test/test_2"
+        "url": "/test_2"
     }]
 }, {
     "name": "退出登录",
@@ -129,12 +132,12 @@ getLevel();
 
 const config = {
     name: "检查助手",
-    menu: menu,
 };
 
-try {
-    module.exports.name = "检查助手";
-    module.exports.menu = menu;
-} catch (e) {
-
-}
+// try {
+//     module.exports.name = config.name;
+//     module.exports.menu = config.menu;
+//     module.exports.baseUrl = config.baseUrl;
+// } catch (e) {
+//
+// }
