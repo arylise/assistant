@@ -8,7 +8,7 @@ const ROLE = {
 const admin = [{
     "name": "首页",
     "icon": "&#xe68e;",
-    "url": "/",
+    "url": "/index",
     "list": [],
 }, {
     "name": "用户管理",
@@ -16,10 +16,10 @@ const admin = [{
     "url": "",
     "list": [{
         "name": "医生用户",
-        "url": "/admin/page?to=doctor"
+        "url": "/admin/page_doctor"
     }, {
         "name": "患者用户",
-        "url": "/admin/page?to=patient"
+        "url": "/admin/page_patient"
     }]
 }, {
     "name": "医院管理",
@@ -27,13 +27,13 @@ const admin = [{
     "url": "",
     "list": [{
         "name": "检查科室",
-        "url": "/admin/page?to=department"
+        "url": "/admin/page_department"
     }, {
         "name": "检查项目",
-        "url": "/admin/page?to=project"
+        "url": "/admin/page_project"
     }, {
         "name": "节点管理",
-        "url": "/admin/page?to=mapnode"
+        "url": "/admin/page_mapnode"
     }]
 }, {
     "name": "测试页面",
@@ -41,19 +41,19 @@ const admin = [{
     "url": "",
     "list": [{
         "name": "redis测试",
-        "url": "/test/test?n=redis"
+        "url": "/test/test_redis"
     }, {
         "name": "医生管理测试",
-        "url": "/test/test?n=page_doctor"
+        "url": "/test/test_page_doctor"
     },{
         "name": "科室管理测试",
-        "url": "/test/test?n=page_department"
+        "url": "/test/test_page_department"
     }, {
         "name": "测试1",
-        "url": "/test/test?n=1"
+        "url": "/test/test_1"
     }, {
         "name": "测试2",
-        "url": "/test/test?n=2"
+        "url": "/test/test_2"
     }]
 }, {
     "name": "退出登录",

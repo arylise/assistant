@@ -1,6 +1,5 @@
 package com.assistant.model.enity;
 
-import com.assistant.utils.TestClass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +29,6 @@ public class MapNode {
      * 下一个节点id
      */
     private String nextNode;
-    private List<Integer> nextNodeList;
 
     /**
      * 0不跨层 1楼梯 2电梯
@@ -41,24 +39,17 @@ public class MapNode {
      * 上下楼梯的节点，先上后下，如果为空则置-1，只能有两个值
      */
     private String stairNode;
-    private List<Integer> stairNodeList;
 
     /**
      * 电梯集群id
      */
     private int elevatorId;
 
-    public List<Integer> getStairNodeList() {
-        if (stairNodeList == null) {
-            stairNodeList = Arrays.stream(stairNode.split("\\|")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());
-        }
-        return stairNodeList;
+    public List<Integer> stairNodeList() {
+        return Arrays.stream(stairNode.split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());
     }
 
-    public List<Integer> getNextNodeList() {
-        if (nextNodeList == null) {
-            nextNodeList = Arrays.stream(nextNode.split("\\|")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());
-        }
-        return nextNodeList;
+    public List<Integer> nextNodeList() {
+        return Arrays.stream(nextNode.split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());
     }
 }

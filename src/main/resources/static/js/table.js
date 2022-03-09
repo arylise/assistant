@@ -1,6 +1,6 @@
 layui.use(['table'], function () {
 
-    var table = layui.table;
+    const table = layui.table;
 
     table.render({
         elem: page_config.elem
@@ -13,9 +13,6 @@ layui.use(['table'], function () {
             , 'exports'
             , 'print'
         ]
-        // , request: {
-        //     of: "doctor"
-        // }
         , height: '100%'
         , width: '100%'
         , title: page_config.title

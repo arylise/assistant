@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,14 +18,14 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @RequestMapping("/page")
-    public String manageDoctor(@RequestParam("to") String role) {
-        return "/admin/page_" + role + ".html";
+    @RequestMapping("/page_{name}")
+    public String page(@PathVariable String name) {
+        return "/admin/page_" + name + ".html";
     }
 
-    @RequestMapping("/list")
+    @RequestMapping("/list_{name}")
     @ResponseBody
-    public String list(@RequestParam("name") String name,
+    public String list(@PathVariable String name,
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        @RequestParam(value = "limit", defaultValue = "20") int limit) {
         PageHelper.startPage(page, limit);

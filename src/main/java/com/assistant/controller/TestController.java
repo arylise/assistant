@@ -3,6 +3,7 @@ package com.assistant.controller;
 import com.assistant.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,8 +14,8 @@ public class TestController {
     @Autowired
     private RedisUtils redisUtils;
 
-    @RequestMapping("/test")
-    public String test(@RequestParam("n") String n) {
+    @RequestMapping("/test_{n}")
+    public String test(@PathVariable String n) {
         return "/test/test_" + n + ".html";
     }
 

@@ -48,12 +48,11 @@ public class AdminServiceImpl implements AdminService {
         long count;
         List list;
         switch (listName) {
-            case Role.DOCTOR -> {
+            case StaticString.DOCTOR -> {
                 list = doctorService.selectAll();
                 count = doctorService.count();
             }
-
-            case Role.PATIENT -> {
+            case StaticString.PATIENT -> {
                 list = patientService.selectAll();
                 count = patientService.count();
             }
