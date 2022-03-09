@@ -13,7 +13,6 @@ const admin = [{
 }, {
     "name": "用户管理",
     "icon": "&#xe612;",
-    "url": "",
     "baseUrl":"/admin",
     "list": [{
         "name": "医生用户",
@@ -25,7 +24,6 @@ const admin = [{
 }, {
     "name": "医院管理",
     "icon": "&#xe612;",
-    "url": "",
     "baseUrl":"/admin",
     "list": [{
         "name": "检查科室",
@@ -40,7 +38,6 @@ const admin = [{
 }, {
     "name": "测试页面",
     "icon": "&#xe612;",
-    "url": "",
     "baseUrl":"/test",
     "list": [{
         "name": "redis测试",
