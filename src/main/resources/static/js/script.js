@@ -10,7 +10,7 @@ new Vue({
                 let data = this.menu[pid1];
                 if (data.url.length > 0) {
                     window.location.href = data.url;
-                    $("#a1").text(data.name);
+                    $('#a1').text(data.name);
                     $("#a2").text("");
                 }
             } else {

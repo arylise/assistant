@@ -9,20 +9,20 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserList {
+public class DataList {
     private int code;
     private String msg;
     private long count;
     private List data;
 
-    public  UserList(List list,long count){
+    public DataList(List list, long count){
         this.code = 0;
         this.msg = "";
         this.data = list;
         this.count = count;
     }
 
-    public UserList(int code,String msg){
+    public DataList(int code, String msg){
         this.code = code;
         this.msg = msg;
         this.data = null;

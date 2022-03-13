@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/assistant.css">
+</head>
+<body>
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="map" lay-allowclose="true">
+    <ul class="layui-tab-title">
+        <li class="layui-this unshow-i">地图管理</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <div class="map-button">
+                <button class="layui-btn map-active" data-type="clear">清空地图</button>
+                <button class="layui-btn map-active" data-type="addFloor" floor="1">1楼地图</button>
+                <button class="layui-btn map-active" data-type="addFloor" floor="2">2楼地图</button>
+                <button class="layui-btn map-active" data-type="addFloor" floor="3">3楼地图</button>
+                <button class="layui-btn map-active" data-type="addFloor" floor="4">4楼地图</button>
+                <button class="layui-btn map-active" data-type="addFloor" floor="5">5楼地图</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/layui/layui.js"></script>
+<script th:inline="none">
+    function rectClick(event) {
+        //获取相对于当前所指向对象的位置坐标
+        alert('x:' + event.offsetX + "  y:" + event.offsetY);
+    }
+
+    function addFloor() {
+        var othis = $(this), type = othis.data('type');
+        alert(type)
+        lay.activate[type].call(this, othis)
+    }
+
+    const lay =
+        layui.use('element', function () {
+            var $ = layui.jquery
+                , element = layui.element
+
+                , active = {
+                    addFloor: function (othis) {
+                        const floor = parseInt(othis.attr('floor'));
+                        if ($('#floor' + floor).length <= 0) {
+                            element.tabAdd('map', {
+                                title: floor + '楼地图'
+                                , content: // TODO 按钮失效！！！！！！！！！！
+                                    '<div id="floor' + floor + '"><img src="/img/floor' + floor + '.png" onclick="rectClick(event)" style="-webkit-user-drag:none"/></div>'
+                                    + ' <div className = "layui-btn-group">'
+                                    + ((floor === 1) ? '' : '<button class = "layui-btn map-active" onclick = "addFloor()" data-type="addFloor" floor=' + (floor - 1) + '>下一层</button>')
+                                    + ((floor === 5) ? '' : '<button class = "layui-btn map-active" onclick = "addFloor()" data-type="addFloor" floor=' + (floor + 1) + '>上一层</button>')
+                                    + '</div>'
+                                , id: 'floor' + floor
+                            })
+                        }
+                        element.tabChange('map', 'floor' + floor);
+
+                    }
+                    // , lastMap: function () {
+                    //     const floor = parseInt(othis.attr('floor')) - 1;
+                    //     element.tabChange('map', 'floor' + floor);
+                    // }, nextMap: function () {
+                    //     const floor = parseInt(othis.attr('floor')) + 1;
+                    //     element.tabChange('map', 'floor' + floor);
+                    // }
+                    , clear: function () {
+                        for (var i = 1; i <= 5; i++) {
+                            element.tabDelete('map', 'floor' + i); //删除：“商品管理”
+                        }
+                    }
+
+                }
+            ;
+
+            $('.map-active').on('click', function () {
+                var othis = $(this), type = othis.data('type');
+                active[type] ? active[type].call(this, othis) : '';
+            });
+        });
+</script>
+
+</body>
+</html>

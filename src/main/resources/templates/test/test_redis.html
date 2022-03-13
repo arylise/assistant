@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/layui/css/layui.css"   media="all">
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
 </head>
 <body>
 
-<form class="layui-form" action="/test/redis" form="get">
-<!--    <div class="layui-form-item">-->
-<!--        <label class="layui-form-label">act</label>-->
-<!--        <div class="layui-input-block">-->
-<!--            <input type="radio" name="act" value="set" title="set">-->
-<!--            <input type="radio" name="act" value="get" title="get">-->
-<!--            <input type="radio" name="act" value="del" title="del">-->
-<!--            <input type="radio" name="act" value="update" title="update">-->
-<!--        </div>-->
-<!--    </div>-->
+<form class="layui-form" action="/test/redis" method="get" lay-filter="form-redis">
+    <!--    <div class="layui-form-item">-->
+    <!--        <label class="layui-form-label">act</label>-->
+    <!--        <div class="layui-input-block">-->
+    <!--            <input type="radio" name="act" value="set" title="set">-->
+    <!--            <input type="radio" name="act" value="get" title="get">-->
+    <!--            <input type="radio" name="act" value="del" title="del">-->
+    <!--            <input type="radio" name="act" value="update" title="update">-->
+    <!--        </div>-->
+    <!--    </div>-->
     <div class="layui-form-item">
         <label class="layui-form-label">key</label>
         <div class="layui-input-block">
@@ -28,16 +28,72 @@
             <input type="text" name="value" placeholder="value" autocomplete="off" class="layui-input">
         </div>
     </div>
+    <!--    <div class="layui-form-item">-->
+    <!--        <div class="layui-input-block">-->
+    <!--            <button type="submit" class="layui-btn" lay-submit="" name="act" value="set">set</button>-->
+    <!--            <button type="submit" class="layui-btn" lay-submit="" name="act" value="get">get</button>-->
+    <!--            <button type="submit" class="layui-btn" lay-submit="" name="act" value="del">del</button>-->
+    <!--            <button type="submit" class="layui-btn" lay-submit="" name="act" value="update">update</button>-->
+    <!--        </div>-->
+    <!--    </div>-->
     <div class="layui-form-item">
+        <label class="layui-form-label">act</label>
         <div class="layui-input-block">
-            <button type="submit" class="layui-btn" lay-submit="" name="act" value="set">set</button>
-            <button type="submit" class="layui-btn" lay-submit="" name="act" value="get">get</button>
-            <button type="submit" class="layui-btn" lay-submit="" name="act" value="del">del</button>
-            <button type="submit" class="layui-btn" lay-submit="" name="act" value="update">update</button>
+            <input type="radio" name="act" value="set" title="set">
+            <input type="radio" name="act" value="get" title="get" checked="">
+            <input type="radio" name="act" value="del" title="del">
+            <input type="radio" name="act" value="update" title="update">
         </div>
     </div>
+
 </form>
+<div class="layui-form-item">
+    <div class="layui-input-block">
+        <button class="layui-btn commit" data-type="commit_redis">commit</button>
+    </div>
+</div>
+
+<div class="layui-form-item">
+
+</div>
 
 <script src="/layui/layui.js" charset="utf-8"></script>
+<script>
+
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , $ = layui.jquery
+
+            //监听提交
+            , active = {
+                commit_redis: function () {
+                    const form = $('form');
+                    // layer.alert(JSON.stringify(form.serialize()), {
+                    //     title: '最终的提交信息'
+                    // })
+                    $.ajax({
+                        url: form.attr('action'),
+                        type: form.attr('method'),
+                        async: true,
+                        data: form.serialize(),
+                        success: function (response) {
+                            layer.alert(response)
+                        },
+                        error: function (response) {
+                            layer.alert(response);
+                        }
+                    })
+                    return false;
+                }
+            }
+
+        $('.commit').on('click', function () {
+            var othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        })
+
+    });
+</script>
 </body>
 </html>
