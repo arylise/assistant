@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Data
 public class MapNode {
-    private int nodeId;
+    private String nodeId;
 
     /**
      * 节点所属层数

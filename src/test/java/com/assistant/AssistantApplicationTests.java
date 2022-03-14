@@ -1,8 +1,10 @@
 package com.assistant;
 
 import com.assistant.mapper.DoctorMapper;
+import com.assistant.mapper.MapNodeMapper;
 import com.assistant.mapper.PatientMapper;
 import com.assistant.model.enity.Doctor;
+import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Patient;
 import com.assistant.utils.TestClass;
 import org.junit.jupiter.api.Test;
@@ -11,7 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
@@ -21,6 +25,9 @@ class AssistantApplicationTests {
 
     @Autowired
     private PatientMapper patientMapper;
+
+    @Autowired
+    private MapNodeMapper mapNodeMapper;
 
     @Test
     void createDocTest() {
@@ -134,5 +141,39 @@ class AssistantApplicationTests {
             }
             System.out.println();
         }
+    }
+
+
+    @Test
+    public void insertMapNode() {
+        String str1 = "315,230 441,230 567,230 693,230 819,230 819,322 819,414 819,506 693,506 567,506 441,506 315,506 315,414 315,322 315,230";
+//        int level1 = 1;
+        insertMapNodeFun(str1, 1);
+        insertMapNodeFun(str1, 2);
+        insertMapNodeFun(str1, 3);
+        insertMapNodeFun(str1, 4);
+        insertMapNodeFun(str1, 5);
+
+    }
+
+    public void insertMapNodeFun(String str, int level) {
+        List<String> strings = Arrays.asList(str.split(" "));
+        List<MapNode> list = new ArrayList<MapNode>();
+        int num = 1;
+        for (String xy : strings) {
+            MapNode map = new MapNode();
+            System.out.println(xy);
+
+            String[] s = xy.split(",");
+
+            map.setX(Integer.parseInt(s[0]));
+            map.setY(Integer.parseInt(s[1]));
+            map.setLevel(level);
+            map.setNodeId("node_" + level + "_" + ((num < 10) ? "0" + num : num));
+            map.setSpan(0);
+            list.add(map);
+            num++;
+        }
+        System.out.println(mapNodeMapper.insertNodes(list));
     }
 }

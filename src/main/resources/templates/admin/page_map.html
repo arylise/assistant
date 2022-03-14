@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/layui/css/layui.css">
     <link rel="stylesheet" href="/css/assistant.css">
+    <style>
+        .line {
+            fill: none;
+            stroke: black;
+            stroke-width: 3;
+        }
+
+        .svgStyle {
+            position: fixed;
+            width: 1133px;
+            height: 743px;
+        }
+    </style>
 </head>
 <body>
 <div class="layui-tab layui-tab-brief my-tab" lay-filter="map" lay-allowclose="true">
@@ -46,10 +59,31 @@
                     addFloor: function (othis) {
                         const floor = parseInt(othis.attr('floor'));
                         if ($('#floor' + floor).length <= 0) {
+                            var baseX = 63;
+                            var baseY = 46;
                             element.tabAdd('map', {
                                 title: floor + '楼地图'
                                 , content: // TODO 按钮失效！！！！！！！！！！
-                                    '<div id="floor' + floor + '"><img src="/img/floor' + floor + '.png" onclick="rectClick(event)" style="-webkit-user-drag:none"/></div>'
+                                    '<div>'
+                                    + '<svg class="svgStyle" xmlns="http://www.w3.org/2000/svg" version="1.1"><polyline class="line" points="'
+                                    // + '315,230 441,230 567,230 693,230 819,230 819,322 819,414 819,506 693,506 567,506 441,506 315,506 315,414 315,322 315,230'
+                                    + baseX * 5 + ',' + baseY * 5 + ' '
+                                    + baseX * 7 + ',' + baseY * 5 + ' '
+                                    + baseX * 9 + ',' + baseY * 5 + ' '
+                                    + baseX * 11 + ',' + baseY * 5 + ' '
+                                    + baseX * 13 + ',' + baseY * 5 + ' '
+                                    + baseX * 13 + ',' + baseY * 7 + ' '
+                                    + baseX * 13 + ',' + baseY * 9 + ' '
+                                    + baseX * 13 + ',' + baseY * 11 + ' '
+                                    + baseX * 11 + ',' + baseY * 11 + ' '
+                                    + baseX * 9 + ',' + baseY * 11 + ' '
+                                    + baseX * 7 + ',' + baseY * 11 + ' '
+                                    + baseX * 5 + ',' + baseY * 11 + ' '
+                                    + baseX * 5 + ',' + baseY * 9 + ' '
+                                    + baseX * 5 + ',' + baseY * 7 + ' '
+                                    + baseX * 5 + ',' + baseY * 5 + ' '
+                                    + '"/></svg>'
+                                    + '<img id="floor' + floor + '" src="/img/floor' + floor + '.png" onclick="rectClick(event)" style="-webkit-user-drag:none"/></div>'
                                     + ' <div className = "layui-btn-group">'
                                     + ((floor === 1) ? '' : '<button class = "layui-btn map-active" onclick = "addFloor()" data-type="addFloor" floor=' + (floor - 1) + '>下一层</button>')
                                     + ((floor === 5) ? '' : '<button class = "layui-btn map-active" onclick = "addFloor()" data-type="addFloor" floor=' + (floor + 1) + '>上一层</button>')

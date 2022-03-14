@@ -9,8 +9,12 @@ import java.util.List;
 @Mapper
 public interface PatientMapper {
     String password(String username);
-    boolean insert(String username,String password);
+
+    boolean insert(String username, String password);
+
     int insertPats(List<Patient> patientList);
+
     long count();
+
     List<Patient> selectAll();
 }

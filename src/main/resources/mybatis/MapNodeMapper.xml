@@ -3,6 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.assistant.mapper.MapNodeMapper">
+    <insert id="insert" parameterType="com.assistant.model.enity.MapNode">
+        insert into mapnode (`nodeId`, `level`, `x`, `y`, `nextNode`, `span`, `stairNode`, `elevatorId`)
+        values (#{nodeId}, #{level}, #{x}, #{y}, #{nextNode}, #{span}, #{stairNode}, #{elevatorId})
+    </insert>
+
+    <insert id="insertNodes">
+        insert into mapnode (`nodeId`, `level`, `x`, `y`, `nextNode`, `span`, `stairNode`,`elevatorId`)
+        values
+        <foreach collection="list" item="mapnode" index="index" separator=",">
+            (
+            #{mapnode.nodeId,jdbcType=VARCHAR},
+            #{mapnode.level,jdbcType=INTEGER},
+            #{mapnode.x,jdbcType=INTEGER},
+            #{mapnode.y,jdbcType=INTEGER},
+            #{mapnode.nextNode,jdbcType=VARCHAR},
+            #{mapnode.span,jdbcType=INTEGER},
+            #{mapnode.stairNode,jdbcType=VARCHAR},
+            #{mapnode.elevatorId,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
     <select id="findAll" resultType="com.assistant.model.enity.MapNode">
         select *
         from mapnode
