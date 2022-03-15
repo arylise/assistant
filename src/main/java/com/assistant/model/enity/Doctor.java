@@ -17,4 +17,5 @@ public class Doctor implements Serializable {
     private String sex;
     private int age;
     private int phone;
+    private String msg;
 }

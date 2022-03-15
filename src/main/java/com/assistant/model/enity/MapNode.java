@@ -12,7 +12,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Data
 public class MapNode {
-    private String nodeId;
+    private int nodeId;
+
+    private String nodeName;
 
     /**
      * 节点所属层数
@@ -44,6 +46,8 @@ public class MapNode {
      * 电梯集群id
      */
     private int elevatorId;
+
+    private String msg;
 
     public List<Integer> stairNodeList() {
         return Arrays.stream(stairNode.split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());

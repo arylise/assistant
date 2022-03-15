@@ -37,7 +37,7 @@ class AssistantApplicationTests {
         int i = 0;
         while (++i < 100) {
             double random = Math.random();
-            doctors.add(new Doctor(username + i, encoder.encode(username + i), username + i, "department0" + (random < 0.33 ? "1" : random < 0.66 ? "2" : "3"), "m", i, i));
+            doctors.add(new Doctor(username + i, encoder.encode(username + i), username + i, "department0" + (random < 0.33 ? "1" : random < 0.66 ? "2" : "3"), "m", i, i, null));
         }
         System.out.println(doctorMapper.insertDocs(doctors));
     }
@@ -50,7 +50,7 @@ class AssistantApplicationTests {
         int i = 0;
         while (++i < 100) {
             double random = Math.random();
-            patients.add(new Patient(username + i, encoder.encode(username + i), username + i, "m", i, i, 0));
+            patients.add(new Patient(username + i, encoder.encode(username + i), username + i, "m", i, i, 0, null));
         }
         System.out.println(patientMapper.insertPats(patients));
     }
@@ -160,6 +160,7 @@ class AssistantApplicationTests {
         List<String> strings = Arrays.asList(str.split(" "));
         List<MapNode> list = new ArrayList<MapNode>();
         int num = 1;
+        int size = strings.size();
         for (String xy : strings) {
             MapNode map = new MapNode();
             System.out.println(xy);
@@ -169,11 +170,31 @@ class AssistantApplicationTests {
             map.setX(Integer.parseInt(s[0]));
             map.setY(Integer.parseInt(s[1]));
             map.setLevel(level);
-            map.setNodeId("node_" + level + "_" + ((num < 10) ? "0" + num : num));
+            int nodeId = level * 10000 + num;
+            map.setNodeId(nodeId);
             map.setSpan(0);
+
+            String nextNode = "";
+            if (num == 1) {
+                nextNode += (level * 10000 + size) + "," + (nodeId + 1);
+            } else if (num == size) {
+                nextNode += (nodeId - 1) + "," + (level * 10000 + 1);
+            } else {
+                nextNode += (nodeId - 1) + "," + (nodeId + 1);
+            }
+            map.setNextNode(nextNode);
+
             list.add(map);
             num++;
         }
         System.out.println(mapNodeMapper.insertNodes(list));
+    }
+
+
+//    private static SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+
+    @Test
+    public void func() {
+//        QuartzTool
     }
 }

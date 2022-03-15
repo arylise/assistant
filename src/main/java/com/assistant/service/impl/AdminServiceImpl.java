@@ -1,9 +1,11 @@
 package com.assistant.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.assistant.constant.StaticString;
 import com.assistant.mapper.AdminMapper;
 import com.assistant.model.dto.DataList;
 import com.assistant.model.enity.Admin;
+import com.assistant.model.enity.MapNode;
 import com.assistant.service.intf.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +72,16 @@ public class AdminServiceImpl implements AdminService {
             return new DataList(list, count);
         }
         return new DataList(-2, "");
+    }
+
+    @Override
+    public String getMapNodesByLevel(int level) {
+        List<MapNode> list = mapNodeService.getMapNodesByLevel(level);
+        if (list != null && list.size() != 0) {
+            JSONObject jsonObject = new JSONObject();
+            // TODO
+        }
+        return null;
     }
 
 

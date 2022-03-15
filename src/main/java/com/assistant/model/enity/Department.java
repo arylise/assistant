@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class Department {
     private String department;
     private int nodeId;
+    private String msg;
 }

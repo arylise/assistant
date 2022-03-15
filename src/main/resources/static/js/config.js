@@ -106,6 +106,26 @@ const patient = [{
     "url": "/index",
     "list": [],
 }, {
+    "name": "测试页面",
+    "icon": "&#xe612;",
+    "baseUrl": "/test",
+    "list": [{
+        "name": "redis测试",
+        "url": "/test_redis"
+    }, {
+        "name": "测试1",
+        "url": "/test_1"
+    }, {
+        "name": "测试2",
+        "url": "/test_2"
+    }, {
+        "name": "测试3",
+        "url": "/test_3"
+    }, {
+        "name": "测试4",
+        "url": "/test_4"
+    }]
+}, {
     "name": "退出登录",
     "icon": "&#xe65c;",
     "url": "/logout",

@@ -11,4 +11,5 @@ public class Project {
     private String name;
     private String department;
     private int avetime;
+    private String msg;
 }

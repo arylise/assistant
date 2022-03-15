@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface MapNodeService {
     List<MapNode> findAll();
+
     long count();
+
+    List<MapNode> getMapNodesByLevel(int level);
 }

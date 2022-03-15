@@ -66,22 +66,7 @@
                                 , content: // TODO 按钮失效！！！！！！！！！！
                                     '<div>'
                                     + '<svg class="svgStyle" xmlns="http://www.w3.org/2000/svg" version="1.1"><polyline class="line" points="'
-                                    // + '315,230 441,230 567,230 693,230 819,230 819,322 819,414 819,506 693,506 567,506 441,506 315,506 315,414 315,322 315,230'
-                                    + baseX * 5 + ',' + baseY * 5 + ' '
-                                    + baseX * 7 + ',' + baseY * 5 + ' '
-                                    + baseX * 9 + ',' + baseY * 5 + ' '
-                                    + baseX * 11 + ',' + baseY * 5 + ' '
-                                    + baseX * 13 + ',' + baseY * 5 + ' '
-                                    + baseX * 13 + ',' + baseY * 7 + ' '
-                                    + baseX * 13 + ',' + baseY * 9 + ' '
-                                    + baseX * 13 + ',' + baseY * 11 + ' '
-                                    + baseX * 11 + ',' + baseY * 11 + ' '
-                                    + baseX * 9 + ',' + baseY * 11 + ' '
-                                    + baseX * 7 + ',' + baseY * 11 + ' '
-                                    + baseX * 5 + ',' + baseY * 11 + ' '
-                                    + baseX * 5 + ',' + baseY * 9 + ' '
-                                    + baseX * 5 + ',' + baseY * 7 + ' '
-                                    + baseX * 5 + ',' + baseY * 5 + ' '
+                                    + active.getNodeStr(floor)
                                     + '"/></svg>'
                                     + '<img id="floor' + floor + '" src="/img/floor' + floor + '.png" onclick="rectClick(event)" style="-webkit-user-drag:none"/></div>'
                                     + ' <div className = "layui-btn-group">'
@@ -105,6 +90,18 @@
                         for (var i = 1; i <= 5; i++) {
                             element.tabDelete('map', 'floor' + i); //删除：“商品管理”
                         }
+                    }
+                    , getNodeStr: function (level) {
+                        var str;
+                        $.ajax({
+                            url: "/admin/nodes_" + level,
+                            type: "GET",
+                            async: false,
+                            success: function (response) {
+                                str = response;
+                            }
+                        })
+                        return str;
                     }
 
                 }

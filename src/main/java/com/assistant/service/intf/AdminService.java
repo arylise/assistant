@@ -9,4 +9,5 @@ public interface AdminService {
     List<Admin> findAll();
     String password(String username);
     DataList list(String listName);
+    String getMapNodesByLevel(int level);
 }

@@ -33,4 +33,9 @@
         select count(*)
         from mapnode
     </select>
+    <select id="getNodesByLevel" resultType="com.assistant.model.enity.MapNode">
+        select *
+        from mapnode
+        where mapnode.level = #{level}
+    </select>
 </mapper>

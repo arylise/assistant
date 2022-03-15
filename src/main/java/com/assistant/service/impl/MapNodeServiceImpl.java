@@ -22,4 +22,9 @@ public class MapNodeServiceImpl implements MapNodeService {
     public long count() {
         return mapNodeMapper.count();
     }
+
+    @Override
+    public List<MapNode> getMapNodesByLevel(int level) {
+        return mapNodeMapper.getNodesByLevel(level);
+    }
 }

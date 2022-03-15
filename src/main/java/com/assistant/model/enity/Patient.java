@@ -15,4 +15,5 @@ public class Patient {
     private int age;
     private int phone;
     private int exception;
+    private String msg;
 }

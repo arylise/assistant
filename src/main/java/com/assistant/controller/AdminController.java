@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.websocket.server.PathParam;
+
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -35,5 +37,12 @@ public class AdminController {
     @RequestMapping("/delete_doctor")
     public boolean deleteDoctor() {
         return false;
+    }
+
+    @RequestMapping("/nodes_{level}")
+    @ResponseBody
+    public String nodesByLevel(@PathVariable String level) {
+
+        return adminService.getMapNodesByLevel(Integer.parseInt(level)); // TODO
     }
 }
