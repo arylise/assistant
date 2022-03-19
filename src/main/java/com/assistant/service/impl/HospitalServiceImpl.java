@@ -5,17 +5,18 @@ import com.assistant.mapper.ProjectMapper;
 import com.assistant.model.enity.Department;
 import com.assistant.model.enity.Project;
 import com.assistant.service.intf.HospitalService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class HospitalServiceImpl implements HospitalService{
-    @Autowired
-    private DepartmentMapper departmentMapper;
-    @Autowired
-    private ProjectMapper projectMapper;
+
+    private final DepartmentMapper departmentMapper;
+    private final ProjectMapper projectMapper;
+
     @Override
     public List<Department> departmentList() {
         return departmentMapper.selectAll();

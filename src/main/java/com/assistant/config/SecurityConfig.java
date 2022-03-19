@@ -1,5 +1,6 @@
 package com.assistant.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,14 +16,12 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private LogoutSuccessHandler logoutSuccessHandler;
+    private final UserDetailsService userDetailsService;
+    private final LogoutSuccessHandler logoutSuccessHandler;
 
 //    @Autowired
 //    private AuthenticationProvider authenticationProvider;

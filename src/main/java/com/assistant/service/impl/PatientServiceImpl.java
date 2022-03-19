@@ -3,16 +3,17 @@ package com.assistant.service.impl;
 import com.assistant.mapper.PatientMapper;
 import com.assistant.model.enity.Patient;
 import com.assistant.service.intf.PatientService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PatientServiceImpl implements PatientService {
-    @Autowired
-    private PatientMapper patientMapper;
+
+    private final PatientMapper patientMapper;
 
     @Override
     public String password(String username) {

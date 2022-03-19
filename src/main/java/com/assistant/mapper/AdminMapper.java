@@ -7,7 +7,9 @@ import java.util.List;
 
 @Mapper
 public interface AdminMapper {
+
     List<Admin> findAll(); // TEST
 
     String password(String username);
+
 }

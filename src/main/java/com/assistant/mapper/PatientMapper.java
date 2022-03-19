@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface PatientMapper {
+
     String password(String username);
 
     boolean insert(String username, String password);
@@ -17,4 +18,5 @@ public interface PatientMapper {
     long count();
 
     List<Patient> selectAll();
+
 }

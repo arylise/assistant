@@ -7,7 +7,9 @@ import java.util.List;
 
 @Mapper
 public interface ProjectMapper {
+
     List<Project> selectAll();
 
     long count();
+
 }

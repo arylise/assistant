@@ -2,25 +2,19 @@ package com.assistant.controller;
 
 import com.alibaba.druid.util.StringUtils;
 import com.assistant.service.intf.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.assistant.constant.Role.*;
-
-import java.util.Iterator;
+import static com.assistant.constant.Role.ALL_ROLES;
 
 @Controller
+@RequiredArgsConstructor
 public class IndexController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @RequestMapping("/")
     public String voidRequest() {

@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface DoctorMapper {
+
     String password(String username);
 
     int insertDocs(List<Doctor> doctorList);
@@ -17,4 +18,5 @@ public interface DoctorMapper {
     long count();
 
     boolean delete(String username);
+
 }

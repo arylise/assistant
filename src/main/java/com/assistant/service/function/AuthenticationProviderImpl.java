@@ -1,7 +1,6 @@
 package com.assistant.service.function;
 
-import com.assistant.utils.TestClass;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,9 +11,10 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
 
 @Component
+@RequiredArgsConstructor
 public class AuthenticationProviderImpl implements AuthenticationProvider {
-    @Autowired
-    private UserDetailsService userDetailsService;
+
+    private final UserDetailsService userDetailsService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

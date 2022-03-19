@@ -3,15 +3,16 @@ package com.assistant.service.impl;
 import com.assistant.mapper.MapNodeMapper;
 import com.assistant.model.enity.MapNode;
 import com.assistant.service.intf.MapNodeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MapNodeServiceImpl implements MapNodeService {
-    @Autowired
-    private MapNodeMapper mapNodeMapper;
+
+    private final MapNodeMapper mapNodeMapper;
 
     @Override
     public List<MapNode> findAll() {

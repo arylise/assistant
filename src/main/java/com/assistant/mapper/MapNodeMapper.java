@@ -9,6 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface MapNodeMapper {
+
     List<MapNode> findAll(); // TEST
 
     long count();
@@ -18,4 +19,5 @@ public interface MapNodeMapper {
     int insertNodes(List<MapNode> mapNodeList);
 
     List<MapNode> getNodesByLevel(int level);
+
 }

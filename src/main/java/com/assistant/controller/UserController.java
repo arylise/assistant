@@ -4,6 +4,7 @@ import static com.assistant.constant.Role.*;
 
 import com.assistant.service.intf.UserService;
 import com.assistant.utils.TestClass;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,9 +25,10 @@ import java.util.ArrayList;
 import java.util.Set;
 
 @Controller
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @RequestMapping("/checkRole")
     @ResponseBody
@@ -37,7 +39,7 @@ public class UserController {
     @PostMapping("/signup.do")
     public String signupPatient(@RequestParam("username") String username, @RequestParam("password") String password) {
         boolean ans = userService.insertPatient(username, password);
-        if(ans){
+        if (ans) {
             return "signup_success";
         }
         return "signup_error";

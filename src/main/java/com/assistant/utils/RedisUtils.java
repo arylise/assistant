@@ -1,16 +1,16 @@
 package com.assistant.utils;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
 @Component
+@RequiredArgsConstructor
 public class RedisUtils {
 
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     public Set<String> getAll(String key){
         return redisTemplate.keys(key);

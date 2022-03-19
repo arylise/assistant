@@ -7,27 +7,20 @@ import com.assistant.model.dto.DataList;
 import com.assistant.model.enity.Admin;
 import com.assistant.model.enity.MapNode;
 import com.assistant.service.intf.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
-    @Autowired
-    private AdminMapper adminMapper;
 
-    @Autowired
-    private DoctorService doctorService;
-
-    @Autowired
-    private PatientService patientService;
-
-    @Autowired
-    private HospitalService hospitalService;
-
-    @Autowired
-    private MapNodeService mapNodeService;
+    private final AdminMapper adminMapper;
+    private final DoctorService doctorService;
+    private final PatientService patientService;
+    private final HospitalService hospitalService;
+    private final MapNodeService mapNodeService;
 
     @Override
     public List<Admin> findAll() {
@@ -42,7 +35,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public DataList list(String listName) {
         long count;
-        List list;
+        List list = null;
         switch (listName) {
             case StaticString.DOCTOR -> {
                 list = doctorService.selectAll();

@@ -3,7 +3,7 @@ package com.assistant.controller;
 import com.alibaba.fastjson.JSON;
 import com.assistant.service.intf.AdminService;
 import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.websocket.server.PathParam;
-
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/admin")
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminController {
-    @Autowired
-    private AdminService adminService;
+
+    private final AdminService adminService;
 
     @RequestMapping("/page_{name}")
     public String page(@PathVariable String name) {

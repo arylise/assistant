@@ -1,7 +1,7 @@
 package com.assistant.controller;
 
 import com.assistant.utils.RedisUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/test")
 public class TestController {
-    @Autowired
-    private RedisUtils redisUtils;
+
+    private final RedisUtils redisUtils;
 
     @RequestMapping("/test_{n}")
     public String test(@PathVariable String n) {
@@ -22,16 +23,12 @@ public class TestController {
     @RequestMapping("/redis")
     @ResponseBody
     public String redis_set(@RequestParam("key") String key, @RequestParam("value") String value, @RequestParam("act") String act) {
-        switch (act) {
-            case "set":
-                return String.valueOf(redisUtils.set(key, value));
-            case "get":
-                return redisUtils.get(key);
-            case "del":
-                return String.valueOf(redisUtils.del(key));
-            case "update":
-                return String.valueOf(redisUtils.update(key, value));
-        }
-        return "error act";
+        return switch (act) {
+            case "set" -> String.valueOf(redisUtils.set(key, value));
+            case "get" -> redisUtils.get(key);
+            case "del" -> String.valueOf(redisUtils.del(key));
+            case "update" -> String.valueOf(redisUtils.update(key, value));
+            default -> "error act";
+        };
     }
 }

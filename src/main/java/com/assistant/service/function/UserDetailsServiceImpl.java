@@ -1,13 +1,10 @@
 package com.assistant.service.function;
 
-import static com.assistant.constant.Role.*;
-import static com.assistant.constant.StaticString.*;
-
 import com.assistant.service.intf.AdminService;
 import com.assistant.service.intf.DoctorService;
 import com.assistant.service.intf.PatientService;
 import com.assistant.service.intf.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,35 +15,34 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import static com.assistant.constant.Role.*;
+import static com.assistant.constant.StaticString.PASSWORD;
 
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService, UserService {
-    @Autowired
-    private AdminService adminService;
-    @Autowired
-    private DoctorService doctorService;
-    @Autowired
-    private PatientService patientService;
+
+    private final AdminService adminService;
+    private final DoctorService doctorService;
+    private final PatientService patientService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
-            Map<String, String> map = checkUsername(username);
-            if (map.isEmpty()) {
-                throw new UsernameNotFoundException("用户名或密码错误！");
-            }
-
-            return new User(username, map.get(PASSWORD),
-                    new ArrayList<>() {{
-                        add(new SimpleGrantedAuthority(map.get(ROLE_)));
-                    }}
-            );
-
-        } catch (UsernameNotFoundException e) {
-            throw e;
+        Map<String, String> map = checkUsername(username);
+        if (map.isEmpty()) {
+            throw new UsernameNotFoundException("用户名或密码错误！");
         }
+
+        return new User(username, map.get(PASSWORD),
+                new ArrayList<>() {{
+                    add(new SimpleGrantedAuthority(map.get(ROLE_)));
+                }}
+        );
     }
 
     /***
@@ -81,10 +77,10 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public String checkRole() {
-        Set roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        for (Object o : roles) {
+        Set<String> roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        for (String o : roles) {
             if (ALL_ROLES.contains(o)) {
-                return (String) o;
+                return o;
             }
         }
         return null;
