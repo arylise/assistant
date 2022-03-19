@@ -65,9 +65,9 @@
                                 title: floor + '楼地图'
                                 , content: // TODO 按钮失效！！！！！！！！！！
                                     '<div>'
-                                    + '<svg class="svgStyle" xmlns="http://www.w3.org/2000/svg" version="1.1"><polyline class="line" points="'
+                                    + '<svg class="svgStyle" xmlns="http://www.w3.org/2000/svg" version="1.1">'
                                     + active.getNodeStr(floor)
-                                    + '"/></svg>'
+                                    + '</svg>'
                                     + '<img id="floor' + floor + '" src="/img/floor' + floor + '.png" onclick="rectClick(event)" style="-webkit-user-drag:none"/></div>'
                                     + ' <div className = "layui-btn-group">'
                                     + ((floor === 1) ? '' : '<button class = "layui-btn map-active" onclick = "addFloor()" data-type="addFloor" floor=' + (floor - 1) + '>下一层</button>')

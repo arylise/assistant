@@ -33,14 +33,15 @@
         , url: '/admin/list_patient'
         , cols: [
             [
-                {type: 'numbers', fixed: "left"}
+                {fixed: 'left', type: 'checkbox'}
+                , {type: 'numbers', fixed: "left"}
                 , {field: 'username', title: '用户名', width: 100, sort: true, fixed: "left"}
                 , {field: 'name', title: '姓名', width: 100}
                 , {field: 'sex', title: '性别', width: 80}
                 , {field: 'age', title: '年龄', width: 80}
                 , {field: 'phone', title: '电话', width: 135}
                 , {field: 'exception', title: '备注', width: 80}
-                , {fixed: 'right', type: 'checkbox'}
+                , {field: 'msg', title: '描述', width: 300}
                 , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
             ]
         ]

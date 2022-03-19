@@ -13,8 +13,6 @@ layui.use(['table'], function () {
             , 'exports'
             , 'print'
         ]
-        , height: '100%'
-        , width: '100%'
         , title: page_config.title
         , even: true
         , skin: 'row'

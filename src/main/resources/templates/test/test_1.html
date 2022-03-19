@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/layui/css/layui.css">
     <link rel="stylesheet" href="/css/assistant.css">
+    <style>
+        .layui-form{
+
+        }
+    </style>
 </head>
 <body>
 
@@ -29,22 +34,24 @@
         table.render({
             elem: '#doctor-list'
             , id: 'idTest'
-            , url: '/js/tabledata.js'
+            , url: '/admin/list_mapnode'
             , page: true //开启分页
-            , cols: [[ //表头
-                {type: 'numbers', fixed: "left"}
-                , {type: 'checkbox'}
-                , {field: 'id', title: 'ID', width: 100, sort: true}
-                , {field: 'username', title: '用户名', width: 80}
-                , {field: 'sex', title: '性别', width: 80, sort: true}
-                , {field: 'city', title: '城市', width: 100}
-                , {field: 'sign', title: '签名', width: 180}
-                , {field: 'experience', title: '积分', width: 80, sort: true}
-                , {field: 'score', title: '评分', width: 80, sort: true}
-                , {field: 'classify', title: '职业', width: 80}
-                , {field: 'wealth', title: '财富', width: 135, sort: true}
-                , {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'}
-            ]]
+            , limit: 20
+            , cols: [
+                [ //表头
+                    {fixed: 'left', type: 'checkbox'}
+                    , {type: 'numbers', fixed: "left"}
+                    , {field: 'nodeId', title: '节点ID', width: 180}
+                    , {field: 'level', title: '层', width: 135}
+                    , {field: 'x', title: '水平', width: 135}
+                    , {field: 'y', title: '垂直', width: 135}
+                    , {field: 'nextNode', title: '连接节点', width: 135}
+                    , {field: 'span', title: '跨层', width: 135}
+                    , {field: 'stairNode', title: '楼梯上下', width: 135}
+                    , {field: 'elevatorId', title: '电梯群组ID', width: 135}
+                    , {field: 'msg', title: '描述', width: 300}
+                    , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#barDemo'}
+                ]]
         });
 
 

@@ -40,8 +40,8 @@
 .my-tab {
     position: absolute;
     padding-top: 0;
-    margin-top: 0;
     width: 100%;
+
     height: 100%;
 }
 
@@ -68,43 +68,6 @@
     padding: 0;
 }
 
-.layui-tab-item {
-    width: inherit;
-    height: inherit;
-}
-
-.layui-form {
-    /*width: 100% !important;*/
-    /*height:inherit !important;*/
-    margin: 0;
-    height: 100%;
-    display: inline-table;
-}
-
-.layui-table-box {
-    /*width: 100% !important;*/
-    height: 100%;
-    display: inline-table;
-}
-
-.layui-table-body {
-    /*width: 100% !important;*/
-    height: 100%;
-    display: inline-table;
-}
-
-/*.layui-table-body .layui-table {*/
-/*    !*width: 100% !important;*!*/
-/*    height: 100% !important;*/
-/*    display: inline-table !important;*/
-/*}*/
-
-/*.layui-table-header .layui-table {*/
-
-/*    width: 100% !important;*/
-/*    height: 100% !important;*/
-/*    display: inline-table !important;*/
-/*}*/
 
 .unshow-i i {
     display: none !important;
@@ -126,4 +89,10 @@
     bottom: 0;
     position: -webkit-sticky;
     position: sticky;
+}
+
+.layui-form{
+    width: fit-content;
+    max-width: 1500px;
+    margin: 0 auto;
 }
