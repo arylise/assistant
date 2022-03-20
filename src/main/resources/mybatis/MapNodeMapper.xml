@@ -36,6 +36,11 @@
     <select id="getNodesByLevel" resultType="com.assistant.model.enity.MapNode">
         select *
         from mapnode
-        where mapnode.level = #{level}
+        where level = #{level}
     </select>
+<!--    <select id="getMapNodesByLevelToMap" resultType="java.util.Map">-->
+<!--        select *-->
+<!--        from mapnode-->
+<!--        where level = #{level}-->
+<!--    </select>-->
 </mapper>

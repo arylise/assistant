@@ -12,7 +12,7 @@
         }
 
         .svgStyle {
-            position: fixed;
+            position: absolute;
             width: 1133px;
             height: 743px;
         }
@@ -39,28 +39,16 @@
 
 <script src="/layui/layui.js"></script>
 <script th:inline="none">
-    function rectClick(event) {
-        //获取相对于当前所指向对象的位置坐标
-        alert('x:' + event.offsetX + "  y:" + event.offsetY);
-    }
-
-    function addFloor() {
-        var othis = $(this), type = othis.data('type');
-        alert(type)
-        lay.activate[type].call(this, othis)
-    }
-
     const lay =
         layui.use('element', function () {
-            var $ = layui.jquery
+            const $ = layui.jquery
                 , element = layui.element
-
                 , active = {
                     addFloor: function (othis) {
                         const floor = parseInt(othis.attr('floor'));
                         if ($('#floor' + floor).length <= 0) {
-                            var baseX = 63;
-                            var baseY = 46;
+                            const baseX = 63;
+                            const baseY = 46;
                             element.tabAdd('map', {
                                 title: floor + '楼地图'
                                 , content: // TODO 按钮失效！！！！！！！！！！
@@ -68,10 +56,11 @@
                                     + '<svg class="svgStyle" xmlns="http://www.w3.org/2000/svg" version="1.1">'
                                     + active.getNodeStr(floor)
                                     + '</svg>'
-                                    + '<img id="floor' + floor + '" src="/img/floor' + floor + '.png" onclick="rectClick(event)" style="-webkit-user-drag:none"/></div>'
+                                    + '<img id="floor' + floor + '" src="/img/floor' + floor + '.png" onclick="rectClick(event)" style="-webkit-user-drag:none"/>'
+                                    + '</div>'
                                     + ' <div className = "layui-btn-group">'
-                                    + ((floor === 1) ? '' : '<button class = "layui-btn map-active" onclick = "addFloor()" data-type="addFloor" floor=' + (floor - 1) + '>下一层</button>')
-                                    + ((floor === 5) ? '' : '<button class = "layui-btn map-active" onclick = "addFloor()" data-type="addFloor" floor=' + (floor + 1) + '>上一层</button>')
+                                    + ((floor === 1) ? '' : '<a class = "layui-btn map-active" data-type="addFloor" floor=' + (floor - 1) + '>下一层</a>')
+                                    + ((floor === 5) ? '' : '<a class = "layui-btn map-active" data-type="addFloor" floor=' + (floor + 1) + '>上一层</a>')
                                     + '</div>'
                                 , id: 'floor' + floor
                             })
@@ -79,36 +68,51 @@
                         element.tabChange('map', 'floor' + floor);
 
                     }
-                    // , lastMap: function () {
-                    //     const floor = parseInt(othis.attr('floor')) - 1;
-                    //     element.tabChange('map', 'floor' + floor);
-                    // }, nextMap: function () {
-                    //     const floor = parseInt(othis.attr('floor')) + 1;
-                    //     element.tabChange('map', 'floor' + floor);
-                    // }
                     , clear: function () {
-                        for (var i = 1; i <= 5; i++) {
+                        for (let i = 1; i <= 5; i++) {
                             element.tabDelete('map', 'floor' + i); //删除：“商品管理”
                         }
                     }
                     , getNodeStr: function (level) {
-                        var str;
+                        let str,
+                            $ = layui.jquery;
                         $.ajax({
                             url: "/admin/nodes_" + level,
                             type: "GET",
                             async: false,
                             success: function (response) {
-                                str = response;
+                                str = JSON.parse(response)
                             }
-                        })
-                        return str;
+                        });
+                        const index = str['index'],
+                            matrix = str['matrix'],
+                            mapNodes = str['mapNodes'];
+                        let text = '';
+                        for (let i = 0; i < index.length; i++) {
+                            for (let j = 0; j < index.length; j++) {
+                                if (i === j) {
+                                    text += '<circle id="point-' + i + '" cx="' + mapNodes[i].x + '" cy="' + mapNodes[i].y + '"  r="5" stroke="#009688" fill="#009688"/>'
+                                } else if (matrix[i][j]) {
+                                    var id = '' + i + '-' + j;
+                                    var d = 'M ' + mapNodes[i].x + ' ' + mapNodes[i].y + ' L ' + mapNodes[j].x + ' ' + mapNodes[j].y;
+                                    if (matrix[j][i]) {
+                                        text += '<path id="line-' + id + '" d="' + d + '" stroke="#009688" stroke-linecap="round" stroke-width="2"/>';
+                                        matrix[j][i] = false;
+                                    } else {
+                                        text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
+                                        text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
+                                    }
+                                }
+                            }
+                        }
+                        return text;
                     }
 
                 }
             ;
 
             $('.map-active').on('click', function () {
-                var othis = $(this), type = othis.data('type');
+                const othis = $(this), type = othis.data('type');
                 active[type] ? active[type].call(this, othis) : '';
             });
         });

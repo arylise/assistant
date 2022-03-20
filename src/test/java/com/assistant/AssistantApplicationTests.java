@@ -6,28 +6,29 @@ import com.assistant.mapper.PatientMapper;
 import com.assistant.model.enity.Doctor;
 import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Patient;
+import com.assistant.utils.MapNodeUtils;
 import com.assistant.utils.TestClass;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.annotation.Resource;
+import java.util.*;
+
 
 @SpringBootTest
 class AssistantApplicationTests {
-    @Autowired
+
+    @Resource
     private DoctorMapper doctorMapper;
-
-    @Autowired
+    @Resource
     private PatientMapper patientMapper;
-
-    @Autowired
+    @Resource
     private MapNodeMapper mapNodeMapper;
+
+    @Resource
+    private MapNodeUtils mapNodeUtils;
 
     @Test
     void createDocTest() {
@@ -195,6 +196,27 @@ class AssistantApplicationTests {
 
     @Test
     public void func() {
-//        QuartzTool
+        List<MapNode> list = mapNodeMapper.getNodesByLevel(1);
+        MapNodeUtils.AdjacencyMatrix adjacencyMatrix = mapNodeUtils.getAdjacencyMatrix(list);
+        System.out.println(adjacencyMatrix.index);
+        for (boolean[] an : adjacencyMatrix.matrix) {
+            for (boolean b: an){
+                System.out.print(b+" ");
+            }
+            System.out.println();
+        }
+
+//        Map<Integer, MapNode> map = mapNodeMapper.getMapNodesByLevelToMap(1);
+//        System.out.println(map);
+//        List<MapNode> list = mapNodeMapper.getNodesByLevel(1);
+    }
+
+    @Test
+    public void test01(){
+        Map<String ,String> map = new HashMap<>(){{
+            put("123","123");
+            put("324","234");
+        }};
+        System.out.println(map);
     }
 }

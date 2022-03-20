@@ -1,9 +1,7 @@
 package com.assistant.mapper;
 
 import com.assistant.model.enity.MapNode;
-import com.assistant.model.enity.Patient;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -19,5 +17,8 @@ public interface MapNodeMapper {
     int insertNodes(List<MapNode> mapNodeList);
 
     List<MapNode> getNodesByLevel(int level);
+
+//    @MapKey("userId")
+//    Map<Integer, MapNode> getMapNodesByLevelToMap(int level);
 
 }

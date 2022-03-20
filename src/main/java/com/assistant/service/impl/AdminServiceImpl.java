@@ -7,6 +7,7 @@ import com.assistant.model.dto.DataList;
 import com.assistant.model.enity.Admin;
 import com.assistant.model.enity.MapNode;
 import com.assistant.service.intf.*;
+import com.assistant.utils.MapNodeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ public class AdminServiceImpl implements AdminService {
     private final PatientService patientService;
     private final HospitalService hospitalService;
     private final MapNodeService mapNodeService;
+
+    private final MapNodeUtils mapNodeUtils;
 
     @Override
     public List<Admin> findAll() {
@@ -70,11 +73,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public String getMapNodesByLevel(int level) {
         List<MapNode> list = mapNodeService.getMapNodesByLevel(level);
-        if (list != null && list.size() != 0) {
-            JSONObject jsonObject = new JSONObject();
-            // TODO
-        }
-        return null;
+        MapNodeUtils.AdjacencyMatrix adjacencyMatrix = mapNodeUtils.getAdjacencyMatrix(list);
+        JSONObject ans = new JSONObject();
+        ans.put("index", adjacencyMatrix.index);
+        ans.put("matrix", adjacencyMatrix.matrix);
+        ans.put("mapNodes", list);
+        return ans.toJSONString();
     }
 
 
