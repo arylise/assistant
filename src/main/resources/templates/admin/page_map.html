@@ -74,7 +74,7 @@
                         }
                     }
                     , getNodeStr: function (level) {
-                        let str,
+                    let str,
                             $ = layui.jquery;
                         $.ajax({
                             url: "/admin/nodes_" + level,
@@ -89,19 +89,25 @@
                             mapNodes = str['mapNodes'];
                         let text = '';
                         for (let i = 0; i < index.length; i++) {
-                            for (let j = 0; j < index.length; j++) {
+                            for (let j = 0; j <= i; j++) {
+                                let d;
+                                let id;
                                 if (i === j) {
                                     text += '<circle id="point-' + i + '" cx="' + mapNodes[i].x + '" cy="' + mapNodes[i].y + '"  r="5" stroke="#009688" fill="#009688"/>'
                                 } else if (matrix[i][j]) {
-                                    var id = '' + i + '-' + j;
-                                    var d = 'M ' + mapNodes[i].x + ' ' + mapNodes[i].y + ' L ' + mapNodes[j].x + ' ' + mapNodes[j].y;
+                                    id = '' + i + '-' + j;
+                                    d = 'M ' + mapNodes[i].x + ' ' + mapNodes[i].y + ' L ' + mapNodes[j].x + ' ' + mapNodes[j].y;
                                     if (matrix[j][i]) {
                                         text += '<path id="line-' + id + '" d="' + d + '" stroke="#009688" stroke-linecap="round" stroke-width="2"/>';
-                                        matrix[j][i] = false;
                                     } else {
                                         text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
                                         text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
                                     }
+                                } else if(matrix[j][i]){
+                                    id = '' + j + '-' + i;
+                                    d = 'M ' + mapNodes[j].x + ' ' + mapNodes[j].y + ' L ' + mapNodes[i].x + ' ' + mapNodes[i].y;
+                                    text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
+                                    text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
                                 }
                             }
                         }

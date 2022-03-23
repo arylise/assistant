@@ -104,15 +104,17 @@ class AssistantApplicationTests {
                 eStr[i][jj] = "" + i + "->" + strs[2 * j];
             }
         }
-        showMeEStr();
+//        showMeEStr();
 
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     if (e[i][k] != inf && e[k][j] != inf && e[i][j] > e[i][k] + e[k][j]) {
                         e[i][j] = e[i][k] + e[k][j];
+                        boolean show = eStr[i][j] == null || eStr[i][k] == null || eStr[k][j] == null;
+                        if (show)
+                            TestClass.showMe(eStr[i][j] + "    ij\n" + eStr[i][k] + "    ik\n" + eStr[k][j] + "    kj");
                         eStr[i][j] = eStr[i][k].substring(0, eStr[i][k].length() - 1) + eStr[k][j];
-                        showMeEStr(k, i, j);
                     }
                 }
             }
@@ -159,7 +161,7 @@ class AssistantApplicationTests {
 
     public void insertMapNodeFun(String str, int level) {
         List<String> strings = Arrays.asList(str.split(" "));
-        List<MapNode> list = new ArrayList<MapNode>();
+        List<MapNode> list = new ArrayList<>();
         int num = 1;
         int size = strings.size();
         for (String xy : strings) {
@@ -200,8 +202,8 @@ class AssistantApplicationTests {
         MapNodeUtils.AdjacencyMatrix adjacencyMatrix = mapNodeUtils.getAdjacencyMatrix(list);
         System.out.println(adjacencyMatrix.index);
         for (boolean[] an : adjacencyMatrix.matrix) {
-            for (boolean b: an){
-                System.out.print(b+" ");
+            for (boolean b : an) {
+                System.out.print(b + " ");
             }
             System.out.println();
         }
@@ -212,11 +214,30 @@ class AssistantApplicationTests {
     }
 
     @Test
-    public void test01(){
-        Map<String ,String> map = new HashMap<>(){{
-            put("123","123");
-            put("324","234");
+    public void test01() {
+        Map<String, String> map = new HashMap<>() {{
+            put("123", "123");
+            put("324", "234");
         }};
         System.out.println(map);
+    }
+
+    @Test
+    public void test02(){
+        List<MapNode> list = mapNodeMapper.getNodesByLevel(1);
+        mapNodeUtils.getFloydMatrix(list);
+    }
+
+    @Test
+    public void test03(){
+        String[] split = "123,456,789".split(",[\\w]+$");
+        for (String s:split){
+            System.out.println(s);
+        }
+
+        System.out.println("123,456,789".split("(\\w+,)+")[0] + "666,777");
+    }
+    @Test
+    public void test04(){
     }
 }
