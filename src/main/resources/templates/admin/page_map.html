@@ -39,6 +39,10 @@
 
 <script src="/layui/layui.js"></script>
 <script th:inline="none">
+    function rectClick(event) {
+        //获取相对于当前所指向对象的位置坐标
+        alert('x:' + event.offsetX + "  y:" + event.offsetY);
+    }
     const lay =
         layui.use('element', function () {
             const $ = layui.jquery
@@ -53,10 +57,10 @@
                                 title: floor + '楼地图'
                                 , content: // TODO 按钮失效！！！！！！！！！！
                                     '<div>'
-                                    + '<svg class="svgStyle" xmlns="http://www.w3.org/2000/svg" version="1.1">'
+                                    + '<svg class="svgStyle" xmlns="http://www.w3.org/2000/svg" version="1.1" onclick="rectClick(event)">'
                                     + active.getNodeStr(floor)
                                     + '</svg>'
-                                    + '<img id="floor' + floor + '" src="/img/floor' + floor + '.png" onclick="rectClick(event)" style="-webkit-user-drag:none"/>'
+                                    + '<img id="floor' + floor + '" src="/img/floor' + floor + '.png" style="-webkit-user-drag:none"/>'
                                     + '</div>'
                                     + ' <div className = "layui-btn-group">'
                                     + ((floor === 1) ? '' : '<a class = "layui-btn map-active" data-type="addFloor" floor=' + (floor - 1) + '>下一层</a>')
@@ -85,7 +89,7 @@
                             }
                         });
                         const index = str['index'],
-                            matrix = str['matrix'],
+                            matrix = str['adjacencyMatrix'],
                             mapNodes = str['mapNodes'];
                         let text = '';
                         for (let i = 0; i < index.length; i++) {

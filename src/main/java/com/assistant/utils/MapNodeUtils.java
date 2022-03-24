@@ -1,8 +1,7 @@
 package com.assistant.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.assistant.model.enity.MapNode;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,19 +12,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MapNodeUtils {
 
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public class AdjacencyMatrix {
-        public List<Integer> index;
-        public boolean[][] matrix;
-    }
-
-    public AdjacencyMatrix getAdjacencyMatrix(List<MapNode> list) {
+    public JSONObject adjacencyMatrix(List<MapNode> list) {
+        JSONObject jsonObject = new JSONObject();
         int n = list.size();
-        boolean[][] ans = new boolean[n][n];
+        boolean[][] adjacencyMatrix = new boolean[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                ans[i][j] = false;
+                adjacencyMatrix[i][j] = false;
             }
         }
 
@@ -36,31 +29,41 @@ public class MapNodeUtils {
         }};
 
         for (MapNode m : list) {
-            for (Integer integer : m.nextNodeList()) {
+            for (Integer integer : m.listOfNext()) {
                 int i = index.indexOf(m.getNodeId());
                 int j = index.indexOf(integer);
-                ans[i][j] = true;
+                adjacencyMatrix[i][j] = true;
             }
         }
 
-
-        return new AdjacencyMatrix(index, ans);
+        jsonObject.put("index", index);
+        jsonObject.put("adjacencyMatrix", adjacencyMatrix);
+        return jsonObject;
     }
 
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public class FloydMatrix {
-        public List<Integer> index;
-        public int[][] matrix;
-        String[][] pathMatrix;
+    public enum Without {
+        STAIR, NULL, ELEVATOR
     }
 
-    public FloydMatrix getFloydMatrix(List<MapNode> list) {
+    public JSONObject floydMatrix(List<MapNode> list) {
+        return floydMatrix(list, Without.NULL);
+    }
+
+    public JSONObject floydMatrixNoStair(List<MapNode> list) {
+        return floydMatrix(list, Without.STAIR);
+    }
+
+    public JSONObject floydMatrixNoElevator(List<MapNode> list) {
+        return floydMatrix(list, Without.ELEVATOR);
+    }
+
+    public JSONObject floydMatrix(List<MapNode> list, Without without) {
+        JSONObject floydMatrix = new JSONObject();
+
         int inf = Integer.MAX_VALUE;
         int n = list.size();
         int[][] matrix = new int[n][n];
         String[][] pathMatrix = new String[n][n];
-        TestClass.showMe(list.toString());
 
         List<Integer> index = new ArrayList<>() {{
             for (MapNode m : list) {
@@ -76,13 +79,45 @@ public class MapNodeUtils {
         }
 
         for (MapNode m : list) {
-            for (Integer id : m.nextNodeList()) {
-                int i = index.indexOf(m.getNodeId());
-                int j = index.indexOf(id);
-                int x = m.getX() - list.get(j).getX();
-                int y = m.getY() - list.get(j).getY();
-                matrix[i][j] = x * x + y * y;
-                pathMatrix[i][j] = "" + m.getNodeId() + "," + id;
+            if (m.listOfNext() != null) {
+                for (Integer id : m.listOfNext()) {
+                    int i = index.indexOf(m.getNodeId());
+                    int j = index.indexOf(id);
+                    int x = m.getX() - list.get(j).getX();
+                    int y = m.getY() - list.get(j).getY();
+                    matrix[i][j] = x * x + y * y;
+                    pathMatrix[i][j] = "" + m.getNodeId() + "," + id;
+                }
+            }
+        }
+
+        if (!Without.STAIR.equals(without)) {
+            for (MapNode m : list) {
+                if (m.listOfStair() != null) {
+                    for (Integer id : m.listOfStair()) {
+                        int i = index.indexOf(m.getNodeId());
+                        int j = index.indexOf(id);
+                        int x = m.getX() - list.get(j).getX();
+                        int y = m.getY() - list.get(j).getY();
+                        matrix[i][j] = x * x + y * y;
+                        pathMatrix[i][j] = "" + m.getNodeId() + "," + id;
+                    }
+                }
+            }
+        }
+
+        if (!Without.ELEVATOR.equals(without)) {
+            for (MapNode m : list) {
+                if (m.listOfElevator() != null) {
+                    for (Integer id : m.listOfElevator()) {
+                        int i = index.indexOf(m.getNodeId());
+                        int j = index.indexOf(id);
+                        int x = m.getX() - list.get(j).getX();
+                        int y = m.getY() - list.get(j).getY();
+                        matrix[i][j] = x * x + y * y;
+                        pathMatrix[i][j] = "" + m.getNodeId() + "," + id;
+                    }
+                }
             }
         }
 
@@ -92,11 +127,13 @@ public class MapNodeUtils {
                     if (matrix[i][k] != inf && matrix[k][j] != inf && matrix[i][j] > matrix[i][k] + matrix[k][j]) {
                         matrix[i][j] = matrix[i][k] + matrix[k][j];
                         pathMatrix[i][j] = pathMatrix[i][k].split(",[\\w]+$")[0] + pathMatrix[k][j];
-                        TestClass.showMe(pathMatrix[i][j]);
                     }
                 }
             }
         }
-        return new FloydMatrix(index, matrix, pathMatrix);
+        floydMatrix.put("floydMatrix", matrix);
+        floydMatrix.put("pathMatrix", pathMatrix);
+        floydMatrix.put("index", index);
+        return floydMatrix;
     }
 }

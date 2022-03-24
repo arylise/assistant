@@ -21,9 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final LogoutSuccessHandler logoutSuccessHandler;
-
-//    @Autowired
-//    private AuthenticationProvider authenticationProvider;
+//    private final AuthenticationProvider authenticationProvider;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

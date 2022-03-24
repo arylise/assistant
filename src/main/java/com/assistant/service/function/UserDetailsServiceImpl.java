@@ -1,5 +1,6 @@
 package com.assistant.service.function;
 
+import com.assistant.constant.AssistantContext;
 import com.assistant.service.intf.AdminService;
 import com.assistant.service.intf.DoctorService;
 import com.assistant.service.intf.PatientService;
@@ -20,8 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.assistant.constant.Role.*;
-import static com.assistant.constant.StaticString.PASSWORD;
 
 @Service
 @RequiredArgsConstructor
@@ -38,9 +37,9 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
             throw new UsernameNotFoundException("用户名或密码错误！");
         }
 
-        return new User(username, map.get(PASSWORD),
+        return new User(username, map.get(AssistantContext.PASSWORD),
                 new ArrayList<>() {{
-                    add(new SimpleGrantedAuthority(map.get(ROLE_)));
+                    add(new SimpleGrantedAuthority(map.get(AssistantContext.ROLE_)));
                 }}
         );
     }
@@ -56,20 +55,20 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
 
         password = patientService.password(username);
         if (!StringUtils.isEmptyOrWhitespace(password)) {
-            map.put(PASSWORD, password);
-            map.put(ROLE_, ROLE_PATIENT);
+            map.put(AssistantContext.PASSWORD, password);
+            map.put(AssistantContext.ROLE_, AssistantContext.ROLE_PATIENT);
             return map;
         }
         password = doctorService.password(username);
         if (!StringUtils.isEmptyOrWhitespace(password)) {
-            map.put(PASSWORD, password);
-            map.put(ROLE_, ROLE_DOCTOR);
+            map.put(AssistantContext.PASSWORD, password);
+            map.put(AssistantContext.ROLE_, AssistantContext.ROLE_DOCTOR);
             return map;
         }
         password = adminService.password(username);
         if (!StringUtils.isEmptyOrWhitespace(password)) {
-            map.put(PASSWORD, password);
-            map.put(ROLE_, ROLE_ADMIN);
+            map.put(AssistantContext.PASSWORD, password);
+            map.put(AssistantContext.ROLE_, AssistantContext.ROLE_ADMIN);
             return map;
         }
         return map;
@@ -79,7 +78,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     public String checkRole() {
         Set<String> roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         for (String o : roles) {
-            if (ALL_ROLES.contains(o)) {
+            if (AssistantContext.ALL_ROLES.contains(o)) {
                 return o;
             }
         }

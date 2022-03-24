@@ -1,5 +1,6 @@
 package com.assistant.model.enity;
 
+import com.alibaba.druid.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,11 +34,6 @@ public class MapNode {
     private String nextNode;
 
     /**
-     * 0不跨层 1楼梯 2电梯
-     */
-    private int span;
-
-    /**
      * 上下楼梯的节点，先上后下，如果为空则置-1，只能有两个值
      */
     private String stairNode;
@@ -45,15 +41,28 @@ public class MapNode {
     /**
      * 电梯集群id
      */
-    private int elevatorId;
+    private String elevatorNode;
 
     private String msg;
 
-    public List<Integer> stairNodeList() {
+    public List<Integer> listOfStair() {
+        if (StringUtils.isEmpty(stairNode)){
+            return null;
+        }
         return Arrays.stream(stairNode.split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());
     }
 
-    public List<Integer> nextNodeList() {
+    public List<Integer> listOfNext() {
+        if (StringUtils.isEmpty(nextNode)){
+            return null;
+        }
         return Arrays.stream(nextNode.split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());
+    }
+
+    public List<Integer> listOfElevator() {
+        if (StringUtils.isEmpty(elevatorNode)){
+            return null;
+        }
+        return Arrays.stream(elevatorNode.split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());
     }
 }

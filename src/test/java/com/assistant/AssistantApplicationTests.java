@@ -175,7 +175,6 @@ class AssistantApplicationTests {
             map.setLevel(level);
             int nodeId = level * 10000 + num;
             map.setNodeId(nodeId);
-            map.setSpan(0);
 
             String nextNode = "";
             if (num == 1) {
@@ -199,14 +198,14 @@ class AssistantApplicationTests {
     @Test
     public void func() {
         List<MapNode> list = mapNodeMapper.getNodesByLevel(1);
-        MapNodeUtils.AdjacencyMatrix adjacencyMatrix = mapNodeUtils.getAdjacencyMatrix(list);
-        System.out.println(adjacencyMatrix.index);
-        for (boolean[] an : adjacencyMatrix.matrix) {
-            for (boolean b : an) {
-                System.out.print(b + " ");
-            }
-            System.out.println();
-        }
+//        JSONObject adjacencyMatrix = mapNodeUtils.getAdjacencyMatrix(list);
+//        System.out.println(adjacencyMatrix.index);
+//        for (boolean[] an : adjacencyMatrix.matrix) {
+//            for (boolean b : an) {
+//                System.out.print(b + " ");
+//            }
+//            System.out.println();
+//        }
 
 //        Map<Integer, MapNode> map = mapNodeMapper.getMapNodesByLevelToMap(1);
 //        System.out.println(map);
@@ -225,7 +224,7 @@ class AssistantApplicationTests {
     @Test
     public void test02(){
         List<MapNode> list = mapNodeMapper.getNodesByLevel(1);
-        mapNodeUtils.getFloydMatrix(list);
+        mapNodeUtils.floydMatrix(list,null);
     }
 
     @Test

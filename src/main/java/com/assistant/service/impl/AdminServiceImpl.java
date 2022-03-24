@@ -1,7 +1,7 @@
 package com.assistant.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.assistant.constant.StaticString;
+import com.assistant.constant.AssistantContext;
 import com.assistant.mapper.AdminMapper;
 import com.assistant.model.dto.DataList;
 import com.assistant.model.enity.Admin;
@@ -38,25 +38,25 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public DataList list(String listName) {
         long count;
-        List list = null;
+        List list;
         switch (listName) {
-            case StaticString.DOCTOR -> {
+            case AssistantContext.DOCTOR -> {
                 list = doctorService.selectAll();
                 count = doctorService.count();
             }
-            case StaticString.PATIENT -> {
+            case AssistantContext.PATIENT -> {
                 list = patientService.selectAll();
                 count = patientService.count();
             }
-            case StaticString.DEPARTMENT -> {
+            case AssistantContext.DEPARTMENT -> {
                 list = hospitalService.departmentList();
                 count = hospitalService.countDeps();
             }
-            case StaticString.PROJECT -> {
+            case AssistantContext.PROJECT -> {
                 list = hospitalService.projectList();
                 count = hospitalService.countPros();
             }
-            case StaticString.MAP_NODE -> {
+            case AssistantContext.MAP_NODE -> {
                 list = mapNodeService.findAll();
                 count = mapNodeService.count();
             }
@@ -73,12 +73,9 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public String getMapNodesByLevel(int level) {
         List<MapNode> list = mapNodeService.getMapNodesByLevel(level);
-        MapNodeUtils.AdjacencyMatrix adjacencyMatrix = mapNodeUtils.getAdjacencyMatrix(list);
-        JSONObject ans = new JSONObject();
-        ans.put("index", adjacencyMatrix.index);
-        ans.put("matrix", adjacencyMatrix.matrix);
-        ans.put("mapNodes", list);
-        return ans.toJSONString();
+        JSONObject adjacencyMatrix = mapNodeUtils.adjacencyMatrix(list);
+        adjacencyMatrix.put("mapNodes", list);
+        return adjacencyMatrix.toJSONString();
     }
 
 
