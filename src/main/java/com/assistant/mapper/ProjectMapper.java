@@ -12,4 +12,5 @@ public interface ProjectMapper {
 
     long count();
 
+    List<Project> selectByDepartment(String department);
 }

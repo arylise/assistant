@@ -10,5 +10,10 @@
     <select id="count" resultType="java.lang.Long">
         select count(*)
         from project
-</select>
+    </select>
+    <select id="selectByDepartment" resultType="com.assistant.model.enity.Project">
+        select *
+        from project
+        where department = #{department}
+    </select>
 </mapper>

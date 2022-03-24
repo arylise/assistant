@@ -26,7 +26,6 @@ class AssistantApplicationTests {
     private PatientMapper patientMapper;
     @Resource
     private MapNodeMapper mapNodeMapper;
-
     @Resource
     private MapNodeUtils mapNodeUtils;
 
