@@ -1,17 +1,10 @@
 package com.assistant.filter;
 
-import com.alibaba.druid.util.StringUtils;
-import com.assistant.controller.AdminController;
-import com.assistant.utils.TestClass;
-import org.springframework.stereotype.Component;
-
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Iterator;
 
 @WebFilter(urlPatterns = {"/admin/*", "/doctor/*", "/patient/*"}, filterName = "iframeFilter")
 public class IframeFilter implements Filter {
@@ -33,10 +26,11 @@ public class IframeFilter implements Filter {
 //        }
 //        TestClass.showMe(req.getHeader("REFERER"));
 
-            if (StringUtils.isEmpty(req.getHeader("REFERER"))) { // TODO 过滤非iframe请求，还需要设置域名匹配
-                res.sendError(404);
-//            res.sendRedirect("/error");
-            }
+            // TODO 正式需解注释
+//            if (StringUtils.isEmpty(req.getHeader("REFERER"))) { // TODO 过滤非iframe请求，还需要设置域名匹配
+//                res.sendError(404);
+////            res.sendRedirect("/error");
+//            }
 
             chain.doFilter(request, response);
         } catch (Exception ignored) {

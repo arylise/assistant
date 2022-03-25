@@ -12,4 +12,6 @@ public interface PatientService {
     long count();
 
     List<Patient> selectAll();
+
+    String register(String dep,String userId);
 }

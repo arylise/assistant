@@ -39,5 +39,11 @@ public class AssistantContext {
     public static final String FLOYD_MATRIX_ALL_WITHOUT_STAIR = "floydMatrixAllWithoutStair";
     public static final String FLOYD_MATRIX_ALL_WITHOUT_ELEVATOR = "floydMatrixAllWithoutElevator";
 
+    public static final String DEPARTMENT_CACHE_KEY = "department_%s";
+
+    public static String appendDepartmentPrefix(String departmentName) {
+        return String.format(DEPARTMENT_CACHE_KEY, departmentName);
+    }
+
 
 }

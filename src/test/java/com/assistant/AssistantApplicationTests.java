@@ -6,14 +6,17 @@ import com.assistant.mapper.PatientMapper;
 import com.assistant.model.enity.Doctor;
 import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Patient;
+import com.assistant.service.impl.PatientServiceImpl;
 import com.assistant.utils.MapNodeUtils;
 import com.assistant.utils.TestClass;
+import org.apache.catalina.connector.RequestFacade;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Field;
 import java.util.*;
 
 
@@ -237,5 +240,14 @@ class AssistantApplicationTests {
     }
     @Test
     public void test04(){
+        Field[] fields1 = PatientServiceImpl.class.getDeclaredFields();
+        for (Field f:fields1){
+            System.out.println(f.getName());
+        }
+        System.out.println();
+        Field[] fields = RequestFacade.class.getDeclaredFields();
+        for (Field f:fields){
+            System.out.println(f.getName());
+        }
     }
 }

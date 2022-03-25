@@ -1,8 +1,6 @@
 package com.assistant.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,10 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
-@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -37,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin() //表单方式，或httpBasic
                 .loginPage("/login")
                 .loginProcessingUrl("/login.do")
-                .defaultSuccessUrl("/") //成功登陆后跳转页面
+                .defaultSuccessUrl("/login_success") //成功登陆后跳转页面
                 .failureUrl("/login_error")
                 .permitAll()
                 .and().csrf().disable();
@@ -61,16 +57,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessHandler(logoutSuccessHandler)
                 .deleteCookies("JSESSIONID")
+                .deleteCookies("username")
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
                 .and();
 
 
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Override
