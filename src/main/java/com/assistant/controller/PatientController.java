@@ -18,7 +18,7 @@ public class PatientController {
 
     @RequestMapping("/register_{dep}")
     @ResponseBody
-    public String registerDepList(@PathVariable String dep, @CookieValue("userid") String userId) {
-        return patientService.register(dep,userId);
+    public boolean registerDepList(@PathVariable String dep, @CookieValue("username") String username) {
+        return patientService.register(dep,username);
     }
 }

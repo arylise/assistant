@@ -5,132 +5,146 @@ const ROLE = {
 }
 
 
-const admin = [{
-    "name": "首页",
-    "icon": "&#xe68e;",
-    "url": "/index",
-    "list": [],
-}, {
-    "name": "用户管理",
-    "icon": "&#xe612;",
-    "baseUrl": "/admin",
-    "list": [{
-        "name": "医生用户",
-        "url": "/page_doctor"
+const admin = [
+    {
+        "name": "首页",
+        "icon": "&#xe68e;",
+        "url": "/index",
+        "list": [],
     }, {
-        "name": "患者用户",
-        "url": "/page_patient"
-    }]
-}, {
-    "name": "医院管理",
-    "icon": "&#xe612;",
-    "baseUrl": "/admin",
-    "list": [{
-        "name": "检查科室",
-        "url": "/page_department"
+        "name": "用户管理",
+        "icon": "&#xe612;",
+        "baseUrl": "/admin",
+        "list": [{
+            "name": "医生用户",
+            "url": "/page_doctor"
+        }, {
+            "name": "患者用户",
+            "url": "/page_patient"
+        }]
     }, {
-        "name": "检查项目",
-        "url": "/page_project"
-    }]
-}, {
-    "name": "地图管理",
-    "icon": "&#xe612;",
-    "baseUrl": "/admin",
-    "list": [{
-        "name": "节点管理",
-        "url": "/page_mapnode"
+        "name": "医院管理",
+        "icon": "&#xe612;",
+        "baseUrl": "/admin",
+        "list": [{
+            "name": "检查科室",
+            "url": "/page_department"
+        }, {
+            "name": "检查项目",
+            "url": "/page_project"
+        }]
     }, {
         "name": "地图管理",
-        "url": "/page_map"
-    }]
-}, {
-    "name": "测试页面",
-    "icon": "&#xe612;",
-    "baseUrl": "/test",
-    "list": [{
-        "name": "redis测试",
-        "url": "/test_redis"
+        "icon": "&#xe612;",
+        "baseUrl": "/admin",
+        "list": [{
+            "name": "节点管理",
+            "url": "/page_mapnode"
+        }, {
+            "name": "地图管理",
+            "url": "/page_map"
+        }]
     }, {
-        "name": "医生管理测试",
-        "url": "/test_page_doctor"
+        "name": "测试页面",
+        "icon": "&#xe612;",
+        "baseUrl": "/test",
+        "list": [{
+            "name": "redis测试",
+            "url": "/test_redis"
+        }, {
+            "name": "医生管理测试",
+            "url": "/test_page_doctor"
+        }, {
+            "name": "科室管理测试",
+            "url": "/test_page_department"
+        }, {
+            "name": "测试1",
+            "url": "/test_1"
+        }, {
+            "name": "测试2",
+            "url": "/test_2"
+        }, {
+            "name": "测试3",
+            "url": "/test_3"
+        }, {
+            "name": "测试4",
+            "url": "/test_4"
+        }]
     }, {
-        "name": "科室管理测试",
-        "url": "/test_page_department"
-    }, {
-        "name": "测试1",
-        "url": "/test_1"
-    }, {
-        "name": "测试2",
-        "url": "/test_2"
-    }, {
-        "name": "测试3",
-        "url": "/test_3"
-    }, {
-        "name": "测试4",
-        "url": "/test_4"
-    }]
-}, {
-    "name": "退出登录",
-    "icon": "&#xe65c;",
-    "url": "/logout",
-    "list": []
-}];
+        "name": "退出登录",
+        "icon": "&#xe65c;",
+        "url": "/logout",
+        "list": []
+    }
+];
 
-const doctor = [{
-    "name": "首页",
-    "icon": "&#xe68e;",
-    "url": "/index",
-    "list": [],
-}, {
-    "name": "文章管理",
-    "icon": "&#xe609;",
-    "url": "",
-    "list": [{
-        "name": "栏目管理",
-        "url": "/type_index.html"
+const doctor = [
+    {
+        "name": "首页",
+        "icon": "&#xe68e;",
+        "url": "/index",
+        "list": [],
     }, {
         "name": "文章管理",
-        "url": "/article_index.html"
-    }]
-}, {
-    "name": "退出登录",
-    "icon": "&#xe65c;",
-    "url": "/logout",
-    "list": []
-}];
+        "icon": "&#xe609;",
+        "url": "",
+        "list": [{
+            "name": "栏目管理",
+            "url": "/type_index.html"
+        }, {
+            "name": "文章管理",
+            "url": "/article_index.html"
+        }]
+    }, {
+        "name": "退出登录",
+        "icon": "&#xe65c;",
+        "url": "/logout",
+        "list": []
+    }
+];
 
 
-const patient = [{
-    "name": "首页",
-    "icon": "&#xe68e;",
-    "url": "/index",
-    "list": [],
-}, {
-    "name": "测试页面",
-    "icon": "&#xe612;",
-    "baseUrl": "/test",
-    "list": [{
-        "name": "redis测试",
-        "url": "/test_redis"
+const patient = [
+    {
+        "name": "首页",
+        "icon": "&#xe68e;",
+        "url": "/index",
+        "list": [],
     }, {
-        "name": "测试1",
-        "url": "/test_1"
+        "name": "测试页面",
+        "icon": "&#xe612;",
+        "baseUrl": "/test",
+        "list": [{
+            "name": "register",
+            "url": ""
+        }]
     }, {
-        "name": "测试2",
-        "url": "/test_2"
+        "name": "测试页面",
+        "icon": "&#xe612;",
+        "baseUrl": "/test",
+        "list": [{
+            "name": "redis测试",
+            "url": "/test_redis"
+        }, {
+            "name": "测试1",
+            "url": "/test_1"
+        }, {
+            "name": "测试2",
+            "url": "/test_2"
+        }, {
+            "name": "测试3",
+            "url": "/test_3"
+        }, {
+            "name": "测试4",
+            "url": "/test_4"
+        }]
     }, {
-        "name": "测试3",
-        "url": "/test_3"
-    }, {
-        "name": "测试4",
-        "url": "/test_4"
-    }]
-}, {
-    "name": "退出登录",
-    "icon": "&#xe65c;",
-    "url": "/logout",
-    "list": []
-}];
+        "name": "退出登录",
+        "icon": "&#xe65c;",
+        "url": "/logout",
+        "list": []
+    }
+];
 
 let menu;
 

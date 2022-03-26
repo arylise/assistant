@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 
@@ -34,7 +33,7 @@ public class IndexController {
 
 
     @RequestMapping(value = "/login_success")
-    public String loginSuccess(RequestFacade request, HttpServletResponse response) throws IOException {
+    public String loginSuccess(RequestFacade request, HttpServletResponse response) {
 
         String postData = getPostData(request);
         String[] split = postData.split("&");
@@ -45,8 +44,7 @@ public class IndexController {
                 response.addCookie(cookie);
             }
         }
-        System.out.println(postData);
-        return "/index";
+        return "redirect:/";
     }
 
     @RequestMapping("/main")

@@ -41,7 +41,6 @@ public class AdminController {
     @RequestMapping("/nodes_{level}")
     @ResponseBody
     public String nodesByLevel(@PathVariable String level) {
-
-        return adminService.getMapNodesByLevel(Integer.parseInt(level)); // TODO
+        return adminService.getMapNodesByLevel(Integer.parseInt(level));
     }
 }

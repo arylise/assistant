@@ -13,5 +13,5 @@ public interface PatientService {
 
     List<Patient> selectAll();
 
-    String register(String dep,String userId);
+    boolean register(String dep, String username);
 }
