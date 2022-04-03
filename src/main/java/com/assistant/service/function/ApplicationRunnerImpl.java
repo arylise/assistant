@@ -3,11 +3,8 @@ package com.assistant.service.function;
 import com.alibaba.fastjson.JSONObject;
 import com.assistant.constant.AssistantContext;
 import com.assistant.mapper.DepartmentMapper;
-import com.assistant.mapper.ProjectMapper;
-import com.assistant.model.dto.RegisterContext;
 import com.assistant.model.enity.Department;
 import com.assistant.model.enity.MapNode;
-import com.assistant.model.enity.Project;
 import com.assistant.service.intf.MapNodeService;
 import com.assistant.utils.MapNodeUtils;
 import com.assistant.utils.RedisUtils;
@@ -27,7 +24,6 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
     private final MapNodeUtils mapNodeUtils;
     private final RedisUtils redisUtils;
     private final DepartmentMapper departmentMapper;
-    private final ProjectMapper projectMapper;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -45,12 +41,10 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         if (departments != null) {
             for (Department d : departments) {
                 JSONObject depsObject = new JSONObject();
-                depsObject.put("department", d.getDepartment());
-                depsObject.put("nodeId", d.getNodeId());
-                List<Project> projects = projectMapper.selectByDepartment(d.getDepartment());
-                depsObject.put("projects", projects);
-                List<RegisterContext> patientList = new ArrayList<>();
-                depsObject.put("patientList", patientList);
+                depsObject.put(AssistantContext.DEPARTMENT, d.getDepartment());
+                depsObject.put(AssistantContext.NODE_ID, d.getNodeId());
+                List<JSONObject> contextList = new ArrayList<>();
+                depsObject.put(AssistantContext.CONTEXT_LIST, contextList);
 
                 redisUtils.set(AssistantContext.appendDepartmentPrefix(d.getDepartment()), depsObject.toJSONString());
             }

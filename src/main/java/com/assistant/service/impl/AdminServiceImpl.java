@@ -52,10 +52,6 @@ public class AdminServiceImpl implements AdminService {
                 list = hospitalService.departmentList();
                 count = hospitalService.countDeps();
             }
-            case AssistantContext.PROJECT -> {
-                list = hospitalService.projectList();
-                count = hospitalService.countPros();
-            }
             case AssistantContext.MAP_NODE -> {
                 list = mapNodeService.findAll();
                 count = mapNodeService.count();

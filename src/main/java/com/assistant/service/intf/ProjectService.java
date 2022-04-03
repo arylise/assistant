@@ -2,6 +2,11 @@ package com.assistant.service.intf;
 
 public interface ProjectService {
 
-    boolean registerList(String dep, String username);
+    boolean regPro(String dep, String username);
 
+    boolean doPro(String dep);
+
+    boolean delFromPro(String dep, String username);
+
+    Integer getWaitTime(String dep);
 }

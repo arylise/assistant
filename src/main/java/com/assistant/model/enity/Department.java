@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class Department {
     private String department;
+    private String project;
     private int nodeId;
+    private int avetime;
     private String msg;
 }

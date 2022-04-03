@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @SpringBootTest
@@ -224,30 +225,42 @@ class AssistantApplicationTests {
     }
 
     @Test
-    public void test02(){
+    public void test02() {
         List<MapNode> list = mapNodeMapper.getNodesByLevel(1);
-        mapNodeUtils.floydMatrix(list,null);
+        mapNodeUtils.floydMatrix(list, null);
     }
 
     @Test
-    public void test03(){
+    public void test03() {
         String[] split = "123,456,789".split(",[\\w]+$");
-        for (String s:split){
+        for (String s : split) {
             System.out.println(s);
         }
 
         System.out.println("123,456,789".split("(\\w+,)+")[0] + "666,777");
     }
+
     @Test
-    public void test04(){
+    public void test04() {
         Field[] fields1 = PatientServiceImpl.class.getDeclaredFields();
-        for (Field f:fields1){
+        for (Field f : fields1) {
             System.out.println(f.getName());
         }
         System.out.println();
         Field[] fields = RequestFacade.class.getDeclaredFields();
-        for (Field f:fields){
+        for (Field f : fields) {
             System.out.println(f.getName());
         }
+    }
+
+    @Test
+    public void test05() {
+        List<Integer> list = new ArrayList<>() {{
+            add(1);
+            add(2);
+            add(3);
+        }};
+        list = list.stream().filter(i -> i == 2).collect(Collectors.toList());
+        System.out.println(list.toString());
     }
 }

@@ -41,6 +41,11 @@ public class AssistantContext {
 
     public static final String DEPARTMENT_CACHE_KEY = "department_%s";
 
+    public static final String CONTEXT_LIST = "contextList";
+//    public static final String LIST_NUM = "listNum";
+    public static final String NODE_ID = "nodeId";
+//    public static final String REGISTER_SET = "registerSet";
+
     public static String appendDepartmentPrefix(String departmentName) {
         return String.format(DEPARTMENT_CACHE_KEY, departmentName);
     }

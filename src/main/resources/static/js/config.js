@@ -30,14 +30,6 @@ const admin = [
             "name": "检查科室",
             "url": "/page_department"
         }, {
-            "name": "检查项目",
-            "url": "/page_project"
-        }]
-    }, {
-        "name": "地图管理",
-        "icon": "&#xe612;",
-        "baseUrl": "/admin",
-        "list": [{
             "name": "节点管理",
             "url": "/page_mapnode"
         }, {

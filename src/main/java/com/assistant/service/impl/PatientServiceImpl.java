@@ -41,6 +41,6 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public boolean register(String dep, String username) {
-        return projectService.registerList(dep,username);
+        return projectService.regPro(dep,username);
     }
 }
