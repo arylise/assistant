@@ -29,8 +29,4 @@ public class MapNodeServiceImpl implements MapNodeService {
         return mapNodeMapper.getNodesByLevel(level);
     }
 
-//    @Override
-//    public Map<Integer, MapNode> getMapNodesByLevelToMap(int level) {
-//        return mapNodeMapper.getMapNodesByLevelToMap(level);
-//    }
 }

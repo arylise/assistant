@@ -41,8 +41,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         if (departments != null) {
             for (Department d : departments) {
                 JSONObject depsObject = new JSONObject();
-                depsObject.put(AssistantContext.DEPARTMENT, d.getDepartment());
-                depsObject.put(AssistantContext.NODE_ID, d.getNodeId());
+                depsObject.put(AssistantContext.DEPARTMENT, d);
                 List<JSONObject> contextList = new ArrayList<>();
                 depsObject.put(AssistantContext.CONTEXT_LIST, contextList);
 

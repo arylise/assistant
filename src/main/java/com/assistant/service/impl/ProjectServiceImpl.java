@@ -93,14 +93,15 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Integer getWaitTime(String dep){
+    public Integer getWaitTime(String dep) {
         String key = AssistantContext.appendDepartmentPrefix(dep);
         String s = redisUtils.get(key);
         if (StringUtils.isEmpty(s)) {
             return Integer.MAX_VALUE;
         }
         JSONObject biz = JSONObject.parseObject(s);
-//        if(biz.get(AssistantContext.PROJECT))
-        return 1;
+        JSONObject department = (JSONObject) biz.get(AssistantContext.DEPARTMENT);
+        List<String> contextList = (List) biz.get(AssistantContext.CONTEXT_LIST);
+        return department.getInteger(AssistantContext.AVETIME) * contextList.size();
     }
 }
