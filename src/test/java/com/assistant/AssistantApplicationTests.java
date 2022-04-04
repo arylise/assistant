@@ -230,7 +230,10 @@ class AssistantApplicationTests {
 
 
         // TODO 时间
-        // TODO 电梯时间
+        // TODO 时间
+
+        int distance = 0;
+        int times = 0;
         for (int i = 1; i < idList.size(); i++) {
 
         }
