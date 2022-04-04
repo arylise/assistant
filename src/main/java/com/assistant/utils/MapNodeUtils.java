@@ -16,10 +16,10 @@ public class MapNodeUtils {
     @NoArgsConstructor
     @Data
     @Builder
-    public class AdjacencyMatrix {
+    public static class AdjacencyMatrix {
         List<Integer> index;
         boolean[][] adjacencyMatrix;
-        List<MapNode> mapNode;
+        List<MapNode> mapNodes;
     }
 
     public AdjacencyMatrix adjacencyMatrix(List<MapNode> list) {
@@ -54,11 +54,11 @@ public class MapNodeUtils {
     @NoArgsConstructor
     @Data
     @Builder
-    public class FloydMatrix {
+    public static class FloydMatrix {
         String[][] pathMatrix;
         int[][] floydMatrix;
         List<Integer> index;
-        List<MapNode> mapNode;
+        List<MapNode> mapNodes;
     }
 
     public FloydMatrix floydMatrix(List<MapNode> list) {

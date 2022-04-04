@@ -71,7 +71,7 @@ public class AdminServiceImpl implements AdminService {
         List<MapNode> list = mapNodeService.getMapNodesByLevel(level);
 
         MapNodeUtils.AdjacencyMatrix adjacencyMatrix = mapNodeUtils.adjacencyMatrix(list);
-        adjacencyMatrix.setMapNode(list);
+        adjacencyMatrix.setMapNodes(list);
         return JSON.toJSONString(adjacencyMatrix);
     }
 
