@@ -1,16 +1,17 @@
 package com.assistant;
 
-import com.alibaba.fastjson.JSONObject;
-import com.assistant.constant.AssistantContext;
 import com.assistant.mapper.DoctorMapper;
 import com.assistant.mapper.MapNodeMapper;
 import com.assistant.mapper.PatientMapper;
+import com.assistant.model.dto.ProCache;
+import com.assistant.model.enity.Department;
 import com.assistant.model.enity.Doctor;
 import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Patient;
 import com.assistant.service.impl.PatientServiceImpl;
+import com.assistant.service.intf.ProjectService;
+import com.assistant.utils.CacheUtils;
 import com.assistant.utils.MapNodeUtils;
-import com.assistant.utils.RedisUtils;
 import com.assistant.utils.TestClass;
 import org.apache.catalina.connector.RequestFacade;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,10 @@ class AssistantApplicationTests {
     private MapNodeUtils mapNodeUtils;
 
     @Resource
-    private RedisUtils redisUtils;
+    private ProjectService projectService;
+
+    @Resource
+    private CacheUtils cacheUtils;
 
     @Test
     void createDocTest() {
@@ -272,16 +276,30 @@ class AssistantApplicationTests {
 
     @Test
     public void test06() {
-        String str = redisUtils.get(AssistantContext.FLOYD_MATRIX_ALL);
-        JSONObject floyd = JSONObject.parseObject(str);
-        List<Integer> list = new ArrayList<>() {{
+        MapNodeUtils.FloydMatrix floydMatrix = cacheUtils.getFloydMatrix();
+        List<Department> departmentList = new ArrayList<>() {{
+        }};
+        List<Integer> idList = new ArrayList<>() {{
             add(0);
+            for (Department department : departmentList) {
+                add(department.getNodeId());
+            }
+        }};
+
+        Map<Integer, Integer> timeMap = new HashMap<>();
+
+        List<Integer> timeList = new ArrayList<>() {{
+            for (Department department : departmentList) {
+                ProCache cache = cacheUtils.getCache(department.getDepartment());
+                add(cache.getContextList().size() * cache.getDepartment().getAvetime());
+                timeMap.put(department.getNodeId(), cache.getDepartment().getAvetime());
+            }
         }};
 
 
         // TODO 时间
         // TODO 电梯时间
-        for (int i = 1; i < list.size(); i++) {
+        for (int i = 1; i < idList.size(); i++) {
 
         }
 

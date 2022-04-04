@@ -39,7 +39,7 @@ public class MapNode {
     private String stairNode;
 
     /**
-     * 电梯集群id
+     * 电梯集群
      */
     private String elevatorNode;
 

@@ -1,6 +1,6 @@
 package com.assistant.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSON;
 import com.assistant.constant.AssistantContext;
 import com.assistant.mapper.AdminMapper;
 import com.assistant.model.dto.DataList;
@@ -69,9 +69,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public String getMapNodesByLevel(int level) {
         List<MapNode> list = mapNodeService.getMapNodesByLevel(level);
-        JSONObject adjacencyMatrix = mapNodeUtils.adjacencyMatrix(list);
-        adjacencyMatrix.put("mapNodes", list);
-        return adjacencyMatrix.toJSONString();
+
+        MapNodeUtils.AdjacencyMatrix adjacencyMatrix = mapNodeUtils.adjacencyMatrix(list);
+        adjacencyMatrix.setMapNode(list);
+        return JSON.toJSONString(adjacencyMatrix);
     }
 
 

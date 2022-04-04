@@ -1,8 +1,8 @@
 package com.assistant.utils;
 
-import com.alibaba.fastjson.JSONObject;
+import com.assistant.constant.AssistantContext;
 import com.assistant.model.enity.MapNode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,8 +12,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MapNodeUtils {
 
-    public JSONObject adjacencyMatrix(List<MapNode> list) {
-        JSONObject jsonObject = new JSONObject();
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    @Builder
+    public class AdjacencyMatrix {
+        List<Integer> index;
+        boolean[][] adjacencyMatrix;
+        List<MapNode> mapNode;
+    }
+
+    public AdjacencyMatrix adjacencyMatrix(List<MapNode> list) {
         int n = list.size();
         boolean[][] adjacencyMatrix = new boolean[n][n];
         for (int i = 0; i < n; i++) {
@@ -35,30 +44,36 @@ public class MapNodeUtils {
                 adjacencyMatrix[i][j] = true;
             }
         }
-
-        jsonObject.put("index", index);
-        jsonObject.put("adjacencyMatrix", adjacencyMatrix);
-        return jsonObject;
+        return AdjacencyMatrix.builder()
+                .index(index)
+                .adjacencyMatrix(adjacencyMatrix)
+                .build();
     }
 
-    public enum Without {
-        STAIR, NULL, ELEVATOR
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    @Builder
+    public class FloydMatrix {
+        String[][] pathMatrix;
+        int[][] floydMatrix;
+        List<Integer> index;
+        List<MapNode> mapNode;
     }
 
-    public JSONObject floydMatrix(List<MapNode> list) {
-        return floydMatrix(list, Without.NULL);
+    public FloydMatrix floydMatrix(List<MapNode> list) {
+        return floydMatrix(list, AssistantContext.FLOYD_MATRIX_ALL);
     }
 
-    public JSONObject floydMatrixNoStair(List<MapNode> list) {
-        return floydMatrix(list, Without.STAIR);
+    public FloydMatrix floydMatrixNoStair(List<MapNode> list) {
+        return floydMatrix(list, AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_STAIR);
     }
 
-    public JSONObject floydMatrixNoElevator(List<MapNode> list) {
-        return floydMatrix(list, Without.ELEVATOR);
+    public FloydMatrix floydMatrixNoElevator(List<MapNode> list) {
+        return floydMatrix(list, AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_ELEVATOR);
     }
 
-    public JSONObject floydMatrix(List<MapNode> list, Without without) {
-        JSONObject floydMatrix = new JSONObject();
+    public FloydMatrix floydMatrix(List<MapNode> list, String without) {
 
         int inf = Integer.MAX_VALUE;
         int n = list.size();
@@ -91,7 +106,7 @@ public class MapNodeUtils {
             }
         }
 
-        if (!Without.STAIR.equals(without)) {
+        if (!AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_STAIR.equals(without)) {
             for (MapNode m : list) {
                 if (m.listOfStair() != null) {
                     for (Integer id : m.listOfStair()) {
@@ -106,7 +121,7 @@ public class MapNodeUtils {
             }
         }
 
-        if (!Without.ELEVATOR.equals(without)) {
+        if (!AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_ELEVATOR.equals(without)) {
             for (MapNode m : list) {
                 if (m.listOfElevator() != null) {
                     for (Integer id : m.listOfElevator()) {
@@ -131,9 +146,10 @@ public class MapNodeUtils {
                 }
             }
         }
-        floydMatrix.put("floydMatrix", matrix);
-        floydMatrix.put("pathMatrix", pathMatrix);
-        floydMatrix.put("index", index);
-        return floydMatrix;
+        return FloydMatrix.builder()
+                .floydMatrix(matrix)
+                .pathMatrix(pathMatrix)
+                .index(index)
+                .build();
     }
 }
