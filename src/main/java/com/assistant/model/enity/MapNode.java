@@ -43,24 +43,29 @@ public class MapNode {
      */
     private String elevatorNode;
 
+    /**
+     * 电梯集群id
+     */
+    private String elevatorId;
+
     private String msg;
 
     public List<Integer> listOfStair() {
-        if (StringUtils.isEmpty(stairNode)){
+        if (StringUtils.isEmpty(stairNode)) {
             return null;
         }
         return Arrays.stream(stairNode.split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());
     }
 
     public List<Integer> listOfNext() {
-        if (StringUtils.isEmpty(nextNode)){
+        if (StringUtils.isEmpty(nextNode)) {
             return null;
         }
         return Arrays.stream(nextNode.split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());
     }
 
     public List<Integer> listOfElevator() {
-        if (StringUtils.isEmpty(elevatorNode)){
+        if (StringUtils.isEmpty(elevatorNode)) {
             return null;
         }
         return Arrays.stream(elevatorNode.split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());

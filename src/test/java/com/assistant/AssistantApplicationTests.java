@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -205,24 +206,35 @@ class AssistantApplicationTests {
         System.out.println(mapNodeMapper.insertNodes(list));
     }
 
-
-//    private static SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-
     @Test
-    public void func() {
-        List<MapNode> list = mapNodeMapper.getNodesByLevel(1);
-//        JSONObject adjacencyMatrix = mapNodeUtils.getAdjacencyMatrix(list);
-//        System.out.println(adjacencyMatrix.index);
-//        for (boolean[] an : adjacencyMatrix.matrix) {
-//            for (boolean b : an) {
-//                System.out.print(b + " ");
-//            }
-//            System.out.println();
-//        }
+    public void testBastWay() {
+        MapNodeUtils.FloydMatrix floydMatrix = cacheUtils.getFloydMatrix();
+        List<Department> departmentList = new ArrayList<>() {{
+        }};
+        List<Integer> idList = new ArrayList<>() {{
+            add(0);
+            for (Department department : departmentList) {
+                add(department.getNodeId());
+            }
+        }};
 
-//        Map<Integer, MapNode> map = mapNodeMapper.getMapNodesByLevelToMap(1);
-//        System.out.println(map);
-//        List<MapNode> list = mapNodeMapper.getNodesByLevel(1);
+        Map<Integer, Integer> timeMap = new HashMap<>();
+
+        List<Integer> timeList = new ArrayList<>() {{
+            for (Department department : departmentList) {
+                ProCache cache = cacheUtils.getCache(department.getDepartment());
+                add(cache.getContextList().size() * cache.getDepartment().getAvetime());
+                timeMap.put(department.getNodeId(), cache.getDepartment().getAvetime());
+            }
+        }};
+
+
+        // TODO 时间
+        // TODO 电梯时间
+        for (int i = 1; i < idList.size(); i++) {
+
+        }
+
     }
 
     @Test
@@ -276,32 +288,56 @@ class AssistantApplicationTests {
 
     @Test
     public void test06() {
-        MapNodeUtils.FloydMatrix floydMatrix = cacheUtils.getFloydMatrix();
-        List<Department> departmentList = new ArrayList<>() {{
-        }};
-        List<Integer> idList = new ArrayList<>() {{
-            add(0);
-            for (Department department : departmentList) {
-                add(department.getNodeId());
+        int n = 5;
+//        int i = (int) (Math.random() * n);
+//        boolean u = Math.random() < 0.5;
+        for (int i = 0; i < n; i++) {
+            for (int ii = 0; ii < 2; ii++) {
+                boolean u = ii == 0;
+                int[] times = new int[n];
+                int j = i;
+                times[j] = 0;
+                int time = 0;
+                if (u) {
+                    while (j < n) {
+                        time += TimeUnit.MINUTES.toMillis(1);
+                        if (j > i) {
+                            times[j] = time;
+                        }
+                        j++;
+                    }
+                    j--;
+                    while (j >= 0) {
+                        time += TimeUnit.MINUTES.toMillis(1);
+                        if (j < i) {
+                            times[j] = time;
+                        }
+                        j--;
+                    }
+                } else {
+                    while (j >= 0) {
+                        time += TimeUnit.MINUTES.toMillis(1);
+                        if (j < i) {
+                            times[j] = time;
+                        }
+                        j--;
+                    }
+                    j++;
+                    while (j < n) {
+                        time += TimeUnit.MINUTES.toMillis(1);
+                        if (j > i) {
+                            times[j] = time;
+                        }
+                        j++;
+                    }
+                }
+
+                for (int time1 : times) {
+                    System.out.print(time1 + ",");
+                }
+                System.out.println();
             }
-        }};
-
-        Map<Integer, Integer> timeMap = new HashMap<>();
-
-        List<Integer> timeList = new ArrayList<>() {{
-            for (Department department : departmentList) {
-                ProCache cache = cacheUtils.getCache(department.getDepartment());
-                add(cache.getContextList().size() * cache.getDepartment().getAvetime());
-                timeMap.put(department.getNodeId(), cache.getDepartment().getAvetime());
-            }
-        }};
-
-
-        // TODO 时间
-        // TODO 电梯时间
-        for (int i = 1; i < idList.size(); i++) {
 
         }
-
     }
 }
