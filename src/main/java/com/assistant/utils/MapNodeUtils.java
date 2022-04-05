@@ -56,7 +56,7 @@ public class MapNodeUtils {
     @Builder
     public static class FloydMatrix {
         String[][] pathMatrix;
-        int[][] floydMatrix;
+        long[][] floydMatrix;
         List<Integer> index;
         List<MapNode> mapNodes;
     }
@@ -77,7 +77,7 @@ public class MapNodeUtils {
 
         int inf = Integer.MAX_VALUE;
         int n = list.size();
-        int[][] matrix = new int[n][n];
+        long[][] matrix = new long[n][n];
         String[][] pathMatrix = new String[n][n];
 
         List<Integer> index = new ArrayList<>() {{
@@ -98,8 +98,8 @@ public class MapNodeUtils {
                 for (Integer id : m.listOfNext()) {
                     int i = index.indexOf(m.getNodeId());
                     int j = index.indexOf(id);
-                    int x = m.getX() - list.get(j).getX();
-                    int y = m.getY() - list.get(j).getY();
+                    long x = m.getX() - list.get(j).getX();
+                    long y = m.getY() - list.get(j).getY();
                     matrix[i][j] = x * x + y * y;
                     pathMatrix[i][j] = "," + m.getNodeId() + "," + id;
                 }
@@ -112,8 +112,8 @@ public class MapNodeUtils {
                     for (Integer id : m.listOfStair()) {
                         int i = index.indexOf(m.getNodeId());
                         int j = index.indexOf(id);
-                        int x = m.getX() - list.get(j).getX();
-                        int y = m.getY() - list.get(j).getY();
+                        long x = m.getX() - list.get(j).getX();
+                        long y = m.getY() - list.get(j).getY();
                         matrix[i][j] = x * x + y * y;
                         pathMatrix[i][j] = "," + m.getNodeId() + "," + id;
                     }
@@ -127,8 +127,8 @@ public class MapNodeUtils {
                     for (Integer id : m.listOfElevator()) {
                         int i = index.indexOf(m.getNodeId());
                         int j = index.indexOf(id);
-                        int x = m.getX() - list.get(j).getX();
-                        int y = m.getY() - list.get(j).getY();
+                        long x = m.getX() - list.get(j).getX();
+                        long y = m.getY() - list.get(j).getY();
                         matrix[i][j] = x * x + y * y;
                         pathMatrix[i][j] = "," + m.getNodeId() + "," + id;
                     }
