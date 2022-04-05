@@ -11,6 +11,7 @@ import com.assistant.model.enity.Patient;
 import com.assistant.service.impl.PatientServiceImpl;
 import com.assistant.service.intf.ProjectService;
 import com.assistant.utils.CacheUtils;
+import com.assistant.utils.CoreUtils;
 import com.assistant.utils.MapNodeUtils;
 import com.assistant.utils.TestClass;
 import lombok.AllArgsConstructor;
@@ -47,6 +48,9 @@ class AssistantApplicationTests {
 
     @Resource
     private CacheUtils cacheUtils;
+
+    @Resource
+    private CoreUtils coreUtils;
 
     @Test
     void createDocTest() {
@@ -212,7 +216,7 @@ class AssistantApplicationTests {
 
     @Test
     public void testBastWay() {
-        MapNodeUtils.FloydMatrix floydMatrix = cacheUtils.getFloydMatrix();
+        MapNodeUtils.FloydResult floydMatrix = cacheUtils.getFloydMatrix();
         List<Department> departmentList = new ArrayList<>() {{
         }};
         List<Integer> idList = new ArrayList<>() {{
@@ -254,7 +258,7 @@ class AssistantApplicationTests {
         String resultPath;
     }
 
-    static TspResult tsp(MapNodeUtils.FloydMatrix floydMatrix, List<Integer> timeList, Map<Integer, Integer> timeMap, long weightPath, long weightTime, List<Integer> idList, int n, boolean[] v, int index, int count, long cost, String path, int time, TspResult ans) {
+    static TspResult tsp(MapNodeUtils.FloydResult floydMatrix, List<Integer> timeList, Map<Integer, Integer> timeMap, long weightPath, long weightTime, List<Integer> idList, int n, boolean[] v, int index, int count, long cost, String path, int time, TspResult ans) {
         long[][] graph = floydMatrix.getFloydMatrix();
 
         int currPos = floydMatrix.getIndex().indexOf(idList.get(index));
@@ -296,7 +300,7 @@ class AssistantApplicationTests {
 
     @Test
     public void testPath() {
-        MapNodeUtils.FloydMatrix floydMatrix = cacheUtils.getFloydMatrix();
+        MapNodeUtils.FloydResult floydMatrix = cacheUtils.getFloydMatrix();
         List<Department> departmentList = new ArrayList<>() {{
         }};
 //
@@ -469,5 +473,11 @@ class AssistantApplicationTests {
             }
 
         }
+    }
+
+    @Test
+    public void test07(){
+        CoreUtils.TspResult bestPath = coreUtils.getBestPath(null, 1L, 1L);
+        System.out.println(bestPath);
     }
 }

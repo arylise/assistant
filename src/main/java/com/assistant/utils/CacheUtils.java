@@ -28,41 +28,41 @@ public class CacheUtils {
     }
 
 
-    public boolean putFloydMatrix(MapNodeUtils.FloydMatrix floydMatrix) {
+    public boolean putFloydMatrix(MapNodeUtils.FloydResult floydMatrix) {
         return putFloydMatrix(AssistantContext.FLOYD_MATRIX_ALL, floydMatrix);
     }
 
-    public boolean putFloydMatrixWithoutStair(MapNodeUtils.FloydMatrix floydMatrix) {
+    public boolean putFloydMatrixWithoutStair(MapNodeUtils.FloydResult floydMatrix) {
         return putFloydMatrix(AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_STAIR, floydMatrix);
     }
 
-    public boolean putFloydMatrixWithoutElevator(MapNodeUtils.FloydMatrix floydMatrix) {
+    public boolean putFloydMatrixWithoutElevator(MapNodeUtils.FloydResult floydMatrix) {
         return putFloydMatrix(AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_ELEVATOR, floydMatrix);
     }
 
-    private boolean putFloydMatrix(String way, MapNodeUtils.FloydMatrix floydMatrix) {
+    private boolean putFloydMatrix(String way, MapNodeUtils.FloydResult floydMatrix) {
         return redisUtils.set(way, JSON.toJSONString(floydMatrix));
     }
 
 
-    public MapNodeUtils.FloydMatrix getFloydMatrix() {
+    public MapNodeUtils.FloydResult getFloydMatrix() {
         return getFloydMatrix(AssistantContext.FLOYD_MATRIX_ALL);
     }
 
-    public MapNodeUtils.FloydMatrix getFloydMatrixWithoutStair() {
+    public MapNodeUtils.FloydResult getFloydMatrixWithoutStair() {
         return getFloydMatrix(AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_STAIR);
     }
 
-    public MapNodeUtils.FloydMatrix getFloydMatrixWithoutElevator() {
+    public MapNodeUtils.FloydResult getFloydMatrixWithoutElevator() {
         return getFloydMatrix(AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_ELEVATOR);
     }
 
-    private MapNodeUtils.FloydMatrix getFloydMatrix(String way) {
+    private MapNodeUtils.FloydResult getFloydMatrix(String way) {
         try {
             String s = redisUtils.get(way);
-            return JSON.parseObject(s, MapNodeUtils.FloydMatrix.class);
+            return JSON.parseObject(s, MapNodeUtils.FloydResult.class);
         } catch (Exception ignored) {
-            return MapNodeUtils.FloydMatrix.builder().build();
+            return MapNodeUtils.FloydResult.builder().build();
         }
     }
 }

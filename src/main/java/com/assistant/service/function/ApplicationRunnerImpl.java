@@ -28,12 +28,12 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         // 地图节点缓存
         List<MapNode> all = mapNodeService.findAll();
-        MapNodeUtils.FloydMatrix floydMatrixAll = mapNodeUtils.floydMatrix(all);
-        cacheUtils.putFloydMatrix(floydMatrixAll);
-        floydMatrixAll = mapNodeUtils.floydMatrixNoStair(all);
-        cacheUtils.putFloydMatrixWithoutStair(floydMatrixAll);
-        floydMatrixAll = mapNodeUtils.floydMatrixNoElevator(all);
-        cacheUtils.putFloydMatrixWithoutElevator(floydMatrixAll);
+        MapNodeUtils.FloydResult floydResult = mapNodeUtils.floydMatrix(all);
+        cacheUtils.putFloydMatrix(floydResult);
+        floydResult = mapNodeUtils.floydMatrixNoStair(all);
+        cacheUtils.putFloydMatrixWithoutStair(floydResult);
+        floydResult = mapNodeUtils.floydMatrixNoElevator(all);
+        cacheUtils.putFloydMatrixWithoutElevator(floydResult);
         // 科室缓存
         List<Department> departments = departmentMapper.selectAll();
         if (departments != null) {

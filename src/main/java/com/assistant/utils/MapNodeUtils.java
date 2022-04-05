@@ -16,13 +16,13 @@ public class MapNodeUtils {
     @NoArgsConstructor
     @Data
     @Builder
-    public static class AdjacencyMatrix {
+    public static class AdjacencyResult {
         List<Integer> index;
         boolean[][] adjacencyMatrix;
         List<MapNode> mapNodes;
     }
 
-    public AdjacencyMatrix adjacencyMatrix(List<MapNode> list) {
+    public AdjacencyResult adjacencyMatrix(List<MapNode> list) {
         int n = list.size();
         boolean[][] adjacencyMatrix = new boolean[n][n];
         for (int i = 0; i < n; i++) {
@@ -44,7 +44,7 @@ public class MapNodeUtils {
                 adjacencyMatrix[i][j] = true;
             }
         }
-        return AdjacencyMatrix.builder()
+        return AdjacencyResult.builder()
                 .index(index)
                 .adjacencyMatrix(adjacencyMatrix)
                 .build();
@@ -54,26 +54,26 @@ public class MapNodeUtils {
     @NoArgsConstructor
     @Data
     @Builder
-    public static class FloydMatrix {
+    public static class FloydResult {
         String[][] pathMatrix;
         long[][] floydMatrix;
         List<Integer> index;
         List<MapNode> mapNodes;
     }
 
-    public FloydMatrix floydMatrix(List<MapNode> list) {
+    public FloydResult floydMatrix(List<MapNode> list) {
         return floydMatrix(list, AssistantContext.FLOYD_MATRIX_ALL);
     }
 
-    public FloydMatrix floydMatrixNoStair(List<MapNode> list) {
+    public FloydResult floydMatrixNoStair(List<MapNode> list) {
         return floydMatrix(list, AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_STAIR);
     }
 
-    public FloydMatrix floydMatrixNoElevator(List<MapNode> list) {
+    public FloydResult floydMatrixNoElevator(List<MapNode> list) {
         return floydMatrix(list, AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_ELEVATOR);
     }
 
-    public FloydMatrix floydMatrix(List<MapNode> list, String without) {
+    public FloydResult floydMatrix(List<MapNode> list, String without) {
 
         int inf = Integer.MAX_VALUE;
         int n = list.size();
@@ -146,7 +146,7 @@ public class MapNodeUtils {
                 }
             }
         }
-        return FloydMatrix.builder()
+        return FloydResult.builder()
                 .floydMatrix(matrix)
                 .pathMatrix(pathMatrix)
                 .index(index)
