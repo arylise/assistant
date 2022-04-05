@@ -28,7 +28,8 @@ public class CoreUtils {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class TspResult {
+    @Builder
+    public static class TspResult {
         long path;
         long time;
         long score;
@@ -71,9 +72,8 @@ public class CoreUtils {
         return ans;
     }
 
-
-    public TspResult getBestPath(List<Department> departmentList, long weightPath, long weightTime) {
-
+    private void parseList(List<Department> departmentList) {
+        // TODO
 //        List<Integer> idList = new ArrayList<>() {{
 //            add(0);
 //            for (Department department : departmentList) {
@@ -81,7 +81,7 @@ public class CoreUtils {
 //            }
 //        }};
 
-        //        Map<Integer, Integer> timeMap = new HashMap<>();
+//        Map<Integer, Integer> timeMap = new HashMap<>();
 //
 //        List<Integer> timeList = new ArrayList<>() {{
 //            for (Department department : departmentList) {
@@ -111,11 +111,15 @@ public class CoreUtils {
             add(10012);
 //            add(40007);
         }};
+    }
+
+
+    public TspResult getBestPath(List<Department> departmentList, long weightPath, long weightTime) {
+        parseList(departmentList);
 
         MapNodeUtils.FloydResult floydResult = cacheUtils.getFloydMatrix();
         this.floydMatrix = floydResult.getFloydMatrix();
         this.floydIndex = floydResult.getIndex();
-        TspResult ans = new TspResult(0, 0, Long.MAX_VALUE, "");
         this.weightPath = weightPath;
         this.weightTime = weightTime;
         // 顶点（结点）的数量
@@ -127,6 +131,6 @@ public class CoreUtils {
 
         // 查找最小权重的汉密尔顿回路 Hamiltonian Cycle
         // 输出结果ans就是最小权重的汉密尔顿回路（ Hamiltonian Cycle）
-        return tsp(0, 1, 0, "0", 0, ans);
+        return tsp(0, 1, 0, "0", 0, TspResult.builder().score(Long.MAX_VALUE).build());
     }
 }

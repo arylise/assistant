@@ -3,8 +3,6 @@ package com.assistant;
 import com.assistant.mapper.DoctorMapper;
 import com.assistant.mapper.MapNodeMapper;
 import com.assistant.mapper.PatientMapper;
-import com.assistant.model.dto.ProCache;
-import com.assistant.model.enity.Department;
 import com.assistant.model.enity.Doctor;
 import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Patient;
@@ -214,39 +212,6 @@ class AssistantApplicationTests {
         System.out.println(mapNodeMapper.insertNodes(list));
     }
 
-    @Test
-    public void testBastWay() {
-        MapNodeUtils.FloydResult floydMatrix = cacheUtils.getFloydMatrix();
-        List<Department> departmentList = new ArrayList<>() {{
-        }};
-        List<Integer> idList = new ArrayList<>() {{
-            add(0);
-            for (Department department : departmentList) {
-                add(department.getNodeId());
-            }
-        }};
-
-        Map<Integer, Integer> timeMap = new HashMap<>();
-
-        List<Integer> timeList = new ArrayList<>() {{
-            for (Department department : departmentList) {
-                ProCache cache = cacheUtils.getCache(department.getDepartment());
-                add(cache.getContextList().size() * cache.getDepartment().getAvetime());
-                timeMap.put(department.getNodeId(), cache.getDepartment().getAvetime());
-            }
-        }};
-
-
-        // TODO 时间
-        // TODO 时间
-        int distance = 0;
-        int times = 0;
-        for (int i = 0; i < idList.size() - 1; i++) {
-
-        }
-
-    }
-
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -301,9 +266,6 @@ class AssistantApplicationTests {
     @Test
     public void testPath() {
         MapNodeUtils.FloydResult floydMatrix = cacheUtils.getFloydMatrix();
-        List<Department> departmentList = new ArrayList<>() {{
-        }};
-//
 //        List<Integer> idList = new ArrayList<>() {{
 //            add(0);
 //            for (Department department : departmentList) {
