@@ -1,8 +1,10 @@
 package com.assistant.utils;
 
+import com.assistant.model.dto.ProCache;
 import com.assistant.model.enity.Department;
 import lombok.*;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.util.ListUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,44 +75,47 @@ public class CoreUtils {
     }
 
     private void parseList(List<Department> departmentList) {
-        // TODO
-//        List<Integer> idList = new ArrayList<>() {{
-//            add(0);
-//            for (Department department : departmentList) {
-//                add(department.getNodeId());
-//            }
-//        }};
-
-//        Map<Integer, Integer> timeMap = new HashMap<>();
-//
-//        List<Integer> timeList = new ArrayList<>() {{
-//            for (Department department : departmentList) {
-//                ProCache cache = cacheUtils.getCache(department.getDepartment());
-//                add(cache.getContextList().size() * cache.getDepartment().getAvetime());
-//                timeMap.put(department.getNodeId(), cache.getDepartment().getAvetime());
-//            }
-//        }};
-
-        this.timeMap = new HashMap<>() {{
-            put(0, 0);
-            put(10011, 1000);
-            put(10015, 2000);
-            put(10012, 1000);
-        }};
-
-        this.timeList = new ArrayList<>() {{
-            add(0);
-            add(10000);
-            add(30000);
-            add(25000);
-        }};
         this.idList = new ArrayList<>() {{
             add(0);
-            add(10011);
-            add(10015);
-            add(10012);
-//            add(40007);
+            for (Department department : departmentList) {
+                add(department.getNodeId());
+            }
         }};
+
+        this.timeMap = new HashMap<>();
+
+        this.timeList = new ArrayList<>() {{
+            for (Department department : departmentList) {
+                ProCache cache = cacheUtils.getCache(department.getDepartment());
+                add(cache.getContextList().size() * cache.getDepartment().getAvetime());
+                timeMap.put(department.getNodeId(), cache.getDepartment().getAvetime());
+            }
+        }};
+
+
+        // TODO TEST CODE
+        if (ListUtils.isEmpty(departmentList)) {
+            this.timeMap = new HashMap<>() {{
+                put(0, 0);
+                put(10011, 1000);
+                put(10015, 2000);
+                put(10012, 1000);
+            }};
+
+            this.timeList = new ArrayList<>() {{
+                add(0);
+                add(10000);
+                add(30000);
+                add(25000);
+            }};
+            this.idList = new ArrayList<>() {{
+                add(0);
+                add(10011);
+                add(10015);
+                add(10012);
+//            add(40007);
+            }};
+        }
     }
 
 
