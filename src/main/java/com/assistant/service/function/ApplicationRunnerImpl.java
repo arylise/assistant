@@ -1,8 +1,8 @@
 package com.assistant.service.function;
 
-import com.assistant.mapper.DepartmentMapper;
+import com.assistant.mapper.ProjectMapper;
 import com.assistant.model.dto.ProCache;
-import com.assistant.model.enity.Department;
+import com.assistant.model.enity.Project;
 import com.assistant.model.enity.MapNode;
 import com.assistant.service.intf.MapNodeService;
 import com.assistant.utils.CacheUtils;
@@ -22,7 +22,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
     private final MapNodeService mapNodeService;
     private final MapNodeUtils mapNodeUtils;
     private final CacheUtils cacheUtils;
-    private final DepartmentMapper departmentMapper;
+    private final ProjectMapper projectMapper;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -35,11 +35,11 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         floydResult = mapNodeUtils.floydMatrixNoElevator(all);
         cacheUtils.putFloydMatrixWithoutElevator(floydResult);
         // 科室缓存
-        List<Department> departments = departmentMapper.selectAll();
+        List<Project> departments = projectMapper.selectAll();
         if (departments != null) {
-            for (Department d : departments) {
+            for (Project d : departments) {
                 ProCache proCache = ProCache.builder()
-                        .department(d)
+                        .project(d)
                         .contextList(new ArrayList<>())
                         .build();
                 cacheUtils.putCache(d.getDepartment(), proCache);

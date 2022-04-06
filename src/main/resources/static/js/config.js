@@ -28,7 +28,7 @@ const admin = [
         "baseUrl": "/admin",
         "list": [{
             "name": "检查科室",
-            "url": "/page_department"
+            "url": "/page_project"
         }, {
             "name": "节点管理",
             "url": "/page_mapnode"
@@ -48,7 +48,7 @@ const admin = [
             "url": "/test_page_doctor"
         }, {
             "name": "科室管理测试",
-            "url": "/test_page_department"
+            "url": "/test_page_project"
         }, {
             "name": "测试1",
             "url": "/test_1"

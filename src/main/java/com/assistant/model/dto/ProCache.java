@@ -1,6 +1,6 @@
 package com.assistant.model.dto;
 
-import com.assistant.model.enity.Department;
+import com.assistant.model.enity.Project;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +14,5 @@ import java.util.List;
 @Builder
 public class ProCache {
     List<String> contextList;
-    Department department;
+    Project project;
 }

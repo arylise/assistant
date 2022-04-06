@@ -48,8 +48,8 @@ public class AdminServiceImpl implements AdminService {
                 list = patientService.selectAll();
                 count = patientService.count();
             }
-            case AssistantContext.DEPARTMENT -> {
-                list = hospitalService.departmentList();
+            case AssistantContext.PROJECT -> {
+                list = hospitalService.projectList();
                 count = hospitalService.countDeps();
             }
             case AssistantContext.MAP_NODE -> {

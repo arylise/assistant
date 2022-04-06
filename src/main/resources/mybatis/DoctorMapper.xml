@@ -5,7 +5,7 @@
 <mapper namespace="com.assistant.mapper.DoctorMapper">
 
     <insert id="insertDocs" parameterType="com.assistant.model.enity.Doctor">
-        insert into doctor (`username`, `password`, `name`, `department`, `sex`, `age`, `phone`)
+        insert into doctor (username, password, name, department, sex, age, phone, msg)
         values
         <foreach collection="list" item="doctor" index="index" separator=",">
             (
@@ -15,7 +15,8 @@
             #{doctor.department,jdbcType=VARCHAR},
             #{doctor.sex,jdbcType=VARCHAR},
             #{doctor.age,jdbcType=INTEGER},
-            #{doctor.phone,jdbcType=INTEGER}
+            #{doctor.phone,jdbcType=INTEGER},
+            #{doctor.msg,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -31,7 +32,7 @@
         where username = #{username}
     </select>
     <select id="selectAll" resultType="com.assistant.model.enity.Doctor">
-        select `username`, `name`, `department`, `sex`, `age`, `phone`
+        select username, name, department, sex, age, phone, msg
         from doctor
     </select>
     <select id="count" resultType="java.lang.Long">

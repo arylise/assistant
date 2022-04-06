@@ -1,7 +1,7 @@
 package com.assistant.utils;
 
 import com.assistant.model.dto.ProCache;
-import com.assistant.model.enity.Department;
+import com.assistant.model.enity.Project;
 import lombok.*;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.ListUtils;
@@ -74,27 +74,9 @@ public class CoreUtils {
         return ans;
     }
 
-    private void parseList(List<Department> departmentList) {
-        this.idList = new ArrayList<>() {{
-            add(0);
-            for (Department department : departmentList) {
-                add(department.getNodeId());
-            }
-        }};
-
-        this.timeMap = new HashMap<>();
-
-        this.timeList = new ArrayList<>() {{
-            for (Department department : departmentList) {
-                ProCache cache = cacheUtils.getCache(department.getDepartment());
-                add(cache.getContextList().size() * cache.getDepartment().getAvetime());
-                timeMap.put(department.getNodeId(), cache.getDepartment().getAvetime());
-            }
-        }};
-
-
+    private void parseList(List<Project> projectList) {
+        if (ListUtils.isEmpty(projectList)) {
         // TODO TEST CODE
-        if (ListUtils.isEmpty(departmentList)) {
             this.timeMap = new HashMap<>() {{
                 put(0, 0);
                 put(10011, 1000);
@@ -115,12 +97,30 @@ public class CoreUtils {
                 add(10012);
 //            add(40007);
             }};
+        } else {
+            this.idList = new ArrayList<>() {{
+                add(0);
+                for (Project project : projectList) {
+                    add(project.getNodeId());
+                }
+            }};
+
+            this.timeMap = new HashMap<>();
+
+            this.timeList = new ArrayList<>() {{
+                for (Project project : projectList) {
+                    ProCache cache = cacheUtils.getCache(project.getDepartment());
+                    add(cache.getContextList().size() * cache.getProject().getAvetime());
+                    timeMap.put(project.getNodeId(), cache.getProject().getAvetime());
+                }
+            }};
+
         }
     }
 
 
-    public TspResult getBestPath(List<Department> departmentList, long weightPath, long weightTime) {
-        parseList(departmentList);
+    public TspResult getBestPath(List<Project> projects, long weightPath, long weightTime) {
+        parseList(projects);
 
         MapNodeUtils.FloydResult floydResult = cacheUtils.getFloydMatrix();
         this.floydMatrix = floydResult.getFloydMatrix();

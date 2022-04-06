@@ -7,7 +7,7 @@ import com.assistant.model.enity.Doctor;
 import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Patient;
 import com.assistant.service.impl.PatientServiceImpl;
-import com.assistant.service.intf.ProjectService;
+import com.assistant.service.intf.QueueService;
 import com.assistant.utils.CacheUtils;
 import com.assistant.utils.CoreUtils;
 import com.assistant.utils.MapNodeUtils;
@@ -42,7 +42,7 @@ class AssistantApplicationTests {
     private MapNodeUtils mapNodeUtils;
 
     @Resource
-    private ProjectService projectService;
+    private QueueService queueService;
 
     @Resource
     private CacheUtils cacheUtils;
@@ -58,7 +58,8 @@ class AssistantApplicationTests {
         int i = 0;
         while (++i < 100) {
             double random = Math.random();
-            doctors.add(new Doctor(username + i, encoder.encode(username + i), username + i, "department0" + (random < 0.33 ? "1" : random < 0.66 ? "2" : "3"), "m", i, i, null));
+            String namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(new Doctor(namestr, encoder.encode(namestr), namestr, "department0" + (random < 0.33 ? "1" : random < 0.66 ? "2" : "3"), "m", i, i, null));
         }
         System.out.println(doctorMapper.insertDocs(doctors));
     }
@@ -71,7 +72,8 @@ class AssistantApplicationTests {
         int i = 0;
         while (++i < 100) {
             double random = Math.random();
-            patients.add(new Patient(username + i, encoder.encode(username + i), username + i, "m", i, i, 0, null));
+            String namestr = username + (i < 10 ? "0" + i : i);
+            patients.add(new Patient(namestr, encoder.encode(namestr), namestr, random > 0.5 ? "m" : "f", i, i, 0, null));
         }
         System.out.println(patientMapper.insertPats(patients));
     }
@@ -438,7 +440,7 @@ class AssistantApplicationTests {
     }
 
     @Test
-    public void test07(){
+    public void test07() {
         CoreUtils.TspResult bestPath = coreUtils.getBestPath(null, 1L, 1L);
         System.out.println(bestPath);
     }

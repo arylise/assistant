@@ -7,13 +7,13 @@
 </head>
 <body>
 
-<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-department">
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-project">
     <ul class="layui-tab-title">
         <li class="layui-this">科室列表</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            <table id="department-list" lay-filter="list-listener"></table>
+            <table id="project-list" lay-filter="list-listener"></table>
         </div>
     </div>
 </div>
@@ -27,16 +27,16 @@
 <script src="/layui/layui.js"></script>
 <script>
     const page_config = {
-        elem: '#department-list'
+        elem: '#project-list'
         , toolbar: '#toolbar'
         , title: '用户数据表'
-        , url: '/admin/list_department'
+        , url: '/admin/list_project'
         , cols: [
             [
                 {fixed: 'left', type: 'checkbox'}
                 , {type: 'numbers', fixed: "left"}
-                , {field: 'department', title: '科室', width: 180}
                 , {field: 'project', title: '检查项目', width: 135}
+                , {field: 'department', title: '科室', width: 180}
                 , {field: 'nodeId', title: '地图节点', width: 135}
                 , {field: 'avetime', title: '平均用时', width: 135}
                 , {field: 'msg', title: '描述', width: 300}

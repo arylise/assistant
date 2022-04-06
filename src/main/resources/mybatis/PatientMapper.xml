@@ -8,7 +8,7 @@
         values (#{username}, #{password}, 0)
     </insert>
     <insert id="insertPats">
-        insert into patient (`username`, `password`, `name`, `sex`, `age`, `phone`, `exception`)
+        insert into patient (username, password, name, sex, age, phone, exception, msg)
         values
         <foreach collection="list" item="patient" index="index" separator=",">
             (
@@ -18,7 +18,8 @@
             #{patient.sex,jdbcType=VARCHAR},
             #{patient.age,jdbcType=INTEGER},
             #{patient.phone,jdbcType=INTEGER},
-            #{patient.exception,jdbcType=INTEGER}
+            #{patient.exception,jdbcType=INTEGER},
+            #{patient.msg,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -29,7 +30,7 @@
         where username = #{username}
     </select>
     <select id="selectAll" resultType="com.assistant.model.enity.Patient">
-        select  `username`, `name`, `sex`, `age`, `phone`, `exception`
+        select username, name, sex, age, phone, exception, msg
         from patient
     </select>
     <select id="count" resultType="java.lang.Long">

@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Department {
-    private String department;
+public class Project {
     private String project;
+    private String department;
     private int nodeId;
     private int avetime;
     private String msg;

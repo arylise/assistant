@@ -4,23 +4,34 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.assistant.mapper.MapNodeMapper">
     <insert id="insert" parameterType="com.assistant.model.enity.MapNode">
-        insert into mapnode (`nodeId`, `level`, `x`, `y`, `nextNode`, `span`, `stairNode`, `elevatorId`)
-        values (#{nodeId}, #{level}, #{x}, #{y}, #{nextNode}, #{span}, #{stairNode}, #{elevatorId})
+        insert into mapnode (nodeId, nodeName, level, x, y, nextNode, stairNode, elevatorNode, elevatorId, msg)
+        values (#{nodeId},
+                #{nodeName},
+                #{level},
+                #{x},
+                #{y},
+                #{nextNode},
+                #{stairNode},
+                #{elevatorNode},
+                #{elevatorId},
+                #{msg})
     </insert>
 
     <insert id="insertNodes">
-        insert into mapnode (`nodeId`, `level`, `x`, `y`, `nextNode`, `span`, `stairNode`,`elevatorId`)
+        insert into mapnode (nodeId, nodeName, level, x, y, nextNode, stairNode, elevatorNode, elevatorId, msg)
         values
         <foreach collection="list" item="mapnode" index="index" separator=",">
             (
             #{mapnode.nodeId,jdbcType=VARCHAR},
+            #{mapnode.nodeName,jdbcType=VARCHAR},
             #{mapnode.level,jdbcType=INTEGER},
             #{mapnode.x,jdbcType=INTEGER},
             #{mapnode.y,jdbcType=INTEGER},
             #{mapnode.nextNode,jdbcType=VARCHAR},
-            #{mapnode.span,jdbcType=INTEGER},
             #{mapnode.stairNode,jdbcType=VARCHAR},
-            #{mapnode.elevatorId,jdbcType=INTEGER}
+            #{mapnode.elevatorNode,jdbcType=VARCHAR},
+            #{mapnode.elevatorId,jdbcType=INTEGER},
+            #{mapnode.msg,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -38,9 +49,4 @@
         from mapnode
         where level = #{level}
     </select>
-<!--    <select id="getMapNodesByLevelToMap" resultType="java.util.Map">-->
-<!--        select *-->
-<!--        from mapnode-->
-<!--        where level = #{level}-->
-<!--    </select>-->
 </mapper>

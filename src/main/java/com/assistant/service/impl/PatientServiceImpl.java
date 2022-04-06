@@ -3,7 +3,7 @@ package com.assistant.service.impl;
 import com.assistant.mapper.PatientMapper;
 import com.assistant.model.enity.Patient;
 import com.assistant.service.intf.PatientService;
-import com.assistant.service.intf.ProjectService;
+import com.assistant.service.intf.QueueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientMapper patientMapper;
-    private final ProjectService projectService;
+    private final QueueService queueService;
 
     @Override
     public String password(String username) {
@@ -41,6 +41,6 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public boolean register(String dep, String username) {
-        return projectService.regPro(dep,username);
+        return queueService.regQueue(dep,username);
     }
 }

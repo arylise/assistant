@@ -1,7 +1,7 @@
 package com.assistant.service.impl;
 
 import com.assistant.model.dto.ProCache;
-import com.assistant.service.intf.ProjectService;
+import com.assistant.service.intf.QueueService;
 import com.assistant.utils.CacheUtils;
 import com.assistant.utils.TestClass;
 import lombok.RequiredArgsConstructor;
@@ -10,12 +10,12 @@ import org.thymeleaf.util.ListUtils;
 
 @Service
 @RequiredArgsConstructor
-public class ProjectServiceImpl implements ProjectService {
+public class QueueServiceImpl implements QueueService {
 
     private final CacheUtils cacheUtils;
 
     @Override
-    public boolean regPro(String dep, String username) {
+    public boolean regQueue(String dep, String username) {
         try {
             ProCache cache = cacheUtils.getCache(dep);
             if (!ListUtils.isEmpty(cache.getContextList()) && cache.getContextList().contains(username)) {
@@ -30,7 +30,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public boolean doPro(String dep) {
+    public boolean doQueue(String dep) {
         try {
             ProCache cache = cacheUtils.getCache(dep);
             if (ListUtils.isEmpty(cache.getContextList())) {
@@ -45,7 +45,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public boolean delFromPro(String dep, String username) {
+    public boolean delFromQueue(String dep, String username) {
         try {
             ProCache cache = cacheUtils.getCache(dep);
             if (!ListUtils.isEmpty(cache.getContextList()) && cache.getContextList().contains(username)) {
@@ -63,7 +63,7 @@ public class ProjectServiceImpl implements ProjectService {
     public Integer getWaitTime(String dep) {
         try {
             ProCache cache = cacheUtils.getCache(dep);
-            return cache.getContextList().size() * cache.getDepartment().getAvetime();
+            return cache.getContextList().size() * cache.getProject().getAvetime();
         } catch (Exception e) {
             return Integer.MAX_VALUE;
         }

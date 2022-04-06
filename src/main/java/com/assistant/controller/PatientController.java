@@ -1,7 +1,7 @@
 package com.assistant.controller;
 
 import com.assistant.service.intf.PatientService;
-import com.assistant.service.intf.ProjectService;
+import com.assistant.service.intf.QueueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @PreAuthorize("hasRole('ROLE_PATIENT')")
 public class PatientController {
     private final PatientService patientService;
-    private final ProjectService projectService;
+    private final QueueService queueService;
 
     @RequestMapping("/register_{dep}")
     @ResponseBody
@@ -27,7 +27,7 @@ public class PatientController {
     @RequestMapping("/getTime_{dep}")
     @ResponseBody
     public Integer getTime(@PathVariable String dep) {
-        return projectService.getWaitTime(dep);
+        return queueService.getWaitTime(dep);
     }
 
     @RequestMapping("/getPath_{way}")
