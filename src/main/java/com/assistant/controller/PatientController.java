@@ -18,6 +18,11 @@ public class PatientController {
     private final PatientService patientService;
     private final QueueService queueService;
 
+    @RequestMapping("/page_{name}")
+    public String page(@PathVariable String name) {
+        return "/patient/page_" + name + ".html";
+    }
+
     @RequestMapping("/register_{pro}")
     @ResponseBody
     public boolean registerDepList(@PathVariable String pro, @CookieValue("username") String username) {
@@ -32,7 +37,7 @@ public class PatientController {
 
     @RequestMapping("/getPath_{way}")
     @ResponseBody
-    public String getPath(@PathVariable String way){
+    public String getPath(@PathVariable String way) {
         return "";
     }
 }

@@ -42,6 +42,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
                         .project(d)
                         .contextList(new ArrayList<>())
                         .build();
+                // TODO 缓存数据的解耦合,队列和project信息解耦
                 cacheUtils.putCache(d.getProject(), proCache);
             }
         }

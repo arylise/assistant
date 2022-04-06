@@ -77,15 +77,12 @@ const doctor = [
         "url": "/index",
         "list": [],
     }, {
-        "name": "文章管理",
-        "icon": "&#xe609;",
-        "url": "",
+        "name": "个人信息管理",
+        "icon": "&#xe66f;",
+        "baseUrl": "/doctor",
         "list": [{
-            "name": "栏目管理",
-            "url": "/type_index.html"
-        }, {
-            "name": "文章管理",
-            "url": "/article_index.html"
+            "name": "信息管理",
+            "url": "/page_info"
         }]
     }, {
         "name": "退出登录",
