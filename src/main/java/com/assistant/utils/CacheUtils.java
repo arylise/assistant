@@ -12,9 +12,9 @@ public class CacheUtils {
 
     private final RedisUtils redisUtils;
 
-    public ProCache getCache(String dep) {
+    public ProCache getCache(String pro) {
         try {
-            String key = AssistantContext.appendDepartmentPrefix(dep);
+            String key = AssistantContext.appendQueuePrefix(pro);
             String s = redisUtils.get(key);
             return JSON.parseObject(s, ProCache.class);
         } catch (Exception ignored) {
@@ -22,8 +22,8 @@ public class CacheUtils {
         }
     }
 
-    public boolean putCache(String dep, ProCache proCache) {
-        String key = AssistantContext.appendDepartmentPrefix(dep);
+    public boolean putCache(String pro, ProCache proCache) {
+        String key = AssistantContext.appendQueuePrefix(pro);
         return redisUtils.set(key, JSON.toJSONString(proCache));
     }
 

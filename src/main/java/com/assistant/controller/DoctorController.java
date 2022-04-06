@@ -21,17 +21,17 @@ public class DoctorController {
         return "/doctor/page_" + name + ".html";
     }
 
-    @RequestMapping("/doPro_{dep}")
+    @RequestMapping("/doPro_{pro}")
     @ResponseBody
-    public String doPro(@PathVariable String dep) {
-        boolean b = queueService.doQueue(dep);
+    public String doPro(@PathVariable String pro) {
+        boolean b = queueService.doQueue(pro);
         return String.valueOf(b);
     }
 
-    @RequestMapping("/delFromPro_{dep}_{username}")
+    @RequestMapping("/delFromPro_{pro}_{username}")
     @ResponseBody
-    public String delFromPro(@PathVariable String dep, @PathVariable String username) {
-        boolean b = queueService.delFromQueue(dep, username);
+    public String delFromPro(@PathVariable String pro, @PathVariable String username) {
+        boolean b = queueService.delFromQueue(pro, username);
         return String.valueOf(b);
     }
 }

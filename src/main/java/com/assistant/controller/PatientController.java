@@ -18,16 +18,16 @@ public class PatientController {
     private final PatientService patientService;
     private final QueueService queueService;
 
-    @RequestMapping("/register_{dep}")
+    @RequestMapping("/register_{pro}")
     @ResponseBody
-    public boolean registerDepList(@PathVariable String dep, @CookieValue("username") String username) {
-        return patientService.register(dep, username);
+    public boolean registerDepList(@PathVariable String pro, @CookieValue("username") String username) {
+        return patientService.register(pro, username);
     }
 
-    @RequestMapping("/getTime_{dep}")
+    @RequestMapping("/getTime_{pro}")
     @ResponseBody
-    public Integer getTime(@PathVariable String dep) {
-        return queueService.getWaitTime(dep);
+    public Integer getTime(@PathVariable String pro) {
+        return queueService.getWaitTime(pro);
     }
 
     @RequestMapping("/getPath_{way}")

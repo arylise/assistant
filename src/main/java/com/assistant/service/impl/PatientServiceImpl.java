@@ -40,7 +40,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public boolean register(String dep, String username) {
-        return queueService.regQueue(dep,username);
+    public boolean register(String pro, String username) {
+        return queueService.regQueue(pro, username);
     }
 }

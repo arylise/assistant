@@ -39,14 +39,14 @@ public class AssistantContext {
     public static final String FLOYD_MATRIX_ALL_WITHOUT_STAIR = "floydMatrixAllWithoutStair";
     public static final String FLOYD_MATRIX_ALL_WITHOUT_ELEVATOR = "floydMatrixAllWithoutElevator";
 
-    public static final String DEPARTMENT_CACHE_KEY = "department_%s";
+    public static final String PROJECT_QUEUE_CACHE_KEY = "projectQueue_%s";
 
     public static final String CONTEXT_LIST = "contextList";
     public static final String NODE_ID = "nodeId";
     public static final String AVETIME = "avetime";
 
-    public static String appendDepartmentPrefix(String departmentName) {
-        return String.format(DEPARTMENT_CACHE_KEY, departmentName);
+    public static String appendQueuePrefix(String project) {
+        return String.format(PROJECT_QUEUE_CACHE_KEY, project);
     }
 
 

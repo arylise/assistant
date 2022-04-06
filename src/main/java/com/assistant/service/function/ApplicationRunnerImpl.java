@@ -42,7 +42,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
                         .project(d)
                         .contextList(new ArrayList<>())
                         .build();
-                cacheUtils.putCache(d.getDepartment(), proCache);
+                cacheUtils.putCache(d.getProject(), proCache);
             }
         }
 

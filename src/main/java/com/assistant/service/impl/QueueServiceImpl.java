@@ -15,14 +15,14 @@ public class QueueServiceImpl implements QueueService {
     private final CacheUtils cacheUtils;
 
     @Override
-    public boolean regQueue(String dep, String username) {
+    public boolean regQueue(String pro, String username) {
         try {
-            ProCache cache = cacheUtils.getCache(dep);
+            ProCache cache = cacheUtils.getCache(pro);
             if (!ListUtils.isEmpty(cache.getContextList()) && cache.getContextList().contains(username)) {
                 return false;
             }
             cache.getContextList().add(username);
-            return cacheUtils.putCache(dep, cache);
+            return cacheUtils.putCache(pro, cache);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
         }
@@ -30,14 +30,14 @@ public class QueueServiceImpl implements QueueService {
     }
 
     @Override
-    public boolean doQueue(String dep) {
+    public boolean doQueue(String pro) {
         try {
-            ProCache cache = cacheUtils.getCache(dep);
+            ProCache cache = cacheUtils.getCache(pro);
             if (ListUtils.isEmpty(cache.getContextList())) {
                 return false;
             }
             cache.getContextList().remove(0);
-            return cacheUtils.putCache(dep, cache);
+            return cacheUtils.putCache(pro, cache);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
         }
@@ -45,14 +45,14 @@ public class QueueServiceImpl implements QueueService {
     }
 
     @Override
-    public boolean delFromQueue(String dep, String username) {
+    public boolean delFromQueue(String pro, String username) {
         try {
-            ProCache cache = cacheUtils.getCache(dep);
+            ProCache cache = cacheUtils.getCache(pro);
             if (!ListUtils.isEmpty(cache.getContextList()) && cache.getContextList().contains(username)) {
                 return false;
             }
             cache.getContextList().remove(username);
-            return cacheUtils.putCache(dep, cache);
+            return cacheUtils.putCache(pro, cache);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
         }
@@ -60,9 +60,9 @@ public class QueueServiceImpl implements QueueService {
     }
 
     @Override
-    public Integer getWaitTime(String dep) {
+    public Integer getWaitTime(String pro) {
         try {
-            ProCache cache = cacheUtils.getCache(dep);
+            ProCache cache = cacheUtils.getCache(pro);
             return cache.getContextList().size() * cache.getProject().getAvetime();
         } catch (Exception e) {
             return Integer.MAX_VALUE;
