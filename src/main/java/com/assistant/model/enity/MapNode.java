@@ -7,26 +7,25 @@ import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class MapNode {
-    private int nodeId;
+    private String nodeId;
 
     private String nodeName;
 
     /**
      * 节点所属层数
      */
-    private int level;
+    private Integer level;
 
     /**
      * 节点在该层的位置（像素）
      */
-    private int x;
-    private int y;
+    private Integer x;
+    private Integer y;
 
     /**
      * 下一个节点id
@@ -50,24 +49,24 @@ public class MapNode {
 
     private String msg;
 
-    public List<Integer> listOfStair() {
+    public List<String> listOfStair() {
         if (StringUtils.isEmpty(stairNode)) {
             return null;
         }
-        return Arrays.stream(stairNode.split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());
+        return Arrays.stream(stairNode.split(",")).toList();
     }
 
-    public List<Integer> listOfNext() {
+    public List<String> listOfNext() {
         if (StringUtils.isEmpty(nextNode)) {
             return null;
         }
-        return Arrays.stream(nextNode.split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());
+        return Arrays.stream(nextNode.split(",")).toList();
     }
 
-    public List<Integer> listOfElevator() {
+    public List<String> listOfElevator() {
         if (StringUtils.isEmpty(elevatorNode)) {
             return null;
         }
-        return Arrays.stream(elevatorNode.split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList());
+        return Arrays.stream(elevatorNode.split(",")).toList();
     }
 }

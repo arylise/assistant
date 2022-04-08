@@ -3,8 +3,13 @@ package com.assistant.utils;
 import com.alibaba.fastjson.JSON;
 import com.assistant.constant.AssistantContext;
 import com.assistant.model.dto.ProCache;
+import com.assistant.model.enity.MapNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -64,5 +69,22 @@ public class CacheUtils {
         } catch (Exception ignored) {
             return MapNodeUtils.FloydResult.builder().build();
         }
+    }
+
+    public boolean putElevatorMap(List<MapNode> elevatorMap) {
+        return redisUtils.set(AssistantContext.ELEVATOR_MAP, JSON.toJSONString(elevatorMap));
+    }
+
+    public Map<String, MapNode> getElevatorMap() {
+        try {
+            // TODO
+//            String s = redisUtils.get(AssistantContext.ELEVATOR_MAP);
+//            JSONObject.parse(s);
+//            return map;
+        } catch (Exception ignored) {
+            return new HashMap<>();
+        }
+        return null;
+
     }
 }

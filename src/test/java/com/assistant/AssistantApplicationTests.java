@@ -195,16 +195,16 @@ class AssistantApplicationTests {
             map.setX(Integer.parseInt(s[0]));
             map.setY(Integer.parseInt(s[1]));
             map.setLevel(level);
-            int nodeId = level * 10000 + num;
+            String nodeId = "" + level * 10000 + num;
             map.setNodeId(nodeId);
 
             String nextNode = "";
             if (num == 1) {
                 nextNode += (level * 10000 + size) + "," + (nodeId + 1);
             } else if (num == size) {
-                nextNode += (nodeId - 1) + "," + (level * 10000 + 1);
+                nextNode += (Integer.parseInt(nodeId) - 1) + "," + (level * 10000 + 1);
             } else {
-                nextNode += (nodeId - 1) + "," + (nodeId + 1);
+                nextNode += (Integer.parseInt(nodeId) - 1) + "," + (nodeId + 1);
             }
             map.setNextNode(nextNode);
 
@@ -443,5 +443,12 @@ class AssistantApplicationTests {
     public void test07() {
         CoreUtils.TspResult bestPath = coreUtils.getBestPath(null, 1L, 1L);
         System.out.println(bestPath);
+    }
+
+    @Test
+    public void test08(){
+        Map<String, MapNode> elevatorMap = cacheUtils.getElevatorMap();
+        MapNode node = elevatorMap.get("20015");
+        System.out.println(node);
     }
 }

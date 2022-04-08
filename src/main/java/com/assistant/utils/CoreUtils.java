@@ -6,10 +6,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.ListUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -17,10 +14,11 @@ public class CoreUtils {
     private final CacheUtils cacheUtils;
 
     private long[][] floydMatrix;
-    private List<Integer> floydIndex;
-    private Map<Integer, Integer> timeMap;
+    private String[][] floydPath;
+    private List<String> floydIndex;
+    private Map<String, Integer> timeMap;
     private List<Integer> timeList;
-    private List<Integer> idList;
+    private List<String> idList;
 
     private long weightPath;
     private long weightTime;
@@ -43,11 +41,13 @@ public class CoreUtils {
         int index_0 = floydIndex.indexOf(idList.get(0));
 
         if (count == n) {
-            long score = weightPath * (cost + floydMatrix[index_0][currPos]) + weightTime * time;
+            String[] ids = path.split(",");
+
+            long score = weightPath * (cost + floydMatrix[currPos][index_0]) + weightTime * time;
             if (ans.score > score) {
                 ans.resultPath = path;
                 ans.score = score;
-                ans.path = cost + floydMatrix[index_0][currPos];
+                ans.path = cost + floydMatrix[currPos][index_0];
                 ans.time = time;
             }
             return ans;
@@ -64,9 +64,9 @@ public class CoreUtils {
             if (!v[i]) {
                 // 标记结点被访问过
                 v[i] = true;
-                int id = idList.get(i);
+                String id = idList.get(i);
                 int timeContext = (time <= timeList.get(i) ? timeList.get(i) : time) + timeMap.get(id);
-                ans = tsp(i, count + 1, cost + floydMatrix[index_i][currPos], path + "," + idList.get(i), timeContext, ans);
+                ans = tsp(i, count + 1, cost + floydMatrix[currPos][index_i], path + floydPath[currPos][index_i], timeContext, ans);
                 // 标记结点没有被访问过
                 v[i] = false;
             }
@@ -76,12 +76,12 @@ public class CoreUtils {
 
     private void parseList(List<Project> projectList) {
         if (ListUtils.isEmpty(projectList)) {
-        // TODO TEST CODE
+            // TODO TEST CODE
             this.timeMap = new HashMap<>() {{
-                put(0, 0);
-                put(10011, 1000);
-                put(10015, 2000);
-                put(10012, 1000);
+                put("0", 0);
+                put("10011", 1000);
+                put("10015", 2000);
+                put("10012", 1000);
             }};
 
             this.timeList = new ArrayList<>() {{
@@ -91,15 +91,15 @@ public class CoreUtils {
                 add(25000);
             }};
             this.idList = new ArrayList<>() {{
-                add(0);
-                add(10011);
-                add(10015);
-                add(10012);
+                add("0");
+                add("10011");
+                add("10015");
+                add("10012");
 //            add(40007);
             }};
         } else {
             this.idList = new ArrayList<>() {{
-                add(0);
+                add("0");
                 for (Project project : projectList) {
                     add(project.getNodeId());
                 }
@@ -125,6 +125,7 @@ public class CoreUtils {
         MapNodeUtils.FloydResult floydResult = cacheUtils.getFloydMatrix();
         this.floydMatrix = floydResult.getFloydMatrix();
         this.floydIndex = floydResult.getIndex();
+        this.floydPath = floydResult.getPathMatrix();
         this.weightPath = weightPath;
         this.weightTime = weightTime;
         // 顶点（结点）的数量
@@ -136,6 +137,6 @@ public class CoreUtils {
 
         // 查找最小权重的汉密尔顿回路 Hamiltonian Cycle
         // 输出结果ans就是最小权重的汉密尔顿回路（ Hamiltonian Cycle）
-        return tsp(0, 1, 0, "0", 0, TspResult.builder().score(Long.MAX_VALUE).build());
+        return tsp(0, 1, 0, "", 0, TspResult.builder().score(Long.MAX_VALUE).build());
     }
 }

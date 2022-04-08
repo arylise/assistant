@@ -2,12 +2,13 @@ package com.assistant.service.function;
 
 import com.assistant.mapper.ProjectMapper;
 import com.assistant.model.dto.ProCache;
-import com.assistant.model.enity.Project;
 import com.assistant.model.enity.MapNode;
+import com.assistant.model.enity.Project;
 import com.assistant.service.intf.MapNodeService;
 import com.assistant.utils.CacheUtils;
 import com.assistant.utils.MapNodeUtils;
 import com.assistant.utils.TestClass;
+import com.github.pagehelper.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -48,6 +50,9 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         }
 
 
+        List<MapNode> collect = all.stream().filter(o -> StringUtil.isNotEmpty(o.getElevatorId())).collect(Collectors.toList());
+        System.out.println(collect);
+        cacheUtils.putElevatorMap(collect);
         TestClass.showMe("overLoad!");
     }
 }

@@ -12,8 +12,8 @@ public class Patient {
     private String password;
     private String name;
     private String sex;
-    private int age;
-    private int phone;
-    private int exception;
+    private Integer age;
+    private Integer phone;
+    private Integer exception;
     private String msg;
 }

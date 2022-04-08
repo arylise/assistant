@@ -17,7 +17,7 @@ public class MapNodeUtils {
     @Data
     @Builder
     public static class AdjacencyResult {
-        List<Integer> index;
+        List<String> index;
         boolean[][] adjacencyMatrix;
         List<MapNode> mapNodes;
     }
@@ -31,16 +31,16 @@ public class MapNodeUtils {
             }
         }
 
-        List<Integer> index = new ArrayList<>() {{
+        List<String> index = new ArrayList<>() {{
             for (MapNode m : list) {
                 add(m.getNodeId());
             }
         }};
 
         for (MapNode m : list) {
-            for (Integer integer : m.listOfNext()) {
+            for (String id : m.listOfNext()) {
                 int i = index.indexOf(m.getNodeId());
-                int j = index.indexOf(integer);
+                int j = index.indexOf(id);
                 adjacencyMatrix[i][j] = true;
             }
         }
@@ -57,7 +57,7 @@ public class MapNodeUtils {
     public static class FloydResult {
         String[][] pathMatrix;
         long[][] floydMatrix;
-        List<Integer> index;
+        List<String> index;
         List<MapNode> mapNodes;
     }
 
@@ -80,7 +80,7 @@ public class MapNodeUtils {
         long[][] matrix = new long[n][n];
         String[][] pathMatrix = new String[n][n];
 
-        List<Integer> index = new ArrayList<>() {{
+        List<String> index = new ArrayList<>() {{
             for (MapNode m : list) {
                 add(m.getNodeId());
             }
@@ -95,13 +95,13 @@ public class MapNodeUtils {
 
         for (MapNode m : list) {
             if (m.listOfNext() != null) {
-                for (Integer id : m.listOfNext()) {
+                for (String id : m.listOfNext()) {
                     int i = index.indexOf(m.getNodeId());
                     int j = index.indexOf(id);
                     long x = m.getX() - list.get(j).getX();
                     long y = m.getY() - list.get(j).getY();
                     matrix[i][j] = x * x + y * y;
-                    pathMatrix[i][j] = "," + m.getNodeId() + "," + id;
+                    pathMatrix[i][j] = id + ",";
                 }
             }
         }
@@ -109,13 +109,13 @@ public class MapNodeUtils {
         if (!AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_STAIR.equals(without)) {
             for (MapNode m : list) {
                 if (m.listOfStair() != null) {
-                    for (Integer id : m.listOfStair()) {
+                    for (String id : m.listOfStair()) {
                         int i = index.indexOf(m.getNodeId());
                         int j = index.indexOf(id);
                         long x = m.getX() - list.get(j).getX();
                         long y = m.getY() - list.get(j).getY();
                         matrix[i][j] = x * x + y * y;
-                        pathMatrix[i][j] = "," + m.getNodeId() + "," + id;
+                        pathMatrix[i][j] = id + ",";
                     }
                 }
             }
@@ -124,13 +124,13 @@ public class MapNodeUtils {
         if (!AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_ELEVATOR.equals(without)) {
             for (MapNode m : list) {
                 if (m.listOfElevator() != null) {
-                    for (Integer id : m.listOfElevator()) {
+                    for (String id : m.listOfElevator()) {
                         int i = index.indexOf(m.getNodeId());
                         int j = index.indexOf(id);
                         long x = m.getX() - list.get(j).getX();
                         long y = m.getY() - list.get(j).getY();
                         matrix[i][j] = x * x + y * y;
-                        pathMatrix[i][j] = "," + m.getNodeId() + "," + id;
+                        pathMatrix[i][j] = id + ",";
                     }
                 }
             }
@@ -141,7 +141,7 @@ public class MapNodeUtils {
                 for (int j = 0; j < n; j++) {
                     if (matrix[i][k] != inf && matrix[k][j] != inf && matrix[i][j] > matrix[i][k] + matrix[k][j]) {
                         matrix[i][j] = matrix[i][k] + matrix[k][j];
-                        pathMatrix[i][j] = pathMatrix[i][k].split(",[\\w]+$")[0] + pathMatrix[k][j];
+                        pathMatrix[i][j] = pathMatrix[i][k] + pathMatrix[k][j];
                     }
                 }
             }

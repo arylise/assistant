@@ -44,6 +44,7 @@ public class AssistantContext {
     public static final String CONTEXT_LIST = "contextList";
     public static final String NODE_ID = "nodeId";
     public static final String AVETIME = "avetime";
+    public static final String ELEVATOR_MAP = "elevatorMap";
 
     public static String appendQueuePrefix(String project) {
         return String.format(PROJECT_QUEUE_CACHE_KEY, project);

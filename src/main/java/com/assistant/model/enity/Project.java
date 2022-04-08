@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class Project {
     private String project;
     private String department;
-    private int nodeId;
-    private int avetime;
+    private String nodeId;
+    private Integer avetime;
     private String msg;
 }
