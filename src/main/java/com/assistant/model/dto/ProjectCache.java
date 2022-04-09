@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * 患者的检查清单
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

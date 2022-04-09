@@ -39,4 +39,16 @@
         select count(*)
         from doctor
     </select>
+    <select id="getDepartment" resultType="java.lang.String">
+        select doctor.department
+        from doctor
+        where username = #{username}
+    </select>
+    <select id="getProject" resultType="java.lang.String">
+        select pro.project
+        from project pro,
+             doctor doc
+        where doc.username = #{username}
+          and pro.department = doc.department
+    </select>
 </mapper>

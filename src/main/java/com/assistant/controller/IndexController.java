@@ -1,7 +1,6 @@
 package com.assistant.controller;
 
 import com.alibaba.druid.util.StringUtils;
-import com.assistant.constant.AssistantContext;
 import com.assistant.service.intf.UserService;
 import com.assistant.utils.CacheUtils;
 import lombok.RequiredArgsConstructor;
@@ -53,12 +52,10 @@ public class IndexController {
     @RequestMapping("/main")
     public String main() {
         String role = userService.checkRole();
-        for (String allRole : AssistantContext.ALL_ROLES) {
-            if (StringUtils.equals(allRole, role)) {
-                return role.toLowerCase().substring(5, role.length()) + "/main";
-            }
+        if (StringUtils.isEmpty(role)) {
+            return null;
         }
-        return null;
+        return role + "/main";
     }
 
     private String getPostData(RequestFacade request) {

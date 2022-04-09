@@ -1,7 +1,7 @@
 const ROLE = {
-    ROLE_ADMIN: "ROLE_ADMIN",
-    ROLE_DOCTOR: "ROLE_DOCTOR",
-    ROLE_PATIENT: "ROLE_PATIENT"
+    ADMIN: "admin",
+    DOCTOR: "doctor",
+    PATIENT: "patient"
 }
 
 
@@ -14,7 +14,7 @@ const admin = [
     }, {
         "name": "用户管理",
         "icon": "&#xe612;",
-        "baseUrl": "/admin",
+        "baseUrl": ROLE.ADMIN,
         "list": [{
             "name": "医生用户",
             "url": "/page_doctor"
@@ -25,7 +25,7 @@ const admin = [
     }, {
         "name": "医院管理",
         "icon": "&#xe612;",
-        "baseUrl": "/admin",
+        "baseUrl": ROLE.ADMIN,
         "list": [{
             "name": "检查科室",
             "url": "/page_project"
@@ -79,10 +79,18 @@ const doctor = [
     }, {
         "name": "个人信息管理",
         "icon": "&#xe66f;",
-        "baseUrl": "/doctor",
+        "baseUrl": ROLE.DOCTOR,
         "list": [{
             "name": "信息管理",
             "url": "/page_info"
+        }]
+    }, {
+        "name": "患者管理",
+        "icon": "&#xe66f;",
+        "baseUrl": ROLE.DOCTOR,
+        "list": [{
+            "name": "科室排队",
+            "url": "/page_queue"
         }]
     }, {
         "name": "退出登录",
@@ -143,13 +151,13 @@ $.ajax({
     url: '/checkRole',
     async: false,
     success: function (data) {
-        if (data === ROLE.ROLE_ADMIN) {
+        if (data === ROLE.ADMIN) {
             menu = admin;
         }
-        if (data === ROLE.ROLE_DOCTOR) {
+        if (data === ROLE.DOCTOR) {
             menu = doctor;
         }
-        if (data === ROLE.ROLE_PATIENT) {
+        if (data === ROLE.PATIENT) {
             menu = patient;
         }
     }

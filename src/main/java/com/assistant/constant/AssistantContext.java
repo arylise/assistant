@@ -1,7 +1,7 @@
 package com.assistant.constant;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AssistantContext {
 
@@ -15,10 +15,10 @@ public class AssistantContext {
     public static final String ROLE_DOCTOR = ROLE_ + UPPER_DOCTOR;
     public static final String ROLE_PATIENT = ROLE_ + UPPER_PATIENT;
 
-    public static final List<String> ALL_ROLES = new ArrayList<>() {{
-        add(ROLE_ADMIN);
-        add(ROLE_DOCTOR);
-        add(ROLE_PATIENT);
+    public static final Map<String,String> ALL_ROLES = new HashMap<>() {{
+        put(ROLE_ADMIN,ADMIN);
+        put(ROLE_DOCTOR,DOCTOR);
+        put(ROLE_PATIENT,PATIENT);
     }};
 
 

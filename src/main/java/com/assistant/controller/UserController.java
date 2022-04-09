@@ -17,7 +17,7 @@ public class UserController {
 
     @RequestMapping("/checkRole")
     @ResponseBody
-    public Object checkRole() {
+    public String checkRole() {
         return userService.checkRole();
     }
 

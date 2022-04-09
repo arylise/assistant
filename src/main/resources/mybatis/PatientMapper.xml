@@ -37,4 +37,16 @@
         select count(*)
         from patient
     </select>
+    <select id="getByName" resultType="com.assistant.model.enity.Patient">
+        select count(*)
+        from patient
+        where username = #{username}
+    </select>
+    <select id="getPatientList" resultType="com.assistant.model.enity.Patient">
+        select username, sex, age, phone, exception, msg from patient
+        where patient.username in
+        <foreach collection="list" item="patient" open="(" close=")" separator=",">
+            #{patient}
+        </foreach>
+    </select>
 </mapper>

@@ -78,8 +78,8 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     public String checkRole() {
         Set<String> roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         for (String o : roles) {
-            if (AssistantContext.ALL_ROLES.contains(o)) {
-                return o;
+            if (AssistantContext.ALL_ROLES.containsKey(o)) {
+                return AssistantContext.ALL_ROLES.get(o);
             }
         }
         return null;

@@ -18,7 +18,7 @@ layui.use(['table'], function () {
         , skin: 'row'
         , url: page_config.url
         , limit: 20
-        , page: true //开启分页
+        , page: page_config.page //开启分页
         , cols: page_config.cols
     })
 
@@ -52,19 +52,6 @@ layui.use(['table'], function () {
     });
 
     //监听工具条
-    table.on('tool(list-listener)', function (obj) {
-        // alert("work!!");
-        var data = obj.data;
-        if (obj.event === 'detail') {
-            layer.msg('ID：' + data.id + ' 的查看操作');
-        } else if (obj.event === 'del') {
-            layer.confirm('真的删除行么', function (index) {
-                obj.del();
-                layer.close(index);
-            });
-        } else if (obj.event === 'edit') {
-            layer.alert('编辑行：<br>' + JSON.stringify(data))
-        }
-    });
+    table.on('tool(list-listener)', listListener);
 
 });

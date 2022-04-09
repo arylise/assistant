@@ -30,7 +30,7 @@ public class AdminController {
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        @RequestParam(value = "limit", defaultValue = "20") int limit) {
         PageHelper.startPage(page, limit);
-        return JSON.toJSONString(adminService.list(name));
+        return JSON.toJSONString(adminService.findList(name));
     }
 
     @RequestMapping("/delete_doctor")

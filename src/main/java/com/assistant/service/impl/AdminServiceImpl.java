@@ -36,7 +36,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public DataList list(String listName) {
+    public DataList findList(String listName) {
         long count;
         List list;
         switch (listName) {
@@ -57,13 +57,13 @@ public class AdminServiceImpl implements AdminService {
                 count = mapNodeService.count();
             }
             default -> {
-                return new DataList(-1, "");
+                return DataList.builder().code(-1).build();
             }
         }
         if (list != null) {
-            return new DataList(list, count);
+            return DataList.builder().data(list).count(count).build();
         }
-        return new DataList(-2, "");
+        return DataList.builder().code(-2).build();
     }
 
     @Override

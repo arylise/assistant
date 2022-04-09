@@ -24,6 +24,7 @@ public class ProjectServiceImpl implements ProjectService {
                 return false;
             }
             cache.getQueueList().add(username);
+            cache.getTimestamp().add(System.currentTimeMillis());
             return cacheUtils.putQueueCache(pro, cache);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
@@ -39,6 +40,7 @@ public class ProjectServiceImpl implements ProjectService {
                 return false;
             }
             cache.getQueueList().remove(0);
+            cache.getTimestamp().remove(0);
             return cacheUtils.putQueueCache(pro, cache);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
@@ -50,10 +52,13 @@ public class ProjectServiceImpl implements ProjectService {
     public boolean delFromQue(String pro, String username) {
         try {
             QueueCache cache = cacheUtils.getQueueCache(pro);
-            if (!ListUtils.isEmpty(cache.getQueueList()) && cache.getQueueList().contains(username)) {
+            if (ListUtils.isEmpty(cache.getQueueList()) || !cache.getQueueList().contains(username)) {
                 return false;
             }
-            cache.getQueueList().remove(username);
+            List<String> queueList = cache.getQueueList();
+            int index = queueList.indexOf(username);
+            queueList.remove(index);
+            cache.getTimestamp().remove(index);
             return cacheUtils.putQueueCache(pro, cache);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
@@ -71,6 +76,12 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+    /**
+     * 患者体检清单
+     * @param username
+     * @param projectList
+     * @return
+     */
     @Override
     public boolean regProList(String username, List<String> projectList){
         cacheUtils.getProjectList(username);

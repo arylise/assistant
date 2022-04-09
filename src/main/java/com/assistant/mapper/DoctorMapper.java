@@ -2,7 +2,6 @@ package com.assistant.mapper;
 
 import com.assistant.model.enity.Doctor;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -19,4 +18,7 @@ public interface DoctorMapper {
 
     boolean delete(String username);
 
+    String getDepartment(String username);
+
+    String getProject(String username);
 }

@@ -7,13 +7,16 @@
 </head>
 <body>
 
-<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-doctor">
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-queue">
     <ul class="layui-tab-title">
-        <li class="layui-this">医生列表</li>
+        <li class="layui-this">科室队列管理</li>
+        <li>患者排队列表</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            <table id="doctor-list" lay-filter="list-listener"></table>
+        </div>
+        <div class="layui-tab-item">
+            <table id="queue-list" lay-filter="list-listener"></table>
         </div>
     </div>
 </div>
@@ -26,22 +29,53 @@
 
 <script src="/layui/layui.js"></script>
 <script>
+    // let project;
+    // layui.$.ajax({
+    //     type: 'GET',
+    //     url: '/doctor/getPro',
+    //     async: false,
+    //     success: function (data) {
+    //         project = data;
+    //     }
+    // })
+    const listListener = function (obj) {
+        // alert("work!!");
+        var data = obj.data;
+        if (obj.event === 'detail') {
+            layer.msg('ID：' + data.username + ' 的查看操作');
+        } else if (obj.event === 'del') {
+            layer.confirm('确定将他踢出队伍?', function (index) {
+                obj.del();
+                layer.close(index);
+                layui.$.ajax({
+                    type: 'GET',
+                    url: '/doctor/delFromPro_' + data.username,
+                    async: false
+                })
+            });
+
+        } else if (obj.event === 'edit') {
+            layer.alert('编辑行：<br>' + JSON.stringify(data))
+        }
+    };
+
     const page_config = {
-        elem: '#doctor-list'
+        elem: '#queue-list'
         , toolbar: '#toolbar'
         , title: '用户数据表'
-        , url: '/admin/list_doctor'
-        , page: true
+        , url: '/doctor/check_queue'//+project
+        , page: false
         , cols: [
             [
                 {fixed: 'left', type: 'checkbox'}
                 , {type: 'numbers', fixed: "left"}
                 , {field: 'username', title: '用户名', width: 100, sort: true, fixed: "left"}
+                , {field: 'date', title: '排队时间', width: 200}
                 , {field: 'name', title: '姓名', width: 100}
-                , {field: 'department', title: '科室', width: 180}
                 , {field: 'sex', title: '性别', width: 80}
                 , {field: 'age', title: '年龄', width: 80}
                 , {field: 'phone', title: '电话', width: 135}
+                , {field: 'exception', title: '备注', width: 80}
                 , {field: 'msg', title: '描述', width: 300}
                 , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
             ]

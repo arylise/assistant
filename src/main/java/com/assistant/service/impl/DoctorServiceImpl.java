@@ -1,8 +1,14 @@
 package com.assistant.service.impl;
 
 import com.assistant.mapper.DoctorMapper;
+import com.assistant.mapper.PatientMapper;
+import com.assistant.mapper.ProjectMapper;
+import com.assistant.model.dto.DataList;
+import com.assistant.model.dto.QueueCache;
 import com.assistant.model.enity.Doctor;
+import com.assistant.model.enity.Patient;
 import com.assistant.service.intf.DoctorService;
+import com.assistant.utils.CacheUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +19,9 @@ import java.util.List;
 public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorMapper doctorMapper;
+    private final CacheUtils cacheUtils;
+    private final ProjectMapper projectMapper;
+    private final PatientMapper patientMapper;
 
     @Override
     public String password(String username) {
@@ -37,5 +46,38 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public boolean delete(String username) {
         return doctorMapper.delete(username);
+    }
+
+    @Override
+    public DataList findList(String redisName, String name) {
+        List list = null;
+        switch (redisName){
+            case "queue":{
+                QueueCache queueCache = cacheUtils.getQueueCache(name);
+                list = queueCache.getQueueList();
+            }
+        }
+        if (list != null) {
+            return DataList.builder().data(list).count(list.size()).build();
+        }
+        return DataList.builder().code(-2).build();
+    }
+
+    @Override
+    public String getProject(String username) {
+        return doctorMapper.getProject(username);
+    }
+
+    @Override
+    public DataList checkQueue(String username) {
+        String project = doctorMapper.getProject(username);
+        QueueCache queueCache = cacheUtils.getQueueCache(project);
+        List<String> queueList = queueCache.getQueueList();
+        if (queueList == null || queueList.size() == 0){
+            return  DataList.builder().data(null).count(0).build();
+        }
+        List<Patient> patientList = patientMapper.getPatientList(queueCache.getQueueList());
+        List<DataList.PatientQueue> patientQueues = DataList.transPatientQueue(patientList, queueCache.getTimestamp());
+        return DataList.builder().data(patientQueues).count(patientQueues.size()).build();
     }
 }

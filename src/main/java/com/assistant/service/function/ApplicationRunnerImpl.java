@@ -43,6 +43,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
                 QueueCache proCache = QueueCache.builder()
                         .project(d)
                         .queueList(new ArrayList<>())
+                        .timestamp(new ArrayList<>())
                         .build();
                 // TODO 缓存数据的解耦合,队列和project信息解耦
                 cacheUtils.putQueueCache(d.getProject(), proCache);

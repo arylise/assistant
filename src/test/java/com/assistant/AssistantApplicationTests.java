@@ -7,7 +7,6 @@ import com.assistant.model.enity.Doctor;
 import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Patient;
 import com.assistant.service.impl.PatientServiceImpl;
-import com.assistant.service.intf.ProjectService;
 import com.assistant.utils.CacheUtils;
 import com.assistant.utils.CoreUtils;
 import com.assistant.utils.MapNodeUtils;
@@ -40,13 +39,8 @@ class AssistantApplicationTests {
     private MapNodeMapper mapNodeMapper;
     @Resource
     private MapNodeUtils mapNodeUtils;
-
-    @Resource
-    private ProjectService queueService;
-
     @Resource
     private CacheUtils cacheUtils;
-
     @Resource
     private CoreUtils coreUtils;
 

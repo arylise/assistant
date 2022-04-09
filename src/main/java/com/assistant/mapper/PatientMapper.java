@@ -1,6 +1,5 @@
 package com.assistant.mapper;
 
-import com.assistant.model.enity.Doctor;
 import com.assistant.model.enity.Patient;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,4 +18,7 @@ public interface PatientMapper {
 
     List<Patient> selectAll();
 
+    Patient getByName(String username);
+
+    List<Patient> getPatientList(List<String> patientIds);
 }
