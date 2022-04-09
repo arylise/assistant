@@ -2,8 +2,10 @@ package com.assistant.service.impl;
 
 import com.assistant.mapper.PatientMapper;
 import com.assistant.model.enity.Patient;
+import com.assistant.model.enity.Project;
 import com.assistant.service.intf.PatientService;
-import com.assistant.service.intf.QueueService;
+import com.assistant.service.intf.ProjectService;
+import com.assistant.utils.CoreUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,8 @@ import java.util.List;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientMapper patientMapper;
-    private final QueueService queueService;
+    private final ProjectService projectService;
+    private final CoreUtils coreUtils;
 
     @Override
     public String password(String username) {
@@ -41,6 +44,13 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public boolean register(String pro, String username) {
-        return queueService.regQueue(pro, username);
+        return projectService.regQue(pro, username);
+    }
+
+    @Override
+    public List<String> getPath(String username, int weightPath, int weightTime) {
+        List<Project> projectList = null;
+        List<String> bestPath = coreUtils.getBestPath(projectList,weightPath,weightTime).parsePath();
+        return bestPath;
     }
 }

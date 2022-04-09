@@ -1,7 +1,7 @@
 package com.assistant.service.function;
 
 import com.assistant.mapper.ProjectMapper;
-import com.assistant.model.dto.ProCache;
+import com.assistant.model.dto.QueueCache;
 import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Project;
 import com.assistant.service.intf.MapNodeService;
@@ -40,12 +40,12 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         List<Project> departments = projectMapper.selectAll();
         if (departments != null) {
             for (Project d : departments) {
-                ProCache proCache = ProCache.builder()
+                QueueCache proCache = QueueCache.builder()
                         .project(d)
-                        .contextList(new ArrayList<>())
+                        .queueList(new ArrayList<>())
                         .build();
                 // TODO 缓存数据的解耦合,队列和project信息解耦
-                cacheUtils.putCache(d.getProject(), proCache);
+                cacheUtils.putQueueCache(d.getProject(), proCache);
             }
         }
 

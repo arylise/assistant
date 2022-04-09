@@ -3,6 +3,7 @@ package com.assistant.controller;
 import com.alibaba.druid.util.StringUtils;
 import com.assistant.constant.AssistantContext;
 import com.assistant.service.intf.UserService;
+import com.assistant.utils.CacheUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.RequestFacade;
@@ -20,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 public class IndexController {
 
     private final UserService userService;
+    private final CacheUtils cacheUtils;
 
     @RequestMapping("/")
     public String voidRequest() {
@@ -42,6 +44,7 @@ public class IndexController {
             if (StringUtils.equals(sp[0], "username")) {
                 Cookie cookie = new Cookie(sp[0], sp[1]);
                 response.addCookie(cookie);
+                cacheUtils.delProjectList(sp[1]);
             }
         }
         return "redirect:/";

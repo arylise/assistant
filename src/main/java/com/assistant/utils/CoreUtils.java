@@ -1,16 +1,21 @@
 package com.assistant.utils;
 
-import com.assistant.model.dto.ProCache;
+import com.assistant.model.dto.QueueCache;
+import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Project;
+import com.assistant.service.intf.ElevatorService;
 import lombok.*;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.ListUtils;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class CoreUtils {
+    private final ElevatorService elevatorService;
     private final CacheUtils cacheUtils;
 
     private long[][] floydMatrix;
@@ -20,8 +25,11 @@ public class CoreUtils {
     private List<Integer> timeList;
     private List<String> idList;
 
-    private long weightPath;
-    private long weightTime;
+    private Map<String, MapNode> elevatorMap;
+    private Map<String, int[]> elevatorTimeMap;
+
+    private int weightPath;
+    private int weightTime;
     private int n;
     private boolean[] v;
 
@@ -34,16 +42,28 @@ public class CoreUtils {
         long time;
         long score;
         String resultPath;
+
+        public List<String> parsePath() {
+            if (StringUtils.isEmpty(resultPath)) {
+                return null;
+            }
+            return Arrays.stream(resultPath.split(",")).toList();
+        }
     }
 
-    public TspResult tsp(int index, int count, long cost, String path, int time, TspResult ans) {
+    private TspResult tsp(int index, int count, long cost, String path, int time, TspResult ans) {
         int currPos = floydIndex.indexOf(idList.get(index));
         int index_0 = floydIndex.indexOf(idList.get(0));
 
         if (count == n) {
             String[] ids = path.split(",");
-
-            long score = weightPath * (cost + floydMatrix[currPos][index_0]) + weightTime * time;
+            for (String id : ids) {
+                if (elevatorMap.containsKey(id)) {
+                    MapNode mapNode = elevatorMap.get(id);
+                    time += elevatorTimeMap.get(mapNode.getElevatorId())[mapNode.getLevel() - 1];
+                }
+            }
+            long score = weightPath * (cost + floydMatrix[currPos][index_0]) + (long) weightTime * time;
             if (ans.score > score) {
                 ans.resultPath = path;
                 ans.score = score;
@@ -109,8 +129,8 @@ public class CoreUtils {
 
             this.timeList = new ArrayList<>() {{
                 for (Project project : projectList) {
-                    ProCache cache = cacheUtils.getCache(project.getDepartment());
-                    add(cache.getContextList().size() * cache.getProject().getAvetime());
+                    QueueCache cache = cacheUtils.getQueueCache(project.getDepartment());
+                    add(cache.getQueueList().size() * cache.getProject().getAvetime());
                     timeMap.put(project.getNodeId(), cache.getProject().getAvetime());
                 }
             }};
@@ -119,10 +139,13 @@ public class CoreUtils {
     }
 
 
-    public TspResult getBestPath(List<Project> projects, long weightPath, long weightTime) {
+    public TspResult getBestPath(List<Project> projects, int weightPath, int weightTime) {
         parseList(projects);
 
         MapNodeUtils.FloydResult floydResult = cacheUtils.getFloydMatrix();
+        this.elevatorMap = cacheUtils.getElevatorMap();
+        List<String> elevatorIdList = elevatorMap.values().stream().map(MapNode::getElevatorId).collect(Collectors.toList());
+        this.elevatorTimeMap = elevatorService.getElevatorTimeMap(elevatorIdList);
         this.floydMatrix = floydResult.getFloydMatrix();
         this.floydIndex = floydResult.getIndex();
         this.floydPath = floydResult.getPathMatrix();

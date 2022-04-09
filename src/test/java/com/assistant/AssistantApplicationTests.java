@@ -7,7 +7,7 @@ import com.assistant.model.enity.Doctor;
 import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Patient;
 import com.assistant.service.impl.PatientServiceImpl;
-import com.assistant.service.intf.QueueService;
+import com.assistant.service.intf.ProjectService;
 import com.assistant.utils.CacheUtils;
 import com.assistant.utils.CoreUtils;
 import com.assistant.utils.MapNodeUtils;
@@ -42,7 +42,7 @@ class AssistantApplicationTests {
     private MapNodeUtils mapNodeUtils;
 
     @Resource
-    private QueueService queueService;
+    private ProjectService queueService;
 
     @Resource
     private CacheUtils cacheUtils;
@@ -381,7 +381,7 @@ class AssistantApplicationTests {
             add(3);
         }};
         list = list.stream().filter(i -> i == 2).collect(Collectors.toList());
-        System.out.println(list.toString());
+        System.out.println(list);
     }
 
     @Test
@@ -441,12 +441,12 @@ class AssistantApplicationTests {
 
     @Test
     public void test07() {
-        CoreUtils.TspResult bestPath = coreUtils.getBestPath(null, 1L, 1L);
+        CoreUtils.TspResult bestPath = coreUtils.getBestPath(null, 1, 1);
         System.out.println(bestPath);
     }
 
     @Test
-    public void test08(){
+    public void test08() {
         Map<String, MapNode> elevatorMap = cacheUtils.getElevatorMap();
         MapNode node = elevatorMap.get("20015");
         System.out.println(node);

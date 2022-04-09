@@ -40,6 +40,7 @@ public class AssistantContext {
     public static final String FLOYD_MATRIX_ALL_WITHOUT_ELEVATOR = "floydMatrixAllWithoutElevator";
 
     public static final String PROJECT_QUEUE_CACHE_KEY = "projectQueue_%s";
+    public static final String PROJECT_LIST_CACHE_KEY = "projectList_%s";
 
     public static final String CONTEXT_LIST = "contextList";
     public static final String NODE_ID = "nodeId";
@@ -50,5 +51,7 @@ public class AssistantContext {
         return String.format(PROJECT_QUEUE_CACHE_KEY, project);
     }
 
-
+    public static String appendProjectPrefix(String username) {
+        return String.format(PROJECT_LIST_CACHE_KEY, username);
+    }
 }

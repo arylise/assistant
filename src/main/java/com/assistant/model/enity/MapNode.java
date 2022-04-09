@@ -49,21 +49,21 @@ public class MapNode {
 
     private String msg;
 
-    public List<String> listOfStair() {
+    public List<String> parseStair() {
         if (StringUtils.isEmpty(stairNode)) {
             return null;
         }
         return Arrays.stream(stairNode.split(",")).toList();
     }
 
-    public List<String> listOfNext() {
+    public List<String> parseNext() {
         if (StringUtils.isEmpty(nextNode)) {
             return null;
         }
         return Arrays.stream(nextNode.split(",")).toList();
     }
 
-    public List<String> listOfElevator() {
+    public List<String> parseElevator() {
         if (StringUtils.isEmpty(elevatorNode)) {
             return null;
         }

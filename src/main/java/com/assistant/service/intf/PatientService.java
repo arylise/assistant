@@ -14,4 +14,6 @@ public interface PatientService {
     List<Patient> selectAll();
 
     boolean register(String dep, String username);
+
+    List<String> getPath(String username, int weightPath, int weightTime);
 }

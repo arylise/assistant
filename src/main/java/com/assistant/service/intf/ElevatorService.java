@@ -1,7 +1,10 @@
 package com.assistant.service.intf;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ElevatorService {
-    List<Integer> getElevatorTimes(String elevatorId);
+    int[] getElevatorTimes(String elevatorId);
+
+    Map<String, int[]> getElevatorTimeMap(List<String> elevatorIdList);
 }

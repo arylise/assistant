@@ -1,6 +1,5 @@
 package com.assistant.model.dto;
 
-import com.assistant.model.enity.Project;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class ProCache {
-    List<String> contextList;
-    Project project;
+public class ProjectCache {
+    List<String> projectList;
 }

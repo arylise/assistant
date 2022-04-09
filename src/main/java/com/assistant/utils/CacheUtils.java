@@ -2,7 +2,8 @@ package com.assistant.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.assistant.constant.AssistantContext;
-import com.assistant.model.dto.ProCache;
+import com.assistant.model.dto.ProjectCache;
+import com.assistant.model.dto.QueueCache;
 import com.assistant.model.enity.MapNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -17,19 +19,18 @@ public class CacheUtils {
 
     private final RedisUtils redisUtils;
 
-    public ProCache getCache(String pro) {
+    public QueueCache getQueueCache(String pro) {
         try {
             String key = AssistantContext.appendQueuePrefix(pro);
             String s = redisUtils.get(key);
-            return JSON.parseObject(s, ProCache.class);
+            return JSON.parseObject(s, QueueCache.class);
         } catch (Exception ignored) {
-            return ProCache.builder().build();
+            return QueueCache.builder().build();
         }
     }
 
-    public boolean putCache(String pro, ProCache proCache) {
-        String key = AssistantContext.appendQueuePrefix(pro);
-        return redisUtils.set(key, JSON.toJSONString(proCache));
+    public boolean putQueueCache(String pro, QueueCache proCache) {
+        return redisUtils.set(AssistantContext.appendQueuePrefix(pro), JSON.toJSONString(proCache));
     }
 
 
@@ -77,14 +78,28 @@ public class CacheUtils {
 
     public Map<String, MapNode> getElevatorMap() {
         try {
-            // TODO
-//            String s = redisUtils.get(AssistantContext.ELEVATOR_MAP);
-//            JSONObject.parse(s);
-//            return map;
+            String s = redisUtils.get(AssistantContext.ELEVATOR_MAP);
+            return JSON.parseArray(s, MapNode.class).stream().collect(Collectors.toMap(MapNode::getNodeId, o -> o));
         } catch (Exception ignored) {
             return new HashMap<>();
         }
-        return null;
-
     }
+
+    public ProjectCache getProjectList(String username) {
+        try {
+            String s = redisUtils.get(AssistantContext.appendProjectPrefix(username));
+            return JSON.parseObject(s, ProjectCache.class);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    public boolean putProjectList(String username, ProjectCache projectCache) {
+        return redisUtils.set(AssistantContext.appendProjectPrefix(username), JSON.toJSONString(projectCache));
+    }
+
+    public boolean delProjectList(String username) {
+        return redisUtils.del(AssistantContext.appendProjectPrefix(username));
+    }
+
 }

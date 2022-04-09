@@ -38,7 +38,7 @@ public class MapNodeUtils {
         }};
 
         for (MapNode m : list) {
-            for (String id : m.listOfNext()) {
+            for (String id : m.parseNext()) {
                 int i = index.indexOf(m.getNodeId());
                 int j = index.indexOf(id);
                 adjacencyMatrix[i][j] = true;
@@ -94,8 +94,8 @@ public class MapNodeUtils {
         }
 
         for (MapNode m : list) {
-            if (m.listOfNext() != null) {
-                for (String id : m.listOfNext()) {
+            if (m.parseNext() != null) {
+                for (String id : m.parseNext()) {
                     int i = index.indexOf(m.getNodeId());
                     int j = index.indexOf(id);
                     long x = m.getX() - list.get(j).getX();
@@ -108,8 +108,8 @@ public class MapNodeUtils {
 
         if (!AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_STAIR.equals(without)) {
             for (MapNode m : list) {
-                if (m.listOfStair() != null) {
-                    for (String id : m.listOfStair()) {
+                if (m.parseStair() != null) {
+                    for (String id : m.parseStair()) {
                         int i = index.indexOf(m.getNodeId());
                         int j = index.indexOf(id);
                         long x = m.getX() - list.get(j).getX();
@@ -123,8 +123,8 @@ public class MapNodeUtils {
 
         if (!AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_ELEVATOR.equals(without)) {
             for (MapNode m : list) {
-                if (m.listOfElevator() != null) {
-                    for (String id : m.listOfElevator()) {
+                if (m.parseElevator() != null) {
+                    for (String id : m.parseElevator()) {
                         int i = index.indexOf(m.getNodeId());
                         int j = index.indexOf(id);
                         long x = m.getX() - list.get(j).getX();

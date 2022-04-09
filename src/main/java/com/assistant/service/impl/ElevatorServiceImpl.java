@@ -4,17 +4,17 @@ import com.assistant.service.intf.ElevatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ElevatorServiceImpl implements ElevatorService {
 
     @Override
-    public List<Integer> getElevatorTimes(String elevatorId) {
+    public int[] getElevatorTimes(String elevatorId) {
         int n = 5;
         int i = (int) (Math.random() * n);
         boolean u = Math.random() < 0.5;
@@ -55,6 +55,16 @@ public class ElevatorServiceImpl implements ElevatorService {
                 j++;
             }
         }
-        return Arrays.stream(times).boxed().collect(Collectors.toList());
+        return times;
+    }
+
+    @Override
+    public Map<String, int[]> getElevatorTimeMap(List<String> elevatorIdList) {
+        Map<String, int[]> map = new HashMap<>() {{
+            for (String id : elevatorIdList) {
+                put(id, getElevatorTimes(id));
+            }
+        }};
+        return map;
     }
 }
