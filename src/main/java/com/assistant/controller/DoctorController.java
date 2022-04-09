@@ -1,12 +1,15 @@
 package com.assistant.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.assistant.model.dto.DataList;
 import com.assistant.service.intf.DoctorService;
 import com.assistant.service.intf.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.MessageFormat;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,17 +22,24 @@ public class DoctorController {
 
     @RequestMapping("/page_{name}")
     public String page(@PathVariable String name) {
-        return "/doctor/page_" + name + ".html";
+        return MessageFormat.format("/doctor/page_{0}.html", name);
     }
 
-    @RequestMapping("/doPro_{pro}")
+    @RequestMapping("/doQue")
     @ResponseBody
-    public String doPro(@PathVariable String pro) {
-        boolean b = projectService.doQue(pro);
+    public String doPro(@CookieValue("username") String docUsername) {
+        DataList.Patient b = projectService.doQue(doctorService.getProject(docUsername));
         return String.valueOf(b);
     }
 
-    @RequestMapping("/delFromPro_{username}")
+    @RequestMapping("/getQue")
+    @ResponseBody
+    public String getPro(@CookieValue("username") String docUsername) {
+        DataList.Patient b = projectService.getQue(doctorService.getProject(docUsername));
+        return String.valueOf(b);
+    }
+
+    @RequestMapping("/delFromQue_{username}")
     @ResponseBody
     public String delFromPro(@PathVariable String username, @CookieValue("username") String docUsername) {
         boolean b = projectService.delFromQue(doctorService.getProject(docUsername), username);
@@ -51,10 +61,10 @@ public class DoctorController {
     public String checkQueue(@CookieValue("username") String username,
                              @RequestParam(value = "page", defaultValue = "1") int page,
                              @RequestParam(value = "limit", defaultValue = "20") int limit) {
-        return JSON.toJSONString(doctorService.checkQueue(username));
+        return JSON.toJSONString(projectService.checkQueue(username));
     }
 
-    @RequestMapping("/getPro")
+    @RequestMapping("/getProject")
     @ResponseBody
     public String getProject(@CookieValue("username") String username) {
         return doctorService.getProject(username);

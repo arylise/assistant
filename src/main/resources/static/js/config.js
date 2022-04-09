@@ -144,6 +144,7 @@ const patient = [
 ];
 
 let menu;
+let role;
 
 // function getLevel() {
 $.ajax({
@@ -153,12 +154,15 @@ $.ajax({
     success: function (data) {
         if (data === ROLE.ADMIN) {
             menu = admin;
+            role = "管理员";
         }
         if (data === ROLE.DOCTOR) {
             menu = doctor;
+            role = "医生";
         }
         if (data === ROLE.PATIENT) {
             menu = patient;
+            role = "患者";
         }
     }
 })
@@ -187,9 +191,19 @@ $.ajax({
 //
 // getLevel();
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
+    }
+    return "";
+}
 
 const config = {
     name: "检查助手",
+    hello: "你好" + getCookie("username") + role
 };
 
 // try {

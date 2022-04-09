@@ -14,6 +14,10 @@
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
+            <div class="map-button">
+                <div id="thisPatient"></div>
+                <button class="layui-btn queue-active" data-type="doQue">完成当前检查</button>
+            </div>
         </div>
         <div class="layui-tab-item">
             <table id="queue-list" lay-filter="list-listener"></table>
@@ -32,7 +36,7 @@
     // let project;
     // layui.$.ajax({
     //     type: 'GET',
-    //     url: '/doctor/getPro',
+    //     url: '/doctor/getQue',
     //     async: false,
     //     success: function (data) {
     //         project = data;
@@ -49,7 +53,7 @@
                 layer.close(index);
                 layui.$.ajax({
                     type: 'GET',
-                    url: '/doctor/delFromPro_' + data.username,
+                    url: '/doctor/delFromQue_' + data.username,
                     async: false
                 })
             });
@@ -83,6 +87,39 @@
     };
 </script>
 <script src="/js/table.js"></script>
-
+<script>
+    layui.use([], function () {
+        var $ = layui.jquery,
+            active = {
+                doQue: function () {
+                    layui.$.ajax({
+                        type: 'GET',
+                        url: '/doctor/doQue',
+                        async: false,
+                        success: function (data) {
+                            layer.msg('完成检查');
+                            $('#thisPatient').text(data)
+                        }
+                    })
+                },
+                initPatient: function () {
+                    layui.$.ajax({
+                        type: 'GET',
+                        url: '/doctor/getQue',
+                        async: false,
+                        success: function (data) {
+                            $('#thisPatient').text(data)
+                        }
+                    })
+                }
+            }
+        ;
+        $('.queue-active').on('click', function () {
+            var othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        });
+        active["initPatient"].call(this);
+    });
+</script>
 </body>
 </html>

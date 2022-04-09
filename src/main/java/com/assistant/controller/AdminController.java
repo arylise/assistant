@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.MessageFormat;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -21,7 +23,7 @@ public class AdminController {
 
     @RequestMapping("/page_{name}")
     public String page(@PathVariable String name) {
-        return "/admin/page_" + name + ".html";
+        return MessageFormat.format("/admin/page_{0}.html", name);
     }
 
     @RequestMapping("/list_{name}")

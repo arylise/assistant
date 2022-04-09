@@ -38,7 +38,7 @@
         from patient
     </select>
     <select id="getByName" resultType="com.assistant.model.enity.Patient">
-        select count(*)
+        select *
         from patient
         where username = #{username}
     </select>

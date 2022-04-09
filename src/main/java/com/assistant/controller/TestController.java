@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.MessageFormat;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/test")
@@ -17,7 +19,7 @@ public class TestController {
 
     @RequestMapping("/test_{n}")
     public String test(@PathVariable String n) {
-        return "/test/test_" + n + ".html";
+        return MessageFormat.format("/test/test_{0}.html", n);
     }
 
     @RequestMapping("/redis")

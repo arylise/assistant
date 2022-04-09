@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 
 @Controller
 @RequiredArgsConstructor
@@ -55,7 +56,7 @@ public class IndexController {
         if (StringUtils.isEmpty(role)) {
             return null;
         }
-        return role + "/main";
+        return MessageFormat.format("{0}/main", role);
     }
 
     private String getPostData(RequestFacade request) {

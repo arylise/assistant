@@ -1,6 +1,5 @@
 package com.assistant.model.dto;
 
-import com.assistant.model.enity.Patient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +24,7 @@ public class DataList {
     @NoArgsConstructor
     @Data
     @Builder
-    public static class PatientQueue {
+    public static class Patient {
         private String username;
         private String name;
         private String sex;
@@ -35,7 +34,7 @@ public class DataList {
         private String msg;
         private String date;
 
-        public PatientQueue(Patient patient, Long date) {
+        public Patient(com.assistant.model.enity.Patient patient, Long date) {
             this.username = patient.getUsername();
             this.name = patient.getName();
             this.sex = patient.getSex();
@@ -48,10 +47,10 @@ public class DataList {
         }
     }
 
-    public static List<PatientQueue> transPatientQueue(List<Patient> patientList, List<Long> timeList) {
-        return new ArrayList<PatientQueue>() {{
+    public static List<Patient> transPatientQueue(List<com.assistant.model.enity.Patient> patientList, List<Long> timeList) {
+        return new ArrayList<>() {{
             for (int i = 0; i < patientList.size(); i++) {
-                add(new PatientQueue(patientList.get(i), timeList.get(i)));
+                add(new Patient(patientList.get(i), timeList.get(i)));
             }
         }};
     }

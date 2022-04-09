@@ -1,6 +1,10 @@
 package com.assistant.service.impl;
 
+import com.assistant.mapper.DoctorMapper;
+import com.assistant.mapper.PatientMapper;
+import com.assistant.model.dto.DataList;
 import com.assistant.model.dto.QueueCache;
+import com.assistant.model.enity.Patient;
 import com.assistant.service.intf.ProjectService;
 import com.assistant.utils.CacheUtils;
 import com.assistant.utils.TestClass;
@@ -15,6 +19,8 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     private final CacheUtils cacheUtils;
+    private final DoctorMapper doctorMapper;
+    private final PatientMapper patientMapper;
 
     @Override
     public boolean regQue(String pro, String username) {
@@ -33,19 +39,28 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public boolean doQue(String pro) {
+    public DataList.Patient doQue(String pro) {
         try {
             QueueCache cache = cacheUtils.getQueueCache(pro);
             if (ListUtils.isEmpty(cache.getQueueList())) {
-                return false;
+                return null;
             }
             cache.getQueueList().remove(0);
             cache.getTimestamp().remove(0);
-            return cacheUtils.putQueueCache(pro, cache);
+            boolean result = cacheUtils.putQueueCache(pro, cache);
+
+            if (result && ListUtils.isEmpty(cache.getQueueList())) {
+                return null;
+            }
+
+            String s = cache.getQueueList().get(0);
+            Patient patient = patientMapper.getByName(s);
+            Long time = cache.getTimestamp().get(0);
+            return new DataList.Patient(patient, time);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -78,13 +93,44 @@ public class ProjectServiceImpl implements ProjectService {
 
     /**
      * 患者体检清单
+     *
      * @param username
      * @param projectList
      * @return
      */
     @Override
-    public boolean regProList(String username, List<String> projectList){
+    public boolean regProList(String username, List<String> projectList) {
         cacheUtils.getProjectList(username);
         return false;
+    }
+
+    @Override
+    public DataList checkQueue(String username) {
+        String project = doctorMapper.getProject(username);
+        QueueCache queueCache = cacheUtils.getQueueCache(project);
+        List<String> queueList = queueCache.getQueueList();
+        if (queueList == null || queueList.size() == 0) {
+            return DataList.builder().data(null).count(0).build();
+        }
+        List<Patient> patientList = patientMapper.getPatientList(queueCache.getQueueList());
+        List<DataList.Patient> patientQueues = DataList.transPatientQueue(patientList, queueCache.getTimestamp());
+        return DataList.builder().data(patientQueues).count(patientQueues.size()).build();
+    }
+
+    @Override
+    public DataList.Patient getQue(String pro) {
+        try {
+            QueueCache cache = cacheUtils.getQueueCache(pro);
+            if (ListUtils.isEmpty(cache.getQueueList())) {
+                return null;
+            }
+            String s = cache.getQueueList().get(0);
+            Patient patient = patientMapper.getByName(s);
+            Long time = cache.getTimestamp().get(0);
+            return new DataList.Patient(patient, time);
+        } catch (Exception e) {
+            TestClass.showMe(e.toString());
+        }
+        return null;
     }
 }

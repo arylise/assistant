@@ -6,7 +6,6 @@ import com.assistant.mapper.ProjectMapper;
 import com.assistant.model.dto.DataList;
 import com.assistant.model.dto.QueueCache;
 import com.assistant.model.enity.Doctor;
-import com.assistant.model.enity.Patient;
 import com.assistant.service.intf.DoctorService;
 import com.assistant.utils.CacheUtils;
 import lombok.RequiredArgsConstructor;
@@ -66,18 +65,5 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public String getProject(String username) {
         return doctorMapper.getProject(username);
-    }
-
-    @Override
-    public DataList checkQueue(String username) {
-        String project = doctorMapper.getProject(username);
-        QueueCache queueCache = cacheUtils.getQueueCache(project);
-        List<String> queueList = queueCache.getQueueList();
-        if (queueList == null || queueList.size() == 0){
-            return  DataList.builder().data(null).count(0).build();
-        }
-        List<Patient> patientList = patientMapper.getPatientList(queueCache.getQueueList());
-        List<DataList.PatientQueue> patientQueues = DataList.transPatientQueue(patientList, queueCache.getTimestamp());
-        return DataList.builder().data(patientQueues).count(patientQueues.size()).build();
     }
 }

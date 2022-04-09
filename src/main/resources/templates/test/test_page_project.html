@@ -1,124 +1,227 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/layui/css/layui.css">
-    <link rel="stylesheet" href="/css/assistant.css">
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../res/layui/dist/css/layui.css" tppabs="http://res.layui.com/layui/dist/css/layui.css"  media="all">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
 
-<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-doctor">
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend>默认风格的Tab</legend>
+</fieldset>
+
+<div class="layui-tab">
     <ul class="layui-tab-title">
-        <li class="layui-this">科室列表</li>
+        <li class="layui-this">网站设置</li>
+        <li>用户管理</li>
+        <li>权限分配</li>
+        <li>商品管理</li>
+        <li>订单管理</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            <table id="doctor-list" lay-filter="list-listener"></table>
+            1. 高度默认自适应，也可以随意固宽。
+            <br>2. Tab进行了响应式处理，所以无需担心数量多少。
         </div>
+        <div class="layui-tab-item">内容2</div>
+        <div class="layui-tab-item">内容3</div>
+        <div class="layui-tab-item">内容4</div>
+        <div class="layui-tab-item">内容5</div>
+    </div>
+</div>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+    <legend>动态操作Tab</legend>
+</fieldset>
+
+<div class="layui-tab" lay-filter="demo" lay-allowclose="true">
+    <ul class="layui-tab-title">
+        <li class="layui-this" lay-id="11">网站设置</li>
+        <li lay-id="22">用户管理</li>
+        <li lay-id="33">权限分配</li>
+        <li lay-id="44">商品管理</li>
+        <li lay-id="55">订单管理</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">内容1</div>
+        <div class="layui-tab-item">内容2</div>
+        <div class="layui-tab-item">内容3</div>
+        <div class="layui-tab-item">内容4</div>
+        <div class="layui-tab-item">内容5</div>
+    </div>
+</div>
+<div class="site-demo-button" style="margin-bottom: 0;">
+    <button class="layui-btn site-demo-active" data-type="tabAdd">新增Tab项</button>
+    <button class="layui-btn site-demo-active" data-type="tabDelete">删除：商品管理</button>
+    <button class="layui-btn site-demo-active" data-type="tabChange">切换到：用户管理</button>
+</div>
+
+<!-- 示例-970 -->
+
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+    <legend>Hash地址定位</legend>
+</fieldset>
+<div class="layui-tab" lay-filter="test">
+    <ul class="layui-tab-title">
+        <li class="layui-this" lay-id="11">网站设置</li>
+        <li lay-id="22">用户管理</li>
+        <li lay-id="33">权限分配</li>
+        <li lay-id="44">商品管理</li>
+        <li lay-id="55">订单管理</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            点击该Tab的任一标题，观察地址栏变化，再刷新页面。选项卡将会自动定位到上一次切换的项
+        </div>
+        <div class="layui-tab-item">内容2</div>
+        <div class="layui-tab-item">内容3</div>
+        <div class="layui-tab-item">内容4</div>
+        <div class="layui-tab-item">内容5</div>
     </div>
 </div>
 
-<script type="text/html" id="bar">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+    <legend>简洁风格的Tab</legend>
+</fieldset>
 
-<script src="/layui/layui.js"></script>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">网站设置</li>
+        <li>用户管理</li>
+        <li>权限分配</li>
+        <li>商品管理</li>
+        <li>订单管理</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">内容不一样是要有，因为你可以监听tab事件（阅读下文档就是了）</div>
+        <div class="layui-tab-item">内容2</div>
+        <div class="layui-tab-item">内容3</div>
+        <div class="layui-tab-item">内容4</div>
+        <div class="layui-tab-item">内容5</div>
+    </div>
+</div>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+    <legend>卡片风格的Tab</legend>
+</fieldset>
+
+<div class="layui-tab layui-tab-card">
+    <ul class="layui-tab-title">
+        <li class="layui-this">网站设置</li>
+        <li>用户管理</li>
+        <li>权限分配</li>
+        <li>商品管理</li>
+        <li>订单管理</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">默认宽度是相对于父元素100%适应的，你也可以固定宽度。</div>
+        <div class="layui-tab-item">2</div>
+        <div class="layui-tab-item">3</div>
+        <div class="layui-tab-item">4</div>
+        <div class="layui-tab-item">5</div>
+        <div class="layui-tab-item">6</div>
+    </div>
+</div>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+    <legend>当Tab数超过一定宽度</legend>
+</fieldset>
+
+<div class="layui-tab layui-tab-card" style="width: 290px;">
+    <ul class="layui-tab-title">
+        <li class="layui-this">网站设置</li>
+        <li>用户管理</li>
+        <li>权限分配</li>
+        <li>商品管理</li>
+        <li>订单管理</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            1. 宽度足够，就不会出现右上图标；宽度不够，就会开启展开功能。
+            <br>2. 如果你的宽度是自适应的，Tab会自动判断是否需要展开，并适用于所有风格。
+        </div>
+        <div class="layui-tab-item">2</div>
+        <div class="layui-tab-item">3</div>
+        <div class="layui-tab-item">4</div>
+        <div class="layui-tab-item">5</div>
+        <div class="layui-tab-item">6</div>
+    </div>
+</div>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+    <legend>带删除功能的Tab</legend>
+</fieldset>
+
+<div class="layui-tab layui-tab-card" lay-allowclose="true">
+    <ul class="layui-tab-title">
+        <li class="layui-this">网站设置</li>
+        <li>用户基本管理</li>
+        <li>权限分配</li>
+        <li>商品管理</li>
+        <li>订单管理</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 150px;">
+        <div class="layui-tab-item layui-show">
+            1. 我个人比较喜欢卡片风格的，所以你发现又是以卡片的风格举例
+            2. 删除功能适用于所有风格
+        </div>
+        <div class="layui-tab-item">2</div>
+        <div class="layui-tab-item">3</div>
+        <div class="layui-tab-item">4</div>
+        <div class="layui-tab-item">5</div>
+        <div class="layui-tab-item">6</div>
+    </div>
+</div>
+
+<script src="//res.layui.com/layui/dist/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述 JS 路径需要改成你本地的 -->
 <script>
-    var page_config = {
-        elem: '#doctor-list'
-        , toolbar: '#toolbar'
-        , title: '用户数据表'
-        , url: '/admin/list?name=department'
-        , cols: [
-            [
-                {type: 'numbers', fixed: "left"}
-                , {field: 'department', title: '科室', width: 180}
-                , {field: 'mapnode', title: '地图节点', width: 135}
-                // , {field: 'location', title: '位置', width: 135}
-                , {fixed: 'right', type: 'checkbox'}
-                , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
-            ]
-        ]
-    };
-</script>
-<script th:inline="none"> <!--src="/js/assistant.js">-->
-layui.use(['table'], function () {
+    layui.use('element', function(){
+        var $ = layui.jquery
+            ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
 
-    var table = layui.table;
+        //触发事件
+        var active = {
+            tabAdd: function(){
+                //新增一个Tab项
+                element.tabAdd('demo', {
+                    title: '新选项'+ (Math.random()*1000|0) //用于演示
+                    ,content: '内容'+ (Math.random()*1000|0)
+                    ,id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
+                })
+            }
+            ,tabDelete: function(othis){
+                //删除指定Tab项
+                element.tabDelete('demo', '44'); //删除：“商品管理”
 
-    table.render({
-        elem: page_config.elem
-        , toolbar: page_config.toolbar
-        , defaultToolbar: [
-            {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
-            , {title: '获取选中数目', layEvent: 'getCheckLength', icon: 'layui-icon-tips'}
-            , {title: '验证是否全选', layEvent: 'isAll', icon: 'layui-icon-tips'}
-            , 'filter'
-            , 'exports'
-            , 'print'
-        ]
-        // , request: {
-        //     of: "doctor"
-        // }
-        , height: '100%'
-        , width: '100%'
-        , title: page_config.title
-        , even: true
-        , skin: 'row'
-        , url: page_config.url
-        , limit: 20
-        , page: true //开启分页
-        , cols: page_config.cols
-    })
 
-    //监听表格复选框选择
-    table.on('checkbox(list-listener)', function (obj) {
-        console.log(obj)
-    });
+                othis.addClass('layui-btn-disabled');
+            }
+            ,tabChange: function(){
+                //切换到指定Tab项
+                element.tabChange('demo', '22'); //切换到：用户管理
+            }
+        };
 
-    //头工具栏事件
-    table.on('toolbar(list-listener)', function (obj) {
-        var checkStatus = table.checkStatus(obj.config.id);
-        switch (obj.event) {
-            case 'getCheckData':
-                var data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
-                break;
-            case 'getCheckLength':
-                var data = checkStatus.data;
-                layer.msg('选中了：' + data.length + ' 个');
-                break;
-            case 'isAll':
-                layer.msg(checkStatus.isAll ? '全选' : '未全选');
-                break;
+        $('.site-demo-active').on('click', function(){
+            var othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        });
 
-            //自定义头工具栏右侧图标 - 提示
-            case 'LAYTABLE_TIPS':
-                layer.alert('这是工具栏右侧自定义的一个图标按钮');
-                break;
-        }
+        //Hash地址的定位
+        var layid = location.hash.replace(/^#test=/, '');
+        element.tabChange('test', layid);
+
+        element.on('tab(test)', function(elem){
+            location.hash = 'test='+ $(this).attr('lay-id');
+        });
 
     });
-
-    //监听工具条
-    table.on('tool(list-listener)', function (obj) {
-        // alert("work!!");
-        var data = obj.data;
-        if (obj.event === 'detail') {
-            layer.msg('ID：' + data.id + ' 的查看操作');
-        } else if (obj.event === 'del') {
-            layer.confirm('真的删除行么', function (index) {
-                obj.del();
-                layer.close(index);
-            });
-        } else if (obj.event === 'edit') {
-            layer.alert('编辑行：<br>' + JSON.stringify(data))
-        }
-    });
-
-});
 </script>
 
 </body>

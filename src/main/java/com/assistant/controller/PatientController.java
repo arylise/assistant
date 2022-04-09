@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.MessageFormat;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/patient")
@@ -20,7 +22,7 @@ public class PatientController {
 
     @RequestMapping("/page_{name}")
     public String page(@PathVariable String name) {
-        return "/patient/page_" + name + ".html";
+        return MessageFormat.format("/patient/page_{0}.html", name);
     }
 
     @RequestMapping("/register_{pro}")

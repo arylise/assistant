@@ -20,6 +20,4 @@ public interface DoctorService {
     DataList findList(String redisName, String name);
 
     String getProject(String username);
-
-    DataList checkQueue(String username);
 }

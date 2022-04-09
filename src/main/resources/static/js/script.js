@@ -2,6 +2,7 @@ new Vue({
     el: '#app',
     data: {
         webname: config.name,
+        hello: config.hello,
         menu: menu,
     },
     methods: {
