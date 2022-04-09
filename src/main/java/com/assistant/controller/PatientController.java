@@ -37,12 +37,6 @@ public class PatientController {
         return projectService.getQueWaitTime(pro);
     }
 
-    @RequestMapping("/getPath_{way}")
-    @ResponseBody
-    public String getPath(@PathVariable String way) {
-        return "";
-    }
-
     @RequestMapping("/getPath_{weightPath}_{weightTime}")
     @ResponseBody
     public String getPath(@PathVariable int weightPath,@PathVariable int weightTime,@CookieValue("username") String username){

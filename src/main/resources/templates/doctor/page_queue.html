@@ -97,8 +97,12 @@
                         url: '/doctor/doQue',
                         async: false,
                         success: function (data) {
-                            layer.msg('完成检查');
-                            $('#thisPatient').text(data)
+                            if (data === "null") {
+                                layer.msg('已经全部完成!');
+                            } else {
+                                layer.msg('完成检查');
+                                $('#thisPatient').text(data)
+                            }
                         }
                     })
                 },

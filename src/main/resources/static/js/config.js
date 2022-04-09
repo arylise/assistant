@@ -91,6 +91,9 @@ const doctor = [
         "list": [{
             "name": "科室排队",
             "url": "/page_queue"
+        },{
+            "name": "患者清单管理",
+            "url": "/page_project"
         }]
     }, {
         "name": "退出登录",
