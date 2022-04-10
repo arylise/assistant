@@ -1,12 +1,11 @@
 package com.assistant.service.function;
 
 import com.assistant.constant.AssistantContext;
+import com.assistant.mapper.DoctorMapper;
 import com.assistant.mapper.PatientMapper;
 import com.assistant.model.dto.DataList;
 import com.assistant.model.enity.Patient;
 import com.assistant.service.intf.AdminService;
-import com.assistant.service.intf.DoctorService;
-import com.assistant.service.intf.PatientService;
 import com.assistant.service.intf.UserService;
 import com.assistant.utils.SecurityUtils;
 import com.github.pagehelper.PageHelper;
@@ -23,6 +22,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
@@ -39,8 +39,7 @@ import java.util.Map;
 public class UserDetailsServiceImpl implements UserDetailsService, UserService {
 
     private final AdminService adminService;
-    private final DoctorService doctorService;
-    private final PatientService patientService;
+    private final DoctorMapper doctorMapper;
     private final PatientMapper patientMapper;
 
     @Override
@@ -66,13 +65,13 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
         String password;
         Map<String, String> map = new HashMap<>();
 
-        password = patientService.password(username);
+        password = patientMapper.password(username);
         if (!StringUtils.isEmptyOrWhitespace(password)) {
             map.put(AssistantContext.PASSWORD, password);
             map.put(AssistantContext.ROLE_, AssistantContext.ROLE_PATIENT);
             return map;
         }
-        password = doctorService.password(username);
+        password = doctorMapper.password(username);
         if (!StringUtils.isEmptyOrWhitespace(password)) {
             map.put(AssistantContext.PASSWORD, password);
             map.put(AssistantContext.ROLE_, AssistantContext.ROLE_DOCTOR);
@@ -91,7 +90,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     public boolean insertPatient(String username, String password) {
         Map<String, String> map = checkUsername(username);
         if (map.isEmpty()) {
-            boolean ans = patientService.insertFast(username, password);
+            boolean ans = patientMapper.insert(username, new BCryptPasswordEncoder().encode(password));
             if (ans) {
                 return true;
                 // TODO 实现注册后立即登录

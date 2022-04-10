@@ -10,41 +10,34 @@
 <div class="layui-tab layui-tab-brief my-tab" lay-filter="management-patientProjects">
     <ul class="layui-tab-title">
         <li class="layui-this">患者管理</li>
-        <li>在线患者用户</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            <div class="map-button">
+            <div class="patientProjects-button">
+                <button class="layui-btn patientProjects-button" data-type="check">查看检查清单</button>
+                <button class="layui-btn patientProjects-button" data-type="create">创建检查清单</button>
+                <button class="layui-btn patientProjects-button" data-type="update">修改检查清单</button>
+                <button class="layui-btn patientProjects-button" data-type="delete">删除检查清单</button>
             </div>
-        </div>
-        <div class="layui-tab-item">
-            <table id="patientProjects-list" lay-filter="list-listener"></table>
         </div>
     </div>
 </div>
 
 <script src="/layui/layui.js"></script>
 <script>
-    const page_config = {
-        elem: '#patientProjects-list'
-        , toolbar: '#toolbar'
-        , title: '用户数据表'
-        , url: '/doctor/getActivityPatient'//+project
-        , page: false
-        , cols: [
-            [
-                {type: 'numbers', fixed: "left"}
-                , {field: 'username', title: '用户名', width: 100, sort: true, fixed: "left"}
-                , {field: 'name', title: '姓名', width: 100}
-                , {field: 'sex', title: '性别', width: 80}
-                , {field: 'age', title: '年龄', width: 80}
-                , {field: 'phone', title: '电话', width: 135}
-                , {field: 'exception', title: '备注', width: 80}
-                , {field: 'msg', title: '描述', width: 300}
-            ]
-        ]
-    };
+    layui.use('element', function () {
+        const $ = layui.jquery
+            , element = layui.element
+            , active = {
+
+            }
+        ;
+
+        $('.patientProjects-button').on('click', function () {
+            const othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        });
+    });
 </script>
-<script src="/js/table.js"></script>
 </body>
 </html>

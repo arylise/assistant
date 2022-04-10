@@ -53,7 +53,7 @@
                 layer.close(index);
                 layui.$.ajax({
                     type: 'GET',
-                    url: '/doctor/delFromQue_' + data.username,
+                    url: '/doctor/queue.del_' + data.username,
                     async: false
                 })
             });
@@ -67,7 +67,7 @@
         elem: '#queue-list'
         , toolbar: '#toolbar'
         , title: '用户数据表'
-        , url: '/doctor/check_queue'//+project
+        , url: '/doctor/queue.check'//+project
         , page: false
         , cols: [
             [
@@ -94,7 +94,7 @@
                 doQue: function () {
                     layui.$.ajax({
                         type: 'GET',
-                        url: '/doctor/doQue',
+                        url: '/doctor/queue.pop',
                         async: false,
                         success: function (data) {
                             if (data === "null") {
@@ -109,7 +109,7 @@
                 initPatient: function () {
                     layui.$.ajax({
                         type: 'GET',
-                        url: '/doctor/getQue',
+                        url: '/doctor/queue.peek',
                         async: false,
                         success: function (data) {
                             $('#thisPatient').text(data)

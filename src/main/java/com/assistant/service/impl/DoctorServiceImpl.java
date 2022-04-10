@@ -51,7 +51,6 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public String getProject() {
-        String username = SecurityUtils.getUsername();
-        return doctorMapper.getProject(username);
+        return doctorMapper.getProject(SecurityUtils.getUsername());
     }
 }

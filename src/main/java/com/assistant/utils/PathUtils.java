@@ -1,5 +1,6 @@
 package com.assistant.utils;
 
+import com.assistant.mapper.ProjectMapper;
 import com.assistant.model.dto.QueueCache;
 import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Project;
@@ -14,8 +15,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class CoreUtils {
+public class PathUtils {
     private final ElevatorService elevatorService;
+    private final ProjectMapper projectMapper;
     private final CacheUtils cacheUtils;
 
     private long[][] floydMatrix;
@@ -94,8 +96,8 @@ public class CoreUtils {
         return ans;
     }
 
-    private void parseList(List<Project> projectList) {
-        if (ListUtils.isEmpty(projectList)) {
+    private void parseList(List<String> projectIds) {
+        if (ListUtils.isEmpty(projectIds)) {
             // TODO TEST CODE
             this.timeMap = new HashMap<>() {{
                 put("0", 0);
@@ -118,6 +120,8 @@ public class CoreUtils {
 //            add(40007);
             }};
         } else {
+            // TODO 检查逻辑
+            List<Project> projectList = projectMapper.selectByIds(projectIds);
             this.idList = new ArrayList<>() {{
                 add("0");
                 for (Project project : projectList) {
@@ -129,7 +133,7 @@ public class CoreUtils {
 
             this.timeList = new ArrayList<>() {{
                 for (Project project : projectList) {
-                    QueueCache cache = cacheUtils.getQueueCache(project.getDepartment());
+                    QueueCache cache = cacheUtils.getQueueCache(project.getProject());
                     add(cache.getQueueList().size() * cache.getProject().getAvetime());
                     timeMap.put(project.getNodeId(), cache.getProject().getAvetime());
                 }
@@ -139,8 +143,8 @@ public class CoreUtils {
     }
 
 
-    public TspResult getBestPath(List<Project> projects, int weightPath, int weightTime) {
-        parseList(projects);
+    public TspResult getBestPath(List<String> projectIds, int weightPath, int weightTime) {
+        parseList(projectIds);
 
         MapNodeUtils.FloydResult floydResult = cacheUtils.getFloydMatrix();
         this.elevatorMap = cacheUtils.getElevatorMap();

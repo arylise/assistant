@@ -43,89 +43,89 @@
         //获取相对于当前所指向对象的位置坐标
         alert('x:' + event.offsetX + "  y:" + event.offsetY);
     }
-    const lay =
-        layui.use('element', function () {
-            const $ = layui.jquery
-                , element = layui.element
-                , active = {
-                    addFloor: function (othis) {
-                        const floor = parseInt(othis.attr('floor'));
-                        if ($('#floor' + floor).length <= 0) {
-                            const baseX = 63;
-                            const baseY = 46;
-                            element.tabAdd('map', {
-                                title: floor + '楼地图'
-                                , content: // TODO 按钮失效！！！！！！！！！！
-                                    '<div>'
-                                    + '<svg class="svgStyle" xmlns="http://www.w3.org/2000/svg" version="1.1" onclick="rectClick(event)">'
-                                    + active.getNodeStr(floor)
-                                    + '</svg>'
-                                    + '<img id="floor' + floor + '" src="/img/floor' + floor + '.png" style="-webkit-user-drag:none"/>'
-                                    + '</div>'
-                                    + ' <div className = "layui-btn-group">'
-                                    + ((floor === 1) ? '' : '<a class = "layui-btn map-active" data-type="addFloor" floor=' + (floor - 1) + '>下一层</a>')
-                                    + ((floor === 5) ? '' : '<a class = "layui-btn map-active" data-type="addFloor" floor=' + (floor + 1) + '>上一层</a>')
-                                    + '</div>'
-                                , id: 'floor' + floor
-                            })
-                        }
-                        element.tabChange('map', 'floor' + floor);
 
+    layui.use('element', function () {
+        const $ = layui.jquery
+            , element = layui.element
+            , active = {
+                addFloor: function (othis) {
+                    const floor = parseInt(othis.attr('floor'));
+                    if ($('#floor' + floor).length <= 0) {
+                        const baseX = 63;
+                        const baseY = 46;
+                        element.tabAdd('map', {
+                            title: floor + '楼地图'
+                            , content: // TODO 按钮失效！！！！！！！！！！
+                                '<div>'
+                                + '<svg class="svgStyle" xmlns="http://www.w3.org/2000/svg" version="1.1" onclick="rectClick(event)">'
+                                + active.getNodeStr(floor)
+                                + '</svg>'
+                                + '<img id="floor' + floor + '" src="/img/floor' + floor + '.png" style="-webkit-user-drag:none"/>'
+                                + '</div>'
+                                + ' <div className = "layui-btn-group">'
+                                + ((floor === 1) ? '' : '<a class = "layui-btn map-active" data-type="addFloor" floor=' + (floor - 1) + '>下一层</a>')
+                                + ((floor === 5) ? '' : '<a class = "layui-btn map-active" data-type="addFloor" floor=' + (floor + 1) + '>上一层</a>')
+                                + '</div>'
+                            , id: 'floor' + floor
+                        })
                     }
-                    , clear: function () {
-                        for (let i = 1; i <= 5; i++) {
-                            element.tabDelete('map', 'floor' + i); //删除：“商品管理”
-                        }
+                    element.tabChange('map', 'floor' + floor);
+
+                }
+                , clear: function () {
+                    for (let i = 1; i <= 5; i++) {
+                        element.tabDelete('map', 'floor' + i); //删除：“商品管理”
                     }
-                    , getNodeStr: function (level) {
+                }
+                , getNodeStr: function (level) {
                     let str,
-                            $ = layui.jquery;
-                        $.ajax({
-                            url: "/admin/nodes_" + level,
-                            type: "GET",
-                            async: false,
-                            success: function (response) {
-                                str = JSON.parse(response)
-                            }
-                        });
-                        const index = str['index'],
-                            matrix = str['adjacencyMatrix'],
-                            mapNodes = str['mapNodes'];
-                        let text = '';
-                        for (let i = 0; i < index.length; i++) {
-                            for (let j = 0; j <= i; j++) {
-                                let d;
-                                let id;
-                                if (i === j) {
-                                    text += '<circle id="point-' + index[i] + '" cx="' + mapNodes[i].x + '" cy="' + mapNodes[i].y + '"  r="5" stroke="#009688" fill="#009688"/>'
-                                } else if (matrix[i][j]) {
-                                    id = '' + index[i] + '-' + index[j];
-                                    d = 'M ' + mapNodes[i].x + ' ' + mapNodes[i].y + ' L ' + mapNodes[j].x + ' ' + mapNodes[j].y;
-                                    if (matrix[j][i]) {
-                                        text += '<path id="line-' + id + '" d="' + d + '" stroke="#009688" stroke-linecap="round" stroke-width="2"/>';
-                                    } else {
-                                        text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
-                                        text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
-                                    }
-                                } else if(matrix[j][i]){
-                                    id = '' + index[j] + '-' + index[i];
-                                    d = 'M ' + mapNodes[j].x + ' ' + mapNodes[j].y + ' L ' + mapNodes[i].x + ' ' + mapNodes[i].y;
+                        $ = layui.jquery;
+                    $.ajax({
+                        url: "/admin/nodes_" + level,
+                        type: "GET",
+                        async: false,
+                        success: function (response) {
+                            str = JSON.parse(response)
+                        }
+                    });
+                    const index = str['index'],
+                        matrix = str['adjacencyMatrix'],
+                        mapNodes = str['mapNodes'];
+                    let text = '';
+                    for (let i = 0; i < index.length; i++) {
+                        for (let j = 0; j <= i; j++) {
+                            let d;
+                            let id;
+                            if (i === j) {
+                                text += '<circle id="point-' + index[i] + '" cx="' + mapNodes[i].x + '" cy="' + mapNodes[i].y + '"  r="5" stroke="#009688" fill="#009688"/>'
+                            } else if (matrix[i][j]) {
+                                id = '' + index[i] + '-' + index[j];
+                                d = 'M ' + mapNodes[i].x + ' ' + mapNodes[i].y + ' L ' + mapNodes[j].x + ' ' + mapNodes[j].y;
+                                if (matrix[j][i]) {
+                                    text += '<path id="line-' + id + '" d="' + d + '" stroke="#009688" stroke-linecap="round" stroke-width="2"/>';
+                                } else {
                                     text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
                                     text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
                                 }
+                            } else if (matrix[j][i]) {
+                                id = '' + index[j] + '-' + index[i];
+                                d = 'M ' + mapNodes[j].x + ' ' + mapNodes[j].y + ' L ' + mapNodes[i].x + ' ' + mapNodes[i].y;
+                                text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
+                                text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
                             }
                         }
-                        return text;
                     }
-
+                    return text;
                 }
-            ;
 
-            $('.map-active').on('click', function () {
-                const othis = $(this), type = othis.data('type');
-                active[type] ? active[type].call(this, othis) : '';
-            });
+            }
+        ;
+
+        $('.map-active').on('click', function () {
+            const othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
         });
+    });
 </script>
 
 </body>

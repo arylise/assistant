@@ -22,4 +22,11 @@
         from project
         where project = #{project}
     </select>
+    <select id="selectByIds" resultType="com.assistant.model.enity.Project">
+        select * from project
+        where project.project in
+        <foreach collection="list" item="project" open="(" close=")" separator=",">
+            #{project}
+        </foreach>
+    </select>
 </mapper>

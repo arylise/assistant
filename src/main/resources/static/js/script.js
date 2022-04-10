@@ -17,7 +17,12 @@ new Vue({
             } else {
                 let data = this.menu[pid1].list[pid2];
                 // if (data.url.length > 0) {
-                window.open(this.menu[pid1].baseUrl + data.url, "main");
+                let url = data.url
+                var baseUrl = this.menu[pid1].baseUrl;
+                if (baseUrl != null && baseUrl.length > 0) {
+                    url = this.menu[pid1].baseUrl + url
+                }
+                window.open(url, "main");
                 $("#a1").text(this.menu[pid1].name);
                 $("#a2").text(data.name);
                 // }

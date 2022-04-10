@@ -2,11 +2,10 @@ package com.assistant.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.assistant.constant.AssistantContext;
-import com.assistant.mapper.AdminMapper;
+import com.assistant.mapper.*;
 import com.assistant.model.dto.DataList;
-import com.assistant.model.enity.Admin;
 import com.assistant.model.enity.MapNode;
-import com.assistant.service.intf.*;
+import com.assistant.service.intf.AdminService;
 import com.assistant.utils.MapNodeUtils;
 import com.github.pagehelper.PageHelper;
 import lombok.RequiredArgsConstructor;
@@ -19,17 +18,11 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminMapper adminMapper;
-    private final DoctorService doctorService;
-    private final PatientService patientService;
-    private final HospitalService hospitalService;
-    private final MapNodeService mapNodeService;
-
+    private final DoctorMapper doctorMapper;
+    private final PatientMapper patientMapper;
+    private final ProjectMapper projectMapper;
+    private final MapNodeMapper mapNodeMapper;
     private final MapNodeUtils mapNodeUtils;
-
-    @Override
-    public List<Admin> findAll() {
-        return adminMapper.findAll();
-    }
 
     @Override
     public String password(String username) {
@@ -42,20 +35,20 @@ public class AdminServiceImpl implements AdminService {
         List list;
         switch (listName) {
             case AssistantContext.DOCTOR -> {
-                list = doctorService.selectAll();
-                count = doctorService.count();
+                list = doctorMapper.selectAll();
+                count = doctorMapper.count();
             }
             case AssistantContext.PATIENT -> {
-                list = patientService.selectAll();
-                count = patientService.count();
+                list = patientMapper.selectAll();
+                count = patientMapper.count();
             }
             case AssistantContext.PROJECT -> {
-                list = hospitalService.projectList();
-                count = hospitalService.countDeps();
+                list = projectMapper.selectAll();
+                count = projectMapper.count();
             }
             case AssistantContext.MAP_NODE -> {
-                list = mapNodeService.findAll();
-                count = mapNodeService.count();
+                list = mapNodeMapper.findAll();
+                count = mapNodeMapper.count();
             }
             default -> {
                 PageHelper.clearPage();
@@ -70,7 +63,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public String getMapNodesByLevel(int level) {
-        List<MapNode> list = mapNodeService.getMapNodesByLevel(level);
+        List<MapNode> list = mapNodeMapper.getNodesByLevel(level);
 
         MapNodeUtils.AdjacencyResult adjacencyResult = mapNodeUtils.adjacencyMatrix(list);
         adjacencyResult.setMapNodes(list);

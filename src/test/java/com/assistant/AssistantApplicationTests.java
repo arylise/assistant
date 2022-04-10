@@ -6,23 +6,20 @@ import com.assistant.mapper.PatientMapper;
 import com.assistant.model.enity.Doctor;
 import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Patient;
-import com.assistant.service.impl.PatientServiceImpl;
 import com.assistant.utils.CacheUtils;
-import com.assistant.utils.CoreUtils;
+import com.assistant.utils.PathUtils;
 import com.assistant.utils.MapNodeUtils;
 import com.assistant.utils.TestClass;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.connector.RequestFacade;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -42,7 +39,7 @@ class AssistantApplicationTests {
     @Resource
     private CacheUtils cacheUtils;
     @Resource
-    private CoreUtils coreUtils;
+    private PathUtils pathUtils;
 
     @Test
     void createDocTest() {
@@ -355,19 +352,6 @@ class AssistantApplicationTests {
     }
 
     @Test
-    public void test04() {
-        Field[] fields1 = PatientServiceImpl.class.getDeclaredFields();
-        for (Field f : fields1) {
-            System.out.println(f.getName());
-        }
-        System.out.println();
-        Field[] fields = RequestFacade.class.getDeclaredFields();
-        for (Field f : fields) {
-            System.out.println(f.getName());
-        }
-    }
-
-    @Test
     public void test05() {
         List<Integer> list = new ArrayList<>() {{
             add(1);
@@ -435,7 +419,7 @@ class AssistantApplicationTests {
 
     @Test
     public void test07() {
-        CoreUtils.TspResult bestPath = coreUtils.getBestPath(null, 1, 1);
+        PathUtils.TspResult bestPath = pathUtils.getBestPath(null, 1, 1);
         System.out.println(bestPath);
     }
 
