@@ -1,13 +1,12 @@
 package com.assistant.service.impl;
 
 import com.assistant.mapper.DoctorMapper;
-import com.assistant.mapper.PatientMapper;
-import com.assistant.mapper.ProjectMapper;
 import com.assistant.model.dto.DataList;
 import com.assistant.model.dto.QueueCache;
 import com.assistant.model.enity.Doctor;
 import com.assistant.service.intf.DoctorService;
 import com.assistant.utils.CacheUtils;
+import com.assistant.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +18,10 @@ public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorMapper doctorMapper;
     private final CacheUtils cacheUtils;
-    private final ProjectMapper projectMapper;
-    private final PatientMapper patientMapper;
 
     @Override
     public String password(String username) {
         return doctorMapper.password(username);
-    }
-
-    @Override
-    public int insertDocs(List<Doctor> doctorList) {
-        return doctorMapper.insertDocs(doctorList);
     }
 
     @Override
@@ -43,15 +35,10 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public boolean delete(String username) {
-        return doctorMapper.delete(username);
-    }
-
-    @Override
     public DataList findList(String redisName, String name) {
         List list = null;
-        switch (redisName){
-            case "queue":{
+        switch (redisName) {
+            case "queue": {
                 QueueCache queueCache = cacheUtils.getQueueCache(name);
                 list = queueCache.getQueueList();
             }
@@ -63,7 +50,8 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public String getProject(String username) {
+    public String getProject() {
+        String username = SecurityUtils.getUsername();
         return doctorMapper.getProject(username);
     }
 }

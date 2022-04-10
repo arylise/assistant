@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin() //表单方式，或httpBasic
                 .loginPage("/login")
                 .loginProcessingUrl("/login.do")
-                .defaultSuccessUrl("/login_success") //成功登陆后跳转页面
+                .defaultSuccessUrl("/") //成功登陆后跳转页面
                 .failureUrl("/login_error")
                 .permitAll()
                 .and().csrf().disable();

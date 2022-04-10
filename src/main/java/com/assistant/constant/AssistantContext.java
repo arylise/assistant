@@ -15,13 +15,20 @@ public class AssistantContext {
     public static final String ROLE_DOCTOR = ROLE_ + UPPER_DOCTOR;
     public static final String ROLE_PATIENT = ROLE_ + UPPER_PATIENT;
 
-    public static final Map<String,String> ALL_ROLES = new HashMap<>() {{
-        put(ROLE_ADMIN,ADMIN);
-        put(ROLE_DOCTOR,DOCTOR);
-        put(ROLE_PATIENT,PATIENT);
+    public static String getRole(String user) {
+        if (ALL_ROLES.containsValue(user)) {
+            return ROLE_ + user.toUpperCase();
+        }
+        return null;
+    }
+
+    public static final Map<String, String> ALL_ROLES = new HashMap<>() {{
+        put(ROLE_ADMIN, ADMIN);
+        put(ROLE_DOCTOR, DOCTOR);
+        put(ROLE_PATIENT, PATIENT);
     }};
-
-
+    public static final String ROLE = "role";
+    public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
 
     public static final String ADMIN = "admin";

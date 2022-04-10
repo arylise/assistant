@@ -1,25 +1,37 @@
 package com.assistant.service.function;
 
 import com.assistant.constant.AssistantContext;
+import com.assistant.mapper.PatientMapper;
+import com.assistant.model.dto.DataList;
+import com.assistant.model.enity.Patient;
 import com.assistant.service.intf.AdminService;
 import com.assistant.service.intf.DoctorService;
 import com.assistant.service.intf.PatientService;
 import com.assistant.service.intf.UserService;
+import com.assistant.utils.SecurityUtils;
+import com.github.pagehelper.PageHelper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.apache.catalina.Manager;
+import org.apache.catalina.Session;
+import org.apache.catalina.session.StandardSession;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 @Service
@@ -29,6 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     private final AdminService adminService;
     private final DoctorService doctorService;
     private final PatientService patientService;
+    private final PatientMapper patientMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -75,17 +88,6 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public String checkRole() {
-        Set<String> roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        for (String o : roles) {
-            if (AssistantContext.ALL_ROLES.containsKey(o)) {
-                return AssistantContext.ALL_ROLES.get(o);
-            }
-        }
-        return null;
-    }
-
-    @Override
     public boolean insertPatient(String username, String password) {
         Map<String, String> map = checkUsername(username);
         if (map.isEmpty()) {
@@ -106,6 +108,48 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
             }
         }
         return false;
+    }
+
+    @Override
+    public DataList getActivityUser(HttpServletRequest request, String role) {
+        Manager manager = SecurityUtils.getManager(request.getSession());
+        if (manager == null) {
+            return null;
+        }
+
+        List<String> patientNameList = new ArrayList<>();
+        Session[] sessions = manager.findSessions();
+        for (int i = 0; i < sessions.length; i++) {
+            StandardSession sessioni = (StandardSession) sessions[i];
+            if (sessioni.isValid()) {
+                SecurityContext attribute = (SecurityContext) sessioni.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+                if (attribute == null) {
+                    continue;
+                }
+                Authentication authentication = attribute.getAuthentication();
+                UserDetails principal = (UserDetails) authentication.getPrincipal();
+                if (principal != null) {
+                    List<? extends GrantedAuthority> authorities = principal.getAuthorities().stream().toList();
+                    if (CollectionUtils.isEmpty(authorities)) {
+                        continue;
+                    }
+                    for (GrantedAuthority authority : authorities) {
+                        if (StringUtils.equals(authority.getAuthority(), AssistantContext.getRole(role))) {
+                            patientNameList.add(principal.getUsername());
+                        }
+                    }
+                }
+            }
+        }
+        DataList dataLists;
+        if (CollectionUtils.isNotEmpty(patientNameList)) {
+            List<Patient> patientList = patientMapper.getPatientList(patientNameList);
+            dataLists = DataList.builder().data(patientList).count(patientNameList.size()).build();
+        } else {
+            PageHelper.clearPage();
+            dataLists = DataList.builder().data(null).count(0).build();
+        }
+        return dataLists;
     }
 }
 

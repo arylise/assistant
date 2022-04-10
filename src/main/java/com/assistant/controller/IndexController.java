@@ -1,19 +1,12 @@
 package com.assistant.controller;
 
-import com.alibaba.druid.util.StringUtils;
 import com.assistant.service.intf.UserService;
-import com.assistant.utils.CacheUtils;
+import com.assistant.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.connector.Request;
-import org.apache.catalina.connector.RequestFacade;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 
 @Controller
@@ -21,7 +14,6 @@ import java.text.MessageFormat;
 public class IndexController {
 
     private final UserService userService;
-    private final CacheUtils cacheUtils;
 
     @RequestMapping("/")
     public String voidRequest() {
@@ -33,53 +25,25 @@ public class IndexController {
         return request.getRequestURI();
     }
 
-
-    @RequestMapping(value = "/login_success")
-    public String loginSuccess(RequestFacade request, HttpServletResponse response) {
-
-        String postData = getPostData(request);
-        String[] split = postData.split("&");
-        for (String s : split) {
-            String[] sp = s.split("=");
-            if (StringUtils.equals(sp[0], "username")) {
-                Cookie cookie = new Cookie(sp[0], sp[1]);
-                response.addCookie(cookie);
-                cacheUtils.delProjectList(sp[1]);
-            }
-        }
-        return "redirect:/";
-    }
-
     @RequestMapping("/main")
     public String main() {
-        String role = userService.checkRole();
-        if (StringUtils.isEmpty(role)) {
-            return null;
-        }
-        return MessageFormat.format("{0}/main", role);
+        return MessageFormat.format("{0}/main", SecurityUtils.getRole());
     }
 
-    private String getPostData(RequestFacade request) {
-        int length = 0;
-        byte[] bytes = new byte[0];
-        try {
-            Field innerReq = RequestFacade.class.getDeclaredField("request");
-            innerReq.setAccessible(true);
-            Request req = (Request) innerReq.get(request);
-            Field postData = Request.class.getDeclaredField("postData");
-            postData.setAccessible(true);
-            Object o = postData.get(req);
-            bytes = (byte[]) o;
+    @RequestMapping("/page_{name}")
+    public String page(@PathVariable String name) {
+        return MessageFormat.format("{0}/page_{1}.html", SecurityUtils.getRole(), name);
+    }
 
-            for (int i = 0; i < bytes.length; ++i) {
-                if (bytes[i] == 0) {
-                    length = i;
-                    break;
-                }
-            }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return new String(bytes, 0, length, StandardCharsets.UTF_8);
+    @RequestMapping("/checkRole")
+    @ResponseBody
+    public String checkRole() {
+        return SecurityUtils.getRole();
+    }
+
+    @PostMapping("/signup.do")
+    public String signupPatient(@RequestParam("username") String username, @RequestParam("password") String password) {
+        boolean ans = userService.insertPatient(username, password);
+        return ans ? "signup_success" : "signup_error";
     }
 }

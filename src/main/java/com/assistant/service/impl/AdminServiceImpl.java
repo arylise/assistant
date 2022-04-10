@@ -8,6 +8,7 @@ import com.assistant.model.enity.Admin;
 import com.assistant.model.enity.MapNode;
 import com.assistant.service.intf.*;
 import com.assistant.utils.MapNodeUtils;
+import com.github.pagehelper.PageHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +58,7 @@ public class AdminServiceImpl implements AdminService {
                 count = mapNodeService.count();
             }
             default -> {
+                PageHelper.clearPage();
                 return DataList.builder().code(-1).build();
             }
         }

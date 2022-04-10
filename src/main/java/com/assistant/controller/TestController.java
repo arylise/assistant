@@ -3,10 +3,7 @@ package com.assistant.controller;
 import com.assistant.utils.RedisUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.MessageFormat;
 
@@ -32,5 +29,11 @@ public class TestController {
             case "update" -> String.valueOf(redisUtils.update(key, value));
             default -> "error act";
         };
+    }
+
+    @RequestMapping("/username")
+    @ResponseBody
+    public String username(@CookieValue("username") String cookieUsername, @SessionAttribute("username") String sessionUsername) {
+        return "cookieUsername:" + cookieUsername + " sessionUsername:" + sessionUsername;
     }
 }

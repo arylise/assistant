@@ -105,8 +105,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public DataList checkQueue(String username) {
-        String project = doctorMapper.getProject(username);
+    public DataList checkQueue(String project) {
         QueueCache queueCache = cacheUtils.getQueueCache(project);
         List<String> queueList = queueCache.getQueueList();
         if (queueList == null || queueList.size() == 0) {

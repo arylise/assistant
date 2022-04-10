@@ -14,7 +14,7 @@ const admin = [
     }, {
         "name": "用户管理",
         "icon": "&#xe612;",
-        "baseUrl": ROLE.ADMIN,
+        "baseUrl": "",
         "list": [{
             "name": "医生用户",
             "url": "/page_doctor"
@@ -25,7 +25,7 @@ const admin = [
     }, {
         "name": "医院管理",
         "icon": "&#xe612;",
-        "baseUrl": ROLE.ADMIN,
+        "baseUrl": "",
         "list": [{
             "name": "检查科室",
             "url": "/page_project"
@@ -79,7 +79,7 @@ const doctor = [
     }, {
         "name": "个人信息管理",
         "icon": "&#xe66f;",
-        "baseUrl": ROLE.DOCTOR,
+        // "baseUrl": ROLE.DOCTOR,
         "list": [{
             "name": "信息管理",
             "url": "/page_info"
@@ -87,7 +87,7 @@ const doctor = [
     }, {
         "name": "患者管理",
         "icon": "&#xe66f;",
-        "baseUrl": ROLE.DOCTOR,
+        "baseUrl": "",
         "list": [{
             "name": "科室排队",
             "url": "/page_queue"

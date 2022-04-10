@@ -9,15 +9,11 @@ public interface DoctorService {
 
     String password(String username);
 
-    int insertDocs(List<Doctor> doctorList);
-
     List<Doctor> selectAll();
 
     long count();
 
-    boolean delete(String username);
-
     DataList findList(String redisName, String name);
 
-    String getProject(String username);
+    String getProject();
 }
