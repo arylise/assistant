@@ -16,7 +16,26 @@ import java.util.List;
 @Data
 @Builder
 public class QueueCache {
-    List<String> queueList;
-    List<Long> timestamp;
-    Project project;
+    private List<String> nameList;
+    private List<Long> timestamp;
+    private Project project;
+
+    public void del(String username) {
+        int i = indexOf(username);
+        del(i);
+    }
+
+    public void del(int index) {
+        this.nameList.remove(index);
+        this.timestamp.remove(index);
+    }
+
+    public void add(String username, Long time) {
+        this.nameList.add(username);
+        this.timestamp.add(time);
+    }
+
+    public int indexOf(String name) {
+        return nameList.indexOf(name);
+    }
 }

@@ -134,7 +134,7 @@ public class PathUtils {
             this.timeList = new ArrayList<>() {{
                 for (Project project : projectList) {
                     QueueCache cache = cacheUtils.getQueueCache(project.getProject());
-                    add(cache.getQueueList().size() * cache.getProject().getAvetime());
+                    add(cache.getNameList().size() * cache.getProject().getAvetime());
                     timeMap.put(project.getNodeId(), cache.getProject().getAvetime());
                 }
             }};

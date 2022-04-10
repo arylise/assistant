@@ -2,6 +2,7 @@ package com.assistant.service.impl;
 
 import com.assistant.mapper.PatientMapper;
 import com.assistant.model.dto.DataList;
+import com.assistant.model.dto.PatientDTO;
 import com.assistant.model.dto.QueueCache;
 import com.assistant.model.enity.Patient;
 import com.assistant.service.intf.QueueService;
@@ -21,15 +22,14 @@ public class QueueServiceImpl implements QueueService {
     private final PatientMapper patientMapper;
 
     @Override
-    public boolean push(String pro, String username) {
+    public boolean push(String project, String username) {
         try {
-            QueueCache cache = cacheUtils.getQueueCache(pro);
-            if (!ListUtils.isEmpty(cache.getQueueList()) && cache.getQueueList().contains(username)) {
+            QueueCache cache = cacheUtils.getQueueCache(project);
+            if (!ListUtils.isEmpty(cache.getNameList()) && cache.getNameList().contains(username)) {
                 return false;
             }
-            cache.getQueueList().add(username);
-            cache.getTimestamp().add(System.currentTimeMillis());
-            return cacheUtils.putQueueCache(pro, cache);
+            cache.add(username, System.currentTimeMillis());
+            return cacheUtils.putQueueCache(project, cache);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
         }
@@ -37,24 +37,23 @@ public class QueueServiceImpl implements QueueService {
     }
 
     @Override
-    public DataList.Patient pop(String pro) {
+    public PatientDTO pop(String project) {
         try {
-            QueueCache cache = cacheUtils.getQueueCache(pro);
-            if (ListUtils.isEmpty(cache.getQueueList())) {
+            QueueCache cache = cacheUtils.getQueueCache(project);
+            if (ListUtils.isEmpty(cache.getNameList())) {
                 return null;
             }
-            cache.getQueueList().remove(0);
-            cache.getTimestamp().remove(0);
-            boolean result = cacheUtils.putQueueCache(pro, cache);
+            cache.del(0);
+            boolean result = cacheUtils.putQueueCache(project, cache);
 
-            if (result && ListUtils.isEmpty(cache.getQueueList())) {
+            if (result && ListUtils.isEmpty(cache.getNameList())) {
                 return null;
             }
 
-            String s = cache.getQueueList().get(0);
+            String s = cache.getNameList().get(0);
             Patient patient = patientMapper.getByName(s);
             Long time = cache.getTimestamp().get(0);
-            return new DataList.Patient(patient, time);
+            return new PatientDTO(patient, time);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
         }
@@ -62,17 +61,14 @@ public class QueueServiceImpl implements QueueService {
     }
 
     @Override
-    public boolean delPatient(String pro, String username) {
+    public boolean delPatient(String project, String username) {
         try {
-            QueueCache cache = cacheUtils.getQueueCache(pro);
-            if (ListUtils.isEmpty(cache.getQueueList()) || !cache.getQueueList().contains(username)) {
+            QueueCache cache = cacheUtils.getQueueCache(project);
+            if (ListUtils.isEmpty(cache.getNameList()) || !cache.getNameList().contains(username)) {
                 return false;
             }
-            List<String> queueList = cache.getQueueList();
-            int index = queueList.indexOf(username);
-            queueList.remove(index);
-            cache.getTimestamp().remove(index);
-            return cacheUtils.putQueueCache(pro, cache);
+            cache.del(username);
+            return cacheUtils.putQueueCache(project, cache);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
         }
@@ -80,10 +76,10 @@ public class QueueServiceImpl implements QueueService {
     }
 
     @Override
-    public Integer getWaitTime(String pro) {
+    public Integer getWaitTime(String project) {
         try {
-            QueueCache cache = cacheUtils.getQueueCache(pro);
-            return cache.getQueueList().size() * cache.getProject().getAvetime();
+            QueueCache cache = cacheUtils.getQueueCache(project);
+            return cache.getNameList().size() * cache.getProject().getAvetime();
         } catch (Exception e) {
             return Integer.MAX_VALUE;
         }
@@ -92,26 +88,26 @@ public class QueueServiceImpl implements QueueService {
     @Override
     public DataList check(String project) {
         QueueCache queueCache = cacheUtils.getQueueCache(project);
-        List<String> queueList = queueCache.getQueueList();
+        List<String> queueList = queueCache.getNameList();
         if (queueList == null || queueList.size() == 0) {
             return DataList.builder().data(null).count(0).build();
         }
-        List<Patient> patientList = patientMapper.getPatientList(queueCache.getQueueList());
-        List<DataList.Patient> patientQueues = DataList.transPatientQueue(patientList, queueCache.getTimestamp());
+        List<Patient> patientList = patientMapper.getPatientList(queueCache.getNameList());
+        List<PatientDTO> patientQueues = PatientDTO.trans(patientList, queueCache.getTimestamp());
         return DataList.builder().data(patientQueues).count(patientQueues.size()).build();
     }
 
     @Override
-    public DataList.Patient peek(String pro) {
+    public PatientDTO peek(String project) {
         try {
-            QueueCache cache = cacheUtils.getQueueCache(pro);
-            if (ListUtils.isEmpty(cache.getQueueList())) {
+            QueueCache cache = cacheUtils.getQueueCache(project);
+            if (ListUtils.isEmpty(cache.getNameList())) {
                 return null;
             }
-            String s = cache.getQueueList().get(0);
+            String s = cache.getNameList().get(0);
             Patient patient = patientMapper.getByName(s);
             Long time = cache.getTimestamp().get(0);
-            return new DataList.Patient(patient, time);
+            return new PatientDTO(patient, time);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
         }

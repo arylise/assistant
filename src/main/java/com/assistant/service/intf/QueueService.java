@@ -1,18 +1,19 @@
 package com.assistant.service.intf;
 
 import com.assistant.model.dto.DataList;
+import com.assistant.model.dto.PatientDTO;
 
 public interface QueueService {
 
-    boolean push(String dep, String username);
+    boolean push(String project, String username);
 
-    DataList.Patient pop(String dep);
+    PatientDTO pop(String project);
 
-    DataList.Patient peek(String project);
+    PatientDTO peek(String project);
 
-    boolean delPatient(String dep, String username);
+    boolean delPatient(String project, String username);
 
-    Integer getWaitTime(String dep);
+    Integer getWaitTime(String project);
 
     DataList check(String project);
 

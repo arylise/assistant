@@ -40,7 +40,7 @@ public class DoctorServiceImpl implements DoctorService {
         switch (redisName) {
             case "queue": {
                 QueueCache queueCache = cacheUtils.getQueueCache(name);
-                list = queueCache.getQueueList();
+                list = queueCache.getNameList();
             }
         }
         if (list != null) {

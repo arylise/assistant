@@ -14,10 +14,10 @@
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
             <div class="patientProjects-button">
-                <button class="layui-btn patientProjects-button" data-type="check">查看检查清单</button>
-                <button class="layui-btn patientProjects-button" data-type="create">创建检查清单</button>
-                <button class="layui-btn patientProjects-button" data-type="update">修改检查清单</button>
-                <button class="layui-btn patientProjects-button" data-type="delete">删除检查清单</button>
+                <button class="layui-btn patientProjects-button" data-type="addPage" page="check">查看检查清单</button>
+                <button class="layui-btn patientProjects-button" data-type="addPage" page="create">创建检查清单</button>
+                <button class="layui-btn patientProjects-button" data-type="addPage" page="update">修改检查清单</button>
+                <button class="layui-btn patientProjects-button" data-type="addPage" page="delete">删除检查清单</button>
             </div>
         </div>
     </div>
@@ -29,7 +29,19 @@
         const $ = layui.jquery
             , element = layui.element
             , active = {
+                addPage: function (othis) {
+                    const page = othis.attr('page');
+                    if ($('#page-' + page).length <= 0) {
+                        element.tabAdd('map', {
+                            title: floor + '楼地图'
+                            , content:''
 
+                            , id: 'floor' + floor
+                        })
+                    }
+                    element.tabChange('map', 'floor' + floor);
+
+                }
             }
         ;
 

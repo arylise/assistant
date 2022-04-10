@@ -51,26 +51,30 @@
                 addFloor: function (othis) {
                     const floor = parseInt(othis.attr('floor'));
                     if ($('#floor' + floor).length <= 0) {
-                        const baseX = 63;
-                        const baseY = 46;
                         element.tabAdd('map', {
                             title: floor + '楼地图'
-                            , content: // TODO 按钮失效！！！！！！！！！！
+                            , content:
                                 '<div>'
-                                + '<svg class="svgStyle" xmlns="http://www.w3.org/2000/svg" version="1.1" onclick="rectClick(event)">'
+                                + '<svg class="svgStyle map-active-showMeXY" xmlns="http://www.w3.org/2000/svg" version="1.1" data-type="showXY"">'
                                 + active.getNodeStr(floor)
                                 + '</svg>'
                                 + '<img id="floor' + floor + '" src="/img/floor' + floor + '.png" style="-webkit-user-drag:none"/>'
                                 + '</div>'
                                 + ' <div className = "layui-btn-group">'
-                                + ((floor === 1) ? '' : '<a class = "layui-btn map-active" data-type="addFloor" floor=' + (floor - 1) + '>下一层</a>')
-                                + ((floor === 5) ? '' : '<a class = "layui-btn map-active" data-type="addFloor" floor=' + (floor + 1) + '>上一层</a>')
+                                + ((floor === 1) ? '' : '<button class = "layui-btn map-active-0" data-type="addFloor" floor="' + (floor - 1) + '">下一层</button>')
+                                + ((floor === 5) ? '' : '<button class = "layui-btn map-active-0" data-type="addFloor" floor="' + (floor + 1) + '">上一层</button>')
                                 + '</div>'
                             , id: 'floor' + floor
                         })
                     }
+                    $('.map-active-showMeXY').on('click', function () {
+                        active["showXY"].call(this, event);
+                    });
+                    $('.map-active-0').on('click', function () {
+                        let othis = $(this), type = othis.data('type');
+                        active[type] ? active[type].call(this, othis) : '';
+                    });
                     element.tabChange('map', 'floor' + floor);
-
                 }
                 , clear: function () {
                     for (let i = 1; i <= 5; i++) {
@@ -117,14 +121,17 @@
                     }
                     return text;
                 }
+                , showXY: function (event) {
+                    layer.alert('x:' + event.clientX + "  y:" + event.clientY)
+                }
 
             }
         ;
-
         $('.map-active').on('click', function () {
             const othis = $(this), type = othis.data('type');
             active[type] ? active[type].call(this, othis) : '';
         });
+
     });
 </script>
 

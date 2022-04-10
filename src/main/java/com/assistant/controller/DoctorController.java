@@ -2,8 +2,9 @@ package com.assistant.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.assistant.constant.AssistantContext;
-import com.assistant.model.dto.DataList;
+import com.assistant.model.dto.PatientDTO;
 import com.assistant.service.intf.DoctorService;
+import com.assistant.service.intf.ProjectService;
 import com.assistant.service.intf.QueueService;
 import com.assistant.service.intf.UserService;
 import com.github.pagehelper.PageHelper;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,20 +26,21 @@ import javax.servlet.http.HttpServletRequest;
 public class DoctorController {
 
     private final QueueService queueService;
+    private final ProjectService projectService;
     private final DoctorService doctorService;
     private final UserService userService;
 
     @RequestMapping("/queue.pop")
     @ResponseBody
     public String popQueue() {
-        DataList.Patient b = queueService.pop(doctorService.getProject());
+        PatientDTO b = queueService.pop(doctorService.getProject());
         return String.valueOf(b);
     }
 
     @RequestMapping("/queue.peek")
     @ResponseBody
     public String peekQueue() {
-        DataList.Patient b = queueService.peek(doctorService.getProject());
+        PatientDTO b = queueService.peek(doctorService.getProject());
         return String.valueOf(b);
     }
 
@@ -56,8 +59,9 @@ public class DoctorController {
 
     @RequestMapping("/project.create")
     @ResponseBody
-    public String createProjects() {
-        return null;
+    public String createProjects(@RequestParam("username") String username, List<String> projectIdList) {
+        boolean b = projectService.create(username, projectIdList);
+        return String.valueOf(b);
     }
 
     @RequestMapping("/getActivityPatient")
