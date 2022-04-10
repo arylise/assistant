@@ -1,8 +1,9 @@
-layui.use(['table'], function () {
+layui.use(['table', 'element'], function () {
 
-    const table = layui.table;
+    table = layui.table;
+    element = layui.element;
 
-    table.render({
+    render = {
         elem: page_config.elem
         , toolbar: page_config.toolbar
         , defaultToolbar: [
@@ -18,17 +19,18 @@ layui.use(['table'], function () {
         , skin: 'row'
         , url: page_config.url
         , limit: 20
-        , page: page_config.page //开启分页
+        , page: page_config.page
         , cols: page_config.cols
-    })
+    };
+    layui.table.render(render)
 
     //监听表格复选框选择
-    table.on('checkbox(list-listener)', function (obj) {
+    layui.table.on('checkbox(list-listener)', function (obj) {
         console.log(obj)
     });
 
     //头工具栏事件
-    table.on('toolbar(list-listener)', function (obj) {
+    layui.table.on('toolbar(list-listener)', function (obj) {
         var checkStatus = table.checkStatus(obj.config.id);
         switch (obj.event) {
             case 'getCheckData':
@@ -52,6 +54,6 @@ layui.use(['table'], function () {
     });
 
     //监听工具条
-    table.on('tool(list-listener)', listListener);
+    layui.table.on('tool(list-listener)', toolListener);
 
 });

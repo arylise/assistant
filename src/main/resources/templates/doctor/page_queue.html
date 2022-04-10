@@ -6,21 +6,58 @@
     <link rel="stylesheet" href="/css/assistant.css">
 </head>
 <body>
+<script type="text/html" id="patientInfo">
+    <div class="layui-form" lay-filter="patient" id="pageInfo">
+        <div class="layui-form-item">
+            <label class="layui-form-label">患者姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" placeholder="患者姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sex" value="m" title="男" checked="">
+                <input type="radio" name="sex" value="f" title="女">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系方式</label>
+            <div class="layui-input-block">
+                <input type="text" name="phone" placeholder="联系方式" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">年龄</label>
+            <div class="layui-input-block">
+                <input type="text" name="age" placeholder="年龄" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">附加</label>
+            <div class="layui-input-block">
+                <input type="text" name="exception" placeholder="附加" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" id="reflash">刷新</button>
+                <button class="layui-btn element-active" id="pop">完成当前检查</button>
+            </div>
+        </div>
+    </div>
+</script>
 
-<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-queue">
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-queue" lay-allowclose="true">
     <ul class="layui-tab-title">
-        <li class="layui-this">科室队列管理</li>
-        <li>患者排队列表</li>
+        <li class="layui-this unshow-i">科室队列管理</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
             <div class="map-button">
-                <div id="thisPatient"></div>
-                <button class="layui-btn queue-active" data-type="doQue">完成当前检查</button>
+                <button class="layui-btn element-active" data-type="addInfo">检查患者</button>
+                <button class="layui-btn element-active" data-type="addList">患者排队情况</button>
             </div>
-        </div>
-        <div class="layui-tab-item">
-            <table id="queue-list" lay-filter="list-listener"></table>
         </div>
     </div>
 </div>
@@ -33,17 +70,7 @@
 
 <script src="/layui/layui.js"></script>
 <script>
-    // let project;
-    // layui.$.ajax({
-    //     type: 'GET',
-    //     url: '/doctor/getQue',
-    //     async: false,
-    //     success: function (data) {
-    //         project = data;
-    //     }
-    // })
-    const listListener = function (obj) {
-        // alert("work!!");
+    const toolListener = function (obj) {
         var data = obj.data;
         if (obj.event === 'detail') {
             layer.msg('ID：' + data.username + ' 的查看操作');
@@ -85,44 +112,95 @@
             ]
         ]
     };
+    let render;
+    let table;
+    let element;
+    let active;
 </script>
 <script src="/js/table.js"></script>
 <script>
-    layui.use([], function () {
-        var $ = layui.jquery,
-            active = {
-                doQue: function () {
+    layui.use(['element'], function () {
+        let form = layui.form
+            , $ = layui.jquery
+            , active = {
+                pop: function () {
+                    let data;
                     layui.$.ajax({
                         type: 'GET',
                         url: '/doctor/queue.pop',
                         async: false,
-                        success: function (data) {
-                            if (data === "null") {
-                                layer.msg('已经全部完成!');
-                            } else {
-                                layer.msg('完成检查');
-                                $('#thisPatient').text(data)
-                            }
+                        success: function (response) {
+                            data = JSON.parse(response);
                         }
                     })
+                    console.log(data)
+                    if (data != null) {
+                        form.val('patient', data);
+                    } else {
+                        form.val('patient', {
+                            "name": ""
+                            , "sex": ""
+                            , "phone": ""
+                            , "age": ""
+                            , "exception": ""
+                        });
+                    }
+
+                    return false;
                 },
-                initPatient: function () {
+                peek: function () {
+                    let data;
                     layui.$.ajax({
                         type: 'GET',
                         url: '/doctor/queue.peek',
                         async: false,
-                        success: function (data) {
-                            $('#thisPatient').text(data)
+                        success: function (response) {
+                            data = JSON.parse(response);
                         }
                     })
+                    console.log(data)
+                    form.val('patient', data);
+                    return false;
+                },
+                addInfo: function () {
+                    if ($("#pageInfo").length <= 0) {
+                        element.tabAdd('management-queue', {
+                            title: '患者检查'
+                            , content:
+                                $('#patientInfo').html()
+                            , id: 'pageInfo'
+                        })
+                    }
+                    element.tabChange('management-queue', 'pageInfo');
+                    active["peek"].call()
+                    //表单赋值
+                    $('#reflash').on('click', function () {
+                        active["peek"].call()
+                    });
+                    $('#pop').on("click", function () {
+                        active["pop"].call()
+                    })
+                },
+                addList: function () {
+                    if ($("#queue-list").length <= 0) {
+                        element.tabAdd('management-queue', {
+                            title: '患者排队列表'
+                            , content:
+                                '<table id="queue-list" lay-filter="list-listener"></table>'
+                            , id: 'queue-list'
+                        })
+                        table.render(render);
+                    }
+                    element.tabChange('management-queue', 'queue-list');
+
+
                 }
             }
         ;
-        $('.queue-active').on('click', function () {
+        $('.element-active').on('click', function () {
             var othis = $(this), type = othis.data('type');
             active[type] ? active[type].call(this, othis) : '';
         });
-        active["initPatient"].call(this);
     });
 </script>
 </body>

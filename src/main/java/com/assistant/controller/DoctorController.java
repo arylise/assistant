@@ -34,14 +34,14 @@ public class DoctorController {
     @ResponseBody
     public String popQueue() {
         PatientDTO b = queueService.pop(doctorService.getProject());
-        return String.valueOf(b);
+        return JSON.toJSONString(b);
     }
 
     @RequestMapping("/queue.peek")
     @ResponseBody
     public String peekQueue() {
         PatientDTO b = queueService.peek(doctorService.getProject());
-        return String.valueOf(b);
+        return JSON.toJSONString(b);
     }
 
     @RequestMapping("/queue.del_{patientName}")
