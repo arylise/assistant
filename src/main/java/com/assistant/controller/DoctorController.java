@@ -2,18 +2,22 @@ package com.assistant.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.assistant.constant.AssistantContext;
+import com.assistant.mapper.DoctorMapper;
 import com.assistant.model.dto.DataList;
 import com.assistant.model.dto.PatientDTO;
 import com.assistant.model.dto.ProjectDTO;
-import com.assistant.service.intf.DoctorService;
 import com.assistant.service.intf.ProjectService;
 import com.assistant.service.intf.QueueService;
 import com.assistant.service.intf.UserService;
+import com.assistant.utils.SecurityUtils;
 import com.github.pagehelper.PageHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -26,7 +30,7 @@ public class DoctorController {
 
     private final QueueService queueService;
     private final ProjectService projectService;
-    private final DoctorService doctorService;
+    private final DoctorMapper doctorMapper;
     private final UserService userService;
 
     @RequestMapping("/queue.pop")
@@ -107,5 +111,11 @@ public class DoctorController {
     ) {
         PageHelper.startPage(page, limit);
         return JSON.toJSONString(userService.getActivityUser(request, AssistantContext.PATIENT));
+    }
+
+    @RequestMapping("/getProjects")
+    @ResponseBody
+    public String getProjects() {
+        return String.valueOf(doctorMapper.getProject(SecurityUtils.getUsername()));
     }
 }

@@ -51,7 +51,7 @@ class AssistantApplicationTests {
         String username = "doctor";
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         int i = 0;
-        while (++i < 100) {
+        while (++i < 30) {
             String namestr = username + (i < 10 ? "0" + i : i);
             int j = (int) (Math.random() * 9) + 1;
             doctors.add(new Doctor(namestr, encoder.encode(namestr), namestr, "department0" + j, "m", i, i, null));
@@ -171,8 +171,6 @@ class AssistantApplicationTests {
         insertMapNodeFun(str1, 1);
         insertMapNodeFun(str1, 2);
         insertMapNodeFun(str1, 3);
-        insertMapNodeFun(str1, 4);
-        insertMapNodeFun(str1, 5);
 
     }
 
@@ -253,10 +251,10 @@ class AssistantApplicationTests {
                 mapNode.setNextNode(mapNode.getNextNode() + "," + nodeId);
                 if (mapNode.getY() == 322) {
                     String s = "";
-                    for (int k = 1; k <= 5; k++) {
+                    for (int k = 1; k <= 3; k++) {
                         int b = k * 10000 + num - 1;
                         if (b != nodeId) {
-                            s += b + (k == 5 ? "" : ",");
+                            s += b + (k == 3 ? "" : ",");
                         }
                     }
                     m.setElevatorNode(s);
@@ -264,7 +262,7 @@ class AssistantApplicationTests {
                 } else if (mapNode.getY() == 414) {
                     if (level == 1) {
                         m.setStairNode(String.valueOf(nodeId + 10000));
-                    } else if (level == 5) {
+                    } else if (level == 3) {
                         m.setStairNode(String.valueOf(nodeId - 10000));
                     } else {
                         m.setStairNode((nodeId - 10000) + "," + (nodeId + 10000));
@@ -521,4 +519,10 @@ class AssistantApplicationTests {
         MapNode node = elevatorMap.get("20015");
         System.out.println(node);
     }
+
+    @Test
+    public void test09(){
+        System.out.println(doctorMapper.getProject("doctor01"));
+    }
+
 }

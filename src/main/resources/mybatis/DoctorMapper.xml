@@ -45,10 +45,10 @@
         where username = #{username}
     </select>
     <select id="getProject" resultType="java.lang.String">
-        select pro.project
-        from project pro,
-             doctor doc
-        where doc.username = #{username}
-          and pro.department = doc.department
+        select project.project
+        from project,
+             doctor
+        where doctor.username = #{username}
+          and project.department = doctor.department
     </select>
 </mapper>
