@@ -25,11 +25,6 @@ public class AdminServiceImpl implements AdminService {
     private final MapNodeUtils mapNodeUtils;
 
     @Override
-    public String password(String username) {
-        return adminMapper.password(username);
-    }
-
-    @Override
     public DataList findList(String listName) {
         long count;
         List list;

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Patient {
+public class Patient extends AssistantUser {
     private String username;
     private String password;
     private String name;

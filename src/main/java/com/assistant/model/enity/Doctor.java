@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Doctor implements Serializable {
+public class Doctor extends AssistantUser {
     private String username;
     private String password;
     private String name;

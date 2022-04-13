@@ -21,4 +21,6 @@ public interface DoctorMapper {
     String getDepartment(String username);
 
     List<String> getProject(String username);
+
+    Doctor getByName(String username);
 }

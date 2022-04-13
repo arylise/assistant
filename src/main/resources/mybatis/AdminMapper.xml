@@ -12,4 +12,22 @@
         from admin
         where username = #{username}
     </select>
+    <select id="getByName" resultType="com.assistant.model.enity.Admin">
+        select *
+        from admin
+        where username = #{username}
+    </select>
+    <select id="checkUserName" resultType="java.lang.String">
+        SELECT username
+        FROM admin
+        WHERE FIND_IN_SET(#{usernaem}, admin.username)
+        UNION
+        SELECT username
+        FROM doctor
+        WHERE FIND_IN_SET(#{usernaem}, doctor.username)
+        UNION
+        SELECT username
+        FROM patient
+        WHERE FIND_IN_SET(#{usernaem}, patient.username);
+    </select>
 </mapper>

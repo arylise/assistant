@@ -1,11 +1,11 @@
 package com.assistant.service.function;
 
 import com.assistant.constant.AssistantContext;
+import com.assistant.mapper.AdminMapper;
 import com.assistant.mapper.DoctorMapper;
 import com.assistant.mapper.PatientMapper;
 import com.assistant.model.dto.DataList;
 import com.assistant.model.enity.Patient;
-import com.assistant.service.intf.AdminService;
 import com.assistant.service.intf.UserService;
 import com.assistant.utils.SecurityUtils;
 import com.github.pagehelper.PageHelper;
@@ -16,9 +16,7 @@ import org.apache.catalina.session.StandardSession;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,68 +26,36 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService, UserService {
 
-    private final AdminService adminService;
+    private final AdminMapper adminMapper;
     private final DoctorMapper doctorMapper;
     private final PatientMapper patientMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Map<String, String> map = checkUsername(username);
-        if (map.isEmpty()) {
+        UserDetails details = patientMapper.getByName(username);
+        if (details == null) {
+            details = doctorMapper.getByName(username);
+        }
+        if (details == null) {
+            details = adminMapper.getByName(username);
+        }
+        if (details == null) {
             throw new UsernameNotFoundException("用户名或密码错误！");
         }
-
-        return new User(username, map.get(AssistantContext.PASSWORD),
-                new ArrayList<>() {{
-                    add(new SimpleGrantedAuthority(map.get(AssistantContext.ROLE_)));
-                }}
-        );
-    }
-
-    /***
-     * 检查用户名是否被占用
-     * @param username 用户名
-     * @return 未被占用，返回空map，已被占用，返回password和role
-     */
-    public Map<String, String> checkUsername(String username) {
-        String password;
-        Map<String, String> map = new HashMap<>();
-
-        password = patientMapper.password(username);
-        if (!StringUtils.isEmptyOrWhitespace(password)) {
-            map.put(AssistantContext.PASSWORD, password);
-            map.put(AssistantContext.ROLE_, AssistantContext.ROLE_PATIENT);
-            return map;
-        }
-        password = doctorMapper.password(username);
-        if (!StringUtils.isEmptyOrWhitespace(password)) {
-            map.put(AssistantContext.PASSWORD, password);
-            map.put(AssistantContext.ROLE_, AssistantContext.ROLE_DOCTOR);
-            return map;
-        }
-        password = adminService.password(username);
-        if (!StringUtils.isEmptyOrWhitespace(password)) {
-            map.put(AssistantContext.PASSWORD, password);
-            map.put(AssistantContext.ROLE_, AssistantContext.ROLE_ADMIN);
-            return map;
-        }
-        return map;
+        return details;
     }
 
     @Override
     public boolean insertPatient(String username, String password) {
-        Map<String, String> map = checkUsername(username);
-        if (map.isEmpty()) {
+        List<String> list = adminMapper.checkUserName(username);
+        if (CollectionUtils.isEmpty(list)) {
             boolean ans = patientMapper.insert(username, new BCryptPasswordEncoder().encode(password));
             if (ans) {
                 return true;

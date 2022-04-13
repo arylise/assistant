@@ -51,4 +51,9 @@
         where doctor.username = #{username}
           and project.department = doctor.department
     </select>
+    <select id="getByName" resultType="com.assistant.model.enity.Doctor">
+        select *
+        from doctor
+        where username = #{username}
+    </select>
 </mapper>

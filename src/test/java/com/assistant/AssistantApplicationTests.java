@@ -4,10 +4,7 @@ import com.assistant.mapper.DoctorMapper;
 import com.assistant.mapper.MapNodeMapper;
 import com.assistant.mapper.PatientMapper;
 import com.assistant.mapper.ProjectMapper;
-import com.assistant.model.enity.Doctor;
-import com.assistant.model.enity.MapNode;
-import com.assistant.model.enity.Patient;
-import com.assistant.model.enity.Project;
+import com.assistant.model.enity.*;
 import com.assistant.utils.CacheUtils;
 import com.assistant.utils.MapNodeUtils;
 import com.assistant.utils.PathUtils;
@@ -523,6 +520,21 @@ class AssistantApplicationTests {
     @Test
     public void test09(){
         System.out.println(doctorMapper.getProject("doctor01"));
+    }
+
+    public abstract class NameAB{
+        public String getRole(){
+            return this.getClass().getSimpleName();
+        }
+    }
+
+    public class Name extends NameAB{
+
+    }
+    @Test
+    public void test10(){
+        Name name = new Name();
+        System.out.println(name.getRole());
     }
 
 }
