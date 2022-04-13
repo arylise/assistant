@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.assistant.mapper.MessageMapper">
+
+    <insert id="insert">
+        insert into message
+            value (#{messageId}, #{answerId}, #{speakerName}, #{speakerUsername}, #{speakerRole}, #{msg})
+    </insert>
+    <select id="selectById" resultType="com.assistant.model.enity.Message">
+        select *
+        from message
+        where messageId = #{messageId}
+    </select>
+</mapper>
