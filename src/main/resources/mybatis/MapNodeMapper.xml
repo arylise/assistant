@@ -17,7 +17,7 @@
                 #{msg})
     </insert>
 
-    <insert id="insertNodes">
+    <insert id="insertAll">
         insert into mapnode (nodeId, nodeName, level, x, y, nextNode, stairNode, elevatorNode, elevatorId, msg)
         values
         <foreach collection="list" item="mapnode" index="index" separator=",">

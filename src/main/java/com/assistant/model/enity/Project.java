@@ -11,6 +11,6 @@ public class Project {
     private String project;
     private String department;
     private String nodeId;
-    private Integer avetime;
+    private Long avetime;
     private String msg;
 }

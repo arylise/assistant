@@ -13,7 +13,7 @@ public interface QueueService {
 
     boolean delPatient(String project, String username);
 
-    Integer getWaitTime(String project);
+    Long getWaitTime(String project);
 
     DataList check(String project);
 

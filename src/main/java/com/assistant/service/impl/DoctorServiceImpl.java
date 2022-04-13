@@ -1,12 +1,9 @@
 package com.assistant.service.impl;
 
-import com.assistant.mapper.DoctorMapper;
 import com.assistant.model.dto.DataList;
 import com.assistant.model.dto.QueueCache;
-import com.assistant.model.enity.Doctor;
 import com.assistant.service.intf.DoctorService;
 import com.assistant.utils.CacheUtils;
-import com.assistant.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,23 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DoctorServiceImpl implements DoctorService {
 
-    private final DoctorMapper doctorMapper;
     private final CacheUtils cacheUtils;
-
-    @Override
-    public String password(String username) {
-        return doctorMapper.password(username);
-    }
-
-    @Override
-    public List<Doctor> selectAll() {
-        return doctorMapper.selectAll();
-    }
-
-    @Override
-    public long count() {
-        return doctorMapper.count();
-    }
 
     @Override
     public DataList findList(String redisName, String name) {
@@ -49,8 +30,4 @@ public class DoctorServiceImpl implements DoctorService {
         return DataList.builder().code(-2).build();
     }
 
-    @Override
-    public String getProject() {
-        return doctorMapper.getProject(SecurityUtils.getUsername());
-    }
 }

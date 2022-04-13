@@ -3,12 +3,14 @@ package com.assistant;
 import com.assistant.mapper.DoctorMapper;
 import com.assistant.mapper.MapNodeMapper;
 import com.assistant.mapper.PatientMapper;
+import com.assistant.mapper.ProjectMapper;
 import com.assistant.model.enity.Doctor;
 import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Patient;
+import com.assistant.model.enity.Project;
 import com.assistant.utils.CacheUtils;
-import com.assistant.utils.PathUtils;
 import com.assistant.utils.MapNodeUtils;
+import com.assistant.utils.PathUtils;
 import com.assistant.utils.TestClass;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +42,8 @@ class AssistantApplicationTests {
     private CacheUtils cacheUtils;
     @Resource
     private PathUtils pathUtils;
+    @Resource
+    private ProjectMapper projectMapper;
 
     @Test
     void createDocTest() {
@@ -48,9 +52,9 @@ class AssistantApplicationTests {
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         int i = 0;
         while (++i < 100) {
-            double random = Math.random();
             String namestr = username + (i < 10 ? "0" + i : i);
-            doctors.add(new Doctor(namestr, encoder.encode(namestr), namestr, "department0" + (random < 0.33 ? "1" : random < 0.66 ? "2" : "3"), "m", i, i, null));
+            int j = (int) (Math.random() * 9) + 1;
+            doctors.add(new Doctor(namestr, encoder.encode(namestr), namestr, "department0" + j, "m", i, i, null));
         }
         System.out.println(doctorMapper.insertDocs(doctors));
     }
@@ -186,23 +190,111 @@ class AssistantApplicationTests {
             map.setX(Integer.parseInt(s[0]));
             map.setY(Integer.parseInt(s[1]));
             map.setLevel(level);
-            String nodeId = "" + level * 10000 + num;
-            map.setNodeId(nodeId);
+            int nodeId = level * 10000 + num;
+            map.setNodeId(String.valueOf(nodeId));
 
             String nextNode = "";
             if (num == 1) {
                 nextNode += (level * 10000 + size) + "," + (nodeId + 1);
             } else if (num == size) {
-                nextNode += (Integer.parseInt(nodeId) - 1) + "," + (level * 10000 + 1);
+                nextNode += (nodeId - 1) + "," + (level * 10000 + 1);
             } else {
-                nextNode += (Integer.parseInt(nodeId) - 1) + "," + (nodeId + 1);
+                nextNode += (nodeId - 1) + "," + (nodeId + 1);
             }
             map.setNextNode(nextNode);
 
             list.add(map);
             num++;
         }
-        System.out.println(mapNodeMapper.insertNodes(list));
+
+        List<MapNode> l = new ArrayList<>();
+        for (MapNode mapNode : list) {
+            if (mapNode.getY() == 230) {
+                MapNode m = new MapNode();
+                int nodeId = level * 10000 + num++;
+                m.setNodeId(String.valueOf(nodeId));
+                m.setX(mapNode.getX());
+                m.setY(mapNode.getY() - 92);
+                m.setNextNode(mapNode.getNodeId());
+                m.setLevel(level);
+                mapNode.setNextNode(mapNode.getNextNode() + "," + nodeId);
+                l.add(m);
+            }
+            if (mapNode.getY() == 506) {
+                MapNode m = new MapNode();
+                int nodeId = level * 10000 + num++;
+                m.setNodeId(String.valueOf(nodeId));
+                m.setX(mapNode.getX());
+                m.setY(mapNode.getY() + 92);
+                m.setNextNode(mapNode.getNodeId());
+                m.setLevel(level);
+                mapNode.setNextNode(mapNode.getNextNode() + "," + nodeId);
+                l.add(m);
+            }
+            if (mapNode.getX() == 315) {
+                MapNode m = new MapNode();
+                int nodeId = level * 10000 + num++;
+                m.setNodeId(String.valueOf(nodeId));
+                m.setX(mapNode.getX() - 126);
+                m.setY(mapNode.getY());
+                m.setNextNode(mapNode.getNodeId());
+                m.setLevel(level);
+                mapNode.setNextNode(mapNode.getNextNode() + "," + nodeId);
+                l.add(m);
+            }
+            if (mapNode.getX() == 819) {
+                MapNode m = new MapNode();
+                int nodeId = level * 10000 + num++;
+                m.setNodeId(String.valueOf(nodeId));
+                m.setX(mapNode.getX() + 126);
+                m.setY(mapNode.getY());
+                m.setNextNode(mapNode.getNodeId());
+                m.setLevel(level);
+                mapNode.setNextNode(mapNode.getNextNode() + "," + nodeId);
+                if (mapNode.getY() == 322) {
+                    String s = "";
+                    for (int k = 1; k <= 5; k++) {
+                        int b = k * 10000 + num - 1;
+                        if (b != nodeId) {
+                            s += b + (k == 5 ? "" : ",");
+                        }
+                    }
+                    m.setElevatorNode(s);
+                    m.setElevatorId("e1");
+                } else if (mapNode.getY() == 414) {
+                    if (level == 1) {
+                        m.setStairNode(String.valueOf(nodeId + 10000));
+                    } else if (level == 5) {
+                        m.setStairNode(String.valueOf(nodeId - 10000));
+                    } else {
+                        m.setStairNode((nodeId - 10000) + "," + (nodeId + 10000));
+                    }
+                }
+                l.add(m);
+            }
+        }
+        list.addAll(l);
+        System.out.println(mapNodeMapper.insertAll(list));
+    }
+
+    @Test
+    public void insertProject() {
+        List<Project> list = new ArrayList<>();
+        List<MapNode> all = mapNodeMapper.findAll();
+        for (MapNode mapNode : all) {
+            if (Integer.parseInt(mapNode.getNodeId()) % 100 > 16) {
+
+                Project project = new Project();
+                project.setProject("project" + mapNode.getNodeId());
+                int i = (int) (Math.random() * 9) + 1;
+                project.setDepartment("department0" + i);
+                project.setNodeId(mapNode.getNodeId());
+                long l = TimeUnit.MINUTES.toMillis(1) * ((int) (Math.random() * 10) + 1);
+                project.setAvetime(l);
+                list.add(project);
+            }
+        }
+        projectMapper.insertAll(list);
     }
 
     @Data

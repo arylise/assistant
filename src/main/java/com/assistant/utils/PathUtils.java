@@ -23,8 +23,8 @@ public class PathUtils {
     private long[][] floydMatrix;
     private String[][] floydPath;
     private List<String> floydIndex;
-    private Map<String, Integer> timeMap;
-    private List<Integer> timeList;
+    private Map<String, Long> timeMap;
+    private List<Long> timeList;
     private List<String> idList;
 
     private Map<String, MapNode> elevatorMap;
@@ -44,6 +44,7 @@ public class PathUtils {
         long time;
         long score;
         String resultPath;
+        String mainPath;
 
         public List<String> parsePath() {
             if (StringUtils.isEmpty(resultPath)) {
@@ -53,24 +54,19 @@ public class PathUtils {
         }
     }
 
-    private TspResult tsp(int index, int count, long cost, String path, int time, TspResult ans) {
+    private TspResult tsp(int index, int count, long cost, String path, String mainPath, long time, TspResult ans) {
         int currPos = floydIndex.indexOf(idList.get(index));
         int index_0 = floydIndex.indexOf(idList.get(0));
 
         if (count == n) {
             String[] ids = path.split(",");
-            for (String id : ids) {
-                if (elevatorMap.containsKey(id)) {
-                    MapNode mapNode = elevatorMap.get(id);
-                    time += elevatorTimeMap.get(mapNode.getElevatorId())[mapNode.getLevel() - 1];
-                }
-            }
             long score = weightPath * (cost + floydMatrix[currPos][index_0]) + (long) weightTime * time;
             if (ans.score > score) {
                 ans.resultPath = path;
                 ans.score = score;
                 ans.path = cost + floydMatrix[currPos][index_0];
                 ans.time = time;
+                ans.mainPath = mainPath;
             }
             return ans;
         }
@@ -87,8 +83,13 @@ public class PathUtils {
                 // 标记结点被访问过
                 v[i] = true;
                 String id = idList.get(i);
-                int timeContext = (time <= timeList.get(i) ? timeList.get(i) : time) + timeMap.get(id);
-                ans = tsp(i, count + 1, cost + floydMatrix[currPos][index_i], path + floydPath[currPos][index_i], timeContext, ans);
+                int elevatorTime = 0;
+                if (elevatorMap.containsKey(id)) {
+                    MapNode mapNode = elevatorMap.get(id);
+                    elevatorTime = elevatorTimeMap.get(mapNode.getElevatorId())[mapNode.getLevel() - 1];
+                }
+                long timeContext = (time <= timeList.get(i) ? timeList.get(i) : time) + timeMap.get(id) + elevatorTime;
+                ans = tsp(i, count + 1, cost + floydMatrix[currPos][index_i], path + floydPath[currPos][index_i], mainPath + "," + id, timeContext, ans);
                 // 标记结点没有被访问过
                 v[i] = false;
             }
@@ -100,17 +101,17 @@ public class PathUtils {
         if (ListUtils.isEmpty(projectIds)) {
             // TODO TEST CODE
             this.timeMap = new HashMap<>() {{
-                put("0", 0);
-                put("10011", 1000);
-                put("10015", 2000);
-                put("10012", 1000);
+                put("0", 0L);
+                put("10011", 1000L);
+                put("10015", 2000L);
+                put("10012", 1000L);
             }};
 
             this.timeList = new ArrayList<>() {{
-                add(0);
-                add(10000);
-                add(30000);
-                add(25000);
+                add(0L);
+                add(10000L);
+                add(30000L);
+                add(25000L);
             }};
             this.idList = new ArrayList<>() {{
                 add("0");
@@ -164,6 +165,6 @@ public class PathUtils {
 
         // 查找最小权重的汉密尔顿回路 Hamiltonian Cycle
         // 输出结果ans就是最小权重的汉密尔顿回路（ Hamiltonian Cycle）
-        return tsp(0, 1, 0, "", 0, TspResult.builder().score(Long.MAX_VALUE).build());
+        return tsp(0, 1, 0, "", "0", 0, TspResult.builder().score(Long.MAX_VALUE).build());
     }
 }

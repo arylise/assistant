@@ -17,4 +17,6 @@ public interface ProjectMapper {
     long count();
 
     List<Project> selectByIds(List<String> projectList);
+
+    int insertAll(List<Project> list);
 }

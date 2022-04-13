@@ -3,6 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.assistant.mapper.ProjectMapper">
+    <insert id="insertAll">
+        insert into project (project,department,aveTime,nodeId,msg)
+        values
+        <foreach collection="list" item="project" index="index" separator=",">
+            (
+            #{project.project,jdbcType=VARCHAR},
+            #{project.department,jdbcType=VARCHAR},
+            #{project.avetime,jdbcType=INTEGER},
+            #{project.nodeId,jdbcType=VARCHAR},
+            #{project.msg,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
 
     <select id="selectAll" resultType="com.assistant.model.enity.Project">
         select *

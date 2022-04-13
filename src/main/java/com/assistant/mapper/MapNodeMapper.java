@@ -14,7 +14,7 @@ public interface MapNodeMapper {
 
     boolean insert(MapNode mapNode);
 
-    int insertNodes(List<MapNode> mapNodeList);
+    int insertAll(List<MapNode> mapNodeList);
 
     List<MapNode> getNodesByLevel(int level);
 
