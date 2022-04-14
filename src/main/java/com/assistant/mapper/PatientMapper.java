@@ -1,24 +1,9 @@
 package com.assistant.mapper;
 
-import com.assistant.model.enity.Patient;
+import com.assistant.model.intf.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
 @Mapper
-public interface PatientMapper {
-
-    String password(String username);
-
+public interface PatientMapper extends BaseMapper {
     boolean insert(String username, String password);
-
-    int insertPats(List<Patient> patientList);
-
-    long count();
-
-    List<Patient> selectAll();
-
-    Patient getByName(String username);
-
-    List<Patient> getPatientList(List<String> patientIds);
 }

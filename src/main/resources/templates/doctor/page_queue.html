@@ -6,6 +6,19 @@
     <link rel="stylesheet" href="/css/assistant.css">
 </head>
 <body>
+
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="element-filter" lay-allowclose="true">
+    <ul class="layui-tab-title">
+        <li class="layui-this unshow-i">项目队列管理</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <div class="map-button" id="buttons">
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/html" id="patientInfo">
     <div class="layui-form" lay-filter="patient" id="pageInfo">
         <div class="layui-form-item">
@@ -39,29 +52,8 @@
                 <input type="text" name="exception" placeholder="附加" autocomplete="off" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn layui-btn-normal" id="reflash">刷新</button>
-                <button class="layui-btn element-active" id="pop">完成当前检查</button>
-            </div>
-        </div>
     </div>
 </script>
-
-<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-queue" lay-allowclose="true">
-    <ul class="layui-tab-title">
-        <li class="layui-this unshow-i">科室队列管理</li>
-    </ul>
-    <div class="layui-tab-content">
-        <div class="layui-tab-item layui-show">
-            <div class="map-button">
-                <button class="layui-btn element-active" data-type="addInfo">检查患者</button>
-                <button class="layui-btn element-active" data-type="addList">患者排队情况</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script type="text/html" id="bar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
@@ -70,7 +62,156 @@
 
 <script src="/layui/layui.js"></script>
 <script>
-    const toolListener = function (obj) {
+    const $ = layui.jquery,
+        form = layui.form,
+        table = layui.table,
+        element = layui.element,
+        active = {
+            toJSON: function (response) {
+                form.val('patient', {
+                    "name": response['']
+                    , "sex": ""
+                    , "phone": ""
+                    , "age": ""
+                    , "exception": ""
+                });
+
+            },
+            pop: function (project) {
+                let data;
+                $.ajax({
+                    type: 'GET',
+                    url: '/doctor/queue.pop',
+                    data: {"project": project},
+                    async: false,
+                    success: function (response) {
+                        data = JSON.parse(response);
+                    }
+                })
+                if (data != null) {
+                    form.val('patient', data);
+                } else {
+                    form.val('patient', {
+                        "name": ""
+                        , "sex": ""
+                        , "phone": ""
+                        , "age": ""
+                        , "exception": ""
+                    });
+                }
+
+                return false;
+            },
+            peek: function (project) {
+                let data;
+                $.ajax({
+                    type: 'GET',
+                    url: '/doctor/queue.peek',
+                    data: {"project": project},
+                    async: false,
+                    success: function (response) {
+                        data = JSON.parse(response);
+                    }
+                })
+                form.val('patient', data);
+                return false;
+            },
+            getList: function (project) {
+                table.render(active.getConfig.call(this, project));
+            },
+            getConfig: function (project) {
+                return {
+                    elem: '#page-' + project
+                    , toolbar: '#toolbar'
+                    , title: '用户数据表'
+                    , url: '/doctor/queue.check_' + project
+                    , page: false
+                    , cols: [
+                        [ // TODO
+                            {fixed: 'left', type: 'checkbox'}
+                            , {type: 'numbers', fixed: "left"}
+                            , {field: 'username', title: '用户名', width: 100, sort: true, fixed: "left"}
+                            , {field: 'date', title: '排队时间', width: 200}
+                            , {field: 'name', title: '姓名', width: 100}
+                            , {field: 'sex', title: '性别', width: 80}
+                            , {field: 'age', title: '年龄', width: 80}
+                            , {field: 'phone', title: '电话', width: 135}
+                            , {field: 'exception', title: '备注', width: 80}
+                            , {field: 'msg', title: '描述', width: 300}
+                            , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
+                        ]
+                            // [
+                            // {fixed: 'left', type: 'checkbox'}
+                            //     , {type: 'numbers', fixed: "left"}
+                            //     , {field: 'patient.username', title: '用户名', width: 100, sort: true, fixed: "left"}
+                            //     , {field: 'date', title: '排队时间', width: 200}
+                            //     , {field: 'patient.name', title: '姓名', width: 100}
+                            //     , {field: 'patient.sex', title: '性别', width: 80}
+                            //     , {field: 'patient.age', title: '年龄', width: 80}
+                            //     , {field: 'patient.phone', title: '电话', width: 135}
+                            //     , {field: 'patient.exception', title: '备注', width: 80}
+                            //     , {field: 'patient.msg', title: '描述', width: 300}
+                            //     , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
+                            // ]
+                    ]
+                    , defaultToolbar: [
+                        {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
+                        , {title: '获取选中数目', layEvent: 'getCheckLength', icon: 'layui-icon-tips'}
+                        , {title: '验证是否全选', layEvent: 'isAll', icon: 'layui-icon-tips'}
+                        , 'filter'
+                        , 'exports'
+                        , 'print'
+                    ]
+                    , even: true
+                    , skin: 'row'
+                    , limit: 20
+                }
+            },
+            addPage: function (obj) {
+                let project = obj.attr('project').toString()
+                if ($('#page-' + project).length <= 0) {
+                    element.tabAdd('element-filter', {
+                        title: project
+                        , content:
+                            $('#patientInfo').html() +
+                            '<div class="layui-input-block">\n' +
+                            '<button class="layui-btn layui-btn-normal project-active" project = "' + project + '" data-type="peek">刷新</button>\n' +
+                            '<button class="layui-btn layui-btn-warm project-active" project = "' + project + '" data-type="pop">完成当前检查</button>\n' +
+                            '<button class="layui-btn project-active" project = "' + project + '" data-type="getList">患者排队情况</button>' +
+                            '</div>' +
+                            '<table id="page-' + project + '" lay-filter="table-filter"></table>'
+                        , id: 'page-' + project
+                    })
+                    $('.project-active').on('click', function () {
+                        var othis = $(this), type = othis.data('type');
+                        var project = othis.attr('project').toString()
+                        active[type] ? active[type].call(this, project) : '';
+                    });
+                }
+                element.tabChange('element-filter', 'page-' + project);
+                active.peek.call(this, project)
+            }
+        }
+
+    $.ajax({
+        url: "/doctor/getProjects",
+        type: "GET",
+        async: false,
+        success: function (res) {
+            let str = ""
+            const n = res.length;
+            for (let i = 0; i < n; i++) {
+                str += '<button class="layui-btn element-active" project = "' + res[i] + '" data-type="addPage">' + res[i] + '</button>'
+            }
+            $('#buttons').html(str)
+            $('.element-active').on('click', function () {
+                var othis = $(this), type = othis.data('type');
+                active[type] ? active[type].call(this, othis) : '';
+            });
+        }
+    })
+
+    table.on('tool(list-listener)', function (obj) {
         var data = obj.data;
         if (obj.event === 'detail') {
             layer.msg('ID：' + data.username + ' 的查看操作');
@@ -88,120 +229,9 @@
         } else if (obj.event === 'edit') {
             layer.alert('编辑行：<br>' + JSON.stringify(data))
         }
-    };
-
-    const page_config = {
-        elem: '#queue-list'
-        , toolbar: '#toolbar'
-        , title: '用户数据表'
-        , url: '/doctor/queue.check'//+project
-        , page: false
-        , cols: [
-            [
-                {fixed: 'left', type: 'checkbox'}
-                , {type: 'numbers', fixed: "left"}
-                , {field: 'username', title: '用户名', width: 100, sort: true, fixed: "left"}
-                , {field: 'date', title: '排队时间', width: 200}
-                , {field: 'name', title: '姓名', width: 100}
-                , {field: 'sex', title: '性别', width: 80}
-                , {field: 'age', title: '年龄', width: 80}
-                , {field: 'phone', title: '电话', width: 135}
-                , {field: 'exception', title: '备注', width: 80}
-                , {field: 'msg', title: '描述', width: 300}
-                , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
-            ]
-        ]
-    };
-    let render;
-    let table;
-    let element;
-    let active;
-</script>
-<script src="/js/table.js"></script>
-<script>
-    layui.use(['element'], function () {
-        let form = layui.form
-            , $ = layui.jquery
-            , active = {
-                pop: function () {
-                    let data;
-                    layui.$.ajax({
-                        type: 'GET',
-                        url: '/doctor/queue.pop',
-                        async: false,
-                        success: function (response) {
-                            data = JSON.parse(response);
-                        }
-                    })
-                    console.log(data)
-                    if (data != null) {
-                        form.val('patient', data);
-                    } else {
-                        form.val('patient', {
-                            "name": ""
-                            , "sex": ""
-                            , "phone": ""
-                            , "age": ""
-                            , "exception": ""
-                        });
-                    }
-
-                    return false;
-                },
-                peek: function () {
-                    let data;
-                    layui.$.ajax({
-                        type: 'GET',
-                        url: '/doctor/queue.peek',
-                        async: false,
-                        success: function (response) {
-                            data = JSON.parse(response);
-                        }
-                    })
-                    console.log(data)
-                    form.val('patient', data);
-                    return false;
-                },
-                addInfo: function () {
-                    if ($("#pageInfo").length <= 0) {
-                        element.tabAdd('management-queue', {
-                            title: '患者检查'
-                            , content:
-                                $('#patientInfo').html()
-                            , id: 'pageInfo'
-                        })
-                    }
-                    element.tabChange('management-queue', 'pageInfo');
-                    active["peek"].call()
-                    //表单赋值
-                    $('#reflash').on('click', function () {
-                        active["peek"].call()
-                    });
-                    $('#pop').on("click", function () {
-                        active["pop"].call()
-                    })
-                },
-                addList: function () {
-                    if ($("#queue-list").length <= 0) {
-                        element.tabAdd('management-queue', {
-                            title: '患者排队列表'
-                            , content:
-                                '<table id="queue-list" lay-filter="list-listener"></table>'
-                            , id: 'queue-list'
-                        })
-                        table.render(render);
-                    }
-                    element.tabChange('management-queue', 'queue-list');
-
-
-                }
-            }
-        ;
-        $('.element-active').on('click', function () {
-            var othis = $(this), type = othis.data('type');
-            active[type] ? active[type].call(this, othis) : '';
-        });
     });
+
+
 </script>
 </body>
 </html>

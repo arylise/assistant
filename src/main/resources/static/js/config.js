@@ -85,11 +85,18 @@ const doctor = [
         "name": "患者管理",
         "icon": "&#xe66f;",
         "list": [{
+            "name": "患者清单管理",
+            "url": "/page_patient"
+        },{
+            "name": "在线患者",
+            "url": "/page_activity"
+        }]
+    }, {
+        "name": "科室管理",
+        "icon": "&#xe66f;",
+        "list": [{
             "name": "科室排队",
             "url": "/page_queue"
-        },{
-            "name": "患者清单管理",
-            "url": "/page_project"
         }]
     }, {
         "name": "退出登录",
@@ -142,24 +149,27 @@ const patient = [
     }
 ];
 
-let menu;
-let role;
+let menu,
+    role,
+    name
 
 // function getLevel() {
 $.ajax({
     type: 'GET',
     url: '/checkRole',
     async: false,
-    success: function (data) {
-        if (data === ROLE.ADMIN) {
+    success: function (resp) {
+        let r = resp['role']
+        name = resp['name']
+        if (r === ROLE.ADMIN) {
             menu = admin;
             role = "管理员";
         }
-        if (data === ROLE.DOCTOR) {
+        if (r === ROLE.DOCTOR) {
             menu = doctor;
             role = "医生";
         }
-        if (data === ROLE.PATIENT) {
+        if (r === ROLE.PATIENT) {
             menu = patient;
             role = "患者";
         }
@@ -190,19 +200,9 @@ $.ajax({
 //
 // getLevel();
 
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i].trim();
-        if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
-    }
-    return "";
-}
-
 const config = {
     name: "检查助手",
-    hello: "你好" + getCookie("username") + role
+    hello: "你好" + name + role
 };
 
 // try {

@@ -1,5 +1,7 @@
 package com.assistant.constant;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,5 +62,12 @@ public class AssistantContext {
 
     public static String appendProjectPrefix(String username) {
         return String.format(PROJECT_LIST_CACHE_KEY, username);
+    }
+
+
+    public static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+
+    public static String getDateStr(Long time){
+        return simpleDateFormat.format(new Date(time));
     }
 }

@@ -14,10 +14,7 @@ import com.github.pagehelper.PageHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -54,9 +51,9 @@ public class DoctorController {
         return String.valueOf(b);
     }
 
-    @RequestMapping("/queue.check")
+    @RequestMapping("/queue.check_{project}")
     @ResponseBody
-    public String checkQueue(@RequestParam("project") String project) {
+    public String checkQueue(@PathVariable("project") String project) {
         return JSON.toJSONString(queueService.check(project));
     }
 
@@ -115,7 +112,7 @@ public class DoctorController {
 
     @RequestMapping("/getProjects")
     @ResponseBody
-    public String getProjects() {
-        return String.valueOf(doctorMapper.getProject(SecurityUtils.getUsername()));
+    public List<String> getProjects() {
+        return doctorMapper.getProject(SecurityUtils.getUsername());
     }
 }

@@ -7,7 +7,7 @@
         insert into patient(username, password, exception)
         values (#{username}, #{password}, 0)
     </insert>
-    <insert id="insertPats">
+    <insert id="insertAll">
         insert into patient (username, password, name, sex, age, phone, exception, msg)
         values
         <foreach collection="list" item="patient" index="index" separator=",">
@@ -42,7 +42,7 @@
         from patient
         where username = #{username}
     </select>
-    <select id="getPatientList" resultType="com.assistant.model.enity.Patient">
+    <select id="getUserList" resultType="com.assistant.model.enity.Patient">
         select username, name, sex, age, phone, exception, msg from patient
         where patient.username in
         <foreach collection="list" item="patient" open="(" close=")" separator=",">

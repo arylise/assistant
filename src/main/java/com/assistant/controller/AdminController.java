@@ -1,6 +1,7 @@
 package com.assistant.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.assistant.mapper.AdminMapper;
 import com.assistant.service.intf.AdminService;
 import com.assistant.service.intf.UserService;
 import com.github.pagehelper.PageHelper;
@@ -22,6 +23,7 @@ public class AdminController {
 
     private final AdminService adminService;
     private final UserService userService;
+    private final AdminMapper adminMapper;
 
     @RequestMapping("/list_{name}")
     @ResponseBody
@@ -32,9 +34,9 @@ public class AdminController {
         return JSON.toJSONString(adminService.findList(name));
     }
 
-    @RequestMapping("/delete_doctor")
-    public boolean deleteDoctor() {
-        return false;
+    @RequestMapping("/delete_{doctor}")
+    public boolean deleteUser(@PathVariable("username") String username) {
+        return adminMapper.deleteByNameAtAll(username);
     }
 
     @RequestMapping("/nodes_{level}")

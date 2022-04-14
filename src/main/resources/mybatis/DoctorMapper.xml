@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.assistant.mapper.DoctorMapper">
 
-    <insert id="insertDocs" parameterType="com.assistant.model.enity.Doctor">
+    <insert id="insertAll" parameterType="com.assistant.model.enity.Doctor">
         insert into doctor (username, password, name, department, sex, age, phone, msg)
         values
         <foreach collection="list" item="doctor" index="index" separator=",">

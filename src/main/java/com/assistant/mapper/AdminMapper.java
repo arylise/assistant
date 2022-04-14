@@ -16,4 +16,5 @@ public interface AdminMapper {
 
     List<String> checkUserName(String username);
 
+    boolean deleteByNameAtAll(String username);
 }

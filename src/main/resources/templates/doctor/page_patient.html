@@ -25,30 +25,25 @@
 
 <script src="/layui/layui.js"></script>
 <script>
-    layui.use('element', function () {
-        const $ = layui.jquery
-            , element = layui.element
-            , active = {
-                addPage: function (othis) {
-                    const page = othis.attr('page');
-                    if ($('#page-' + page).length <= 0) {
-                        element.tabAdd('map', {
-                            title: floor + '楼地图'
-                            , content:''
+    const element = layui.element,
+        active = { // TODO
+        addPage: function (othis) {
+            const page = othis.attr('page');
+            if ($('#page-' + page).length <= 0) {
+                element.tabAdd('map', {
+                    title: floor + '楼地图'
+                    , content: ''
 
-                            , id: 'floor' + floor
-                        })
-                    }
-                    element.tabChange('map', 'floor' + floor);
-
-                }
+                    , id: 'floor' + floor
+                })
             }
-        ;
+            element.tabChange('map', 'floor' + floor);
 
-        $('.patientProjects-button').on('click', function () {
-            const othis = $(this), type = othis.data('type');
-            active[type] ? active[type].call(this, othis) : '';
-        });
+        }
+    }
+    $('.patientProjects-button').on('click', function () {
+        const othis = $(this), type = othis.data('type');
+        active[type] ? active[type].call(this, othis) : '';
     });
 </script>
 </body>

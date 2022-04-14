@@ -6,6 +6,7 @@ import com.assistant.model.dto.PatientDTO;
 import com.assistant.model.dto.ProjectDTO;
 import com.assistant.model.dto.QueueCache;
 import com.assistant.model.enity.Patient;
+import com.assistant.model.intf.AssistantUser;
 import com.assistant.service.intf.ProjectService;
 import com.assistant.service.intf.QueueService;
 import com.assistant.utils.CacheUtils;
@@ -57,7 +58,7 @@ public class QueueServiceImpl implements QueueService {
             if (result) {
                 if (!ListUtils.isEmpty(cache.getNameList())) {
                     String s = cache.getNameList().get(0);
-                    Patient patient = patientMapper.getByName(s);
+                    Patient patient = (Patient) patientMapper.getByName(s);
                     Long time = cache.getTimestamp().get(0);
                     projectService.updateState(s, project, ProjectDTO.State.checking);
                     if (cache.getNameList().size() >= 2) {
@@ -104,7 +105,7 @@ public class QueueServiceImpl implements QueueService {
         if (queueList == null || queueList.size() == 0) {
             return DataList.builder().data(null).count(0).build();
         }
-        List<Patient> patientList = patientMapper.getPatientList(queueCache.getNameList());
+        List<AssistantUser> patientList = patientMapper.getUserList(queueCache.getNameList());
         List<PatientDTO> patientQueues = PatientDTO.trans(patientList, queueCache.getTimestamp());
         return DataList.builder().data(patientQueues).count(patientQueues.size()).build();
     }
@@ -117,7 +118,7 @@ public class QueueServiceImpl implements QueueService {
                 return null;
             }
             String s = cache.getNameList().get(0);
-            Patient patient = patientMapper.getByName(s);
+            Patient patient = (Patient) patientMapper.getByName(s);
             Long time = cache.getTimestamp().get(0);
             return new PatientDTO(patient, time);
         } catch (Exception e) {

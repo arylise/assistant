@@ -9,6 +9,7 @@ import com.assistant.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,9 +25,9 @@ public class PatientController {
     private final ProjectService projectService;
     private final PathUtils pathUtils;
 
-    @RequestMapping("/queue.reg")
+    @RequestMapping("/queue.reg_{project}")
     @ResponseBody
-    public boolean regQue(@RequestParam("project") String project) {
+    public boolean regQue(@PathVariable("project") String project) {
         return queueService.push(project, SecurityUtils.getUsername());
     }
 

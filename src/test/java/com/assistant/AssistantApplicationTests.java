@@ -5,6 +5,7 @@ import com.assistant.mapper.MapNodeMapper;
 import com.assistant.mapper.PatientMapper;
 import com.assistant.mapper.ProjectMapper;
 import com.assistant.model.enity.*;
+import com.assistant.model.intf.AssistantUser;
 import com.assistant.utils.CacheUtils;
 import com.assistant.utils.MapNodeUtils;
 import com.assistant.utils.PathUtils;
@@ -44,7 +45,7 @@ class AssistantApplicationTests {
 
     @Test
     void createDocTest() {
-        List<Doctor> doctors = new ArrayList<>();
+        List<AssistantUser> doctors = new ArrayList<>();
         String username = "doctor";
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         int i = 0;
@@ -53,12 +54,12 @@ class AssistantApplicationTests {
             int j = (int) (Math.random() * 9) + 1;
             doctors.add(new Doctor(namestr, encoder.encode(namestr), namestr, "department0" + j, "m", i, i, null));
         }
-        System.out.println(doctorMapper.insertDocs(doctors));
+        System.out.println(doctorMapper.insertAll(doctors));
     }
 
     @Test
     void createPatTest() {
-        List<Patient> patients = new ArrayList<>();
+        List<AssistantUser> patients = new ArrayList<>();
         String username = "patient";
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         int i = 0;
@@ -67,7 +68,7 @@ class AssistantApplicationTests {
             String namestr = username + (i < 10 ? "0" + i : i);
             patients.add(new Patient(namestr, encoder.encode(namestr), namestr, random > 0.5 ? "m" : "f", i, i, 0, null));
         }
-        System.out.println(patientMapper.insertPats(patients));
+        System.out.println(patientMapper.insertAll(patients));
     }
 
     @Test

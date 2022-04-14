@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,8 +42,11 @@ public class IndexController {
 
     @RequestMapping("/checkRole")
     @ResponseBody
-    public String checkRole() {
-        return SecurityUtils.getRole();
+    public Map<String, String> checkRole() {
+        return new HashMap<>() {{
+            put("role", SecurityUtils.getRole());
+            put("name", SecurityUtils.getUsername());
+        }};
     }
 
     @PostMapping("/signup.do")
@@ -52,11 +57,11 @@ public class IndexController {
 
     @RequestMapping("/writeMessage")
     @ResponseBody
-    public void writeMessage(@RequestParam("message") String message, @RequestParam(value = "answerId", required = false, defaultValue = "") String answerId,@RequestParam("incognito") Boolean incognito) {
+    public void writeMessage(@RequestParam("message") String message, @RequestParam(value = "answerId", required = false, defaultValue = "") String answerId, @RequestParam("incognito") Boolean incognito) {
         Message msg = new Message();
         msg.setMsg(message);
         msg.setAnswerId(answerId);
-        if (incognito){
+        if (incognito) {
             msg.setSpeakerUsername(SecurityUtils.getUsername());
             msg.setSpeakerRole(SecurityUtils.getRole());
         }
