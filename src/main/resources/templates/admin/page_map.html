@@ -21,7 +21,7 @@
 <body>
 <div class="layui-tab layui-tab-brief my-tab" lay-filter="map" lay-allowclose="true">
     <ul class="layui-tab-title">
-        <li class="layui-this unshow-i">地图管理</li>
+        <li class="layui-this unshow-i">&nbsp;&nbsp;地图管理&nbsp;&nbsp;</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
@@ -44,7 +44,7 @@
                 const floor = parseInt(othis.attr('floor'));
                 if ($('#floor' + floor).length <= 0) {
                     element.tabAdd('map', {
-                        title: floor + '楼地图'
+                        title: '&nbsp;&nbsp;' + floor + '楼地图&nbsp;&nbsp;'
                         , content:
                             '<div>'
                             + '<svg class="svgStyle map-active-showMeXY" xmlns="http://www.w3.org/2000/svg" version="1.1" data-type="showXY"">'

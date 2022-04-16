@@ -42,4 +42,8 @@
             #{project}
         </foreach>
     </select>
+    <select id="selectAllName" resultType="java.lang.String">
+        select project
+        from project
+    </select>
 </mapper>

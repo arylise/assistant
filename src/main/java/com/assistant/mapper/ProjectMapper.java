@@ -19,4 +19,6 @@ public interface ProjectMapper {
     List<Project> selectByIds(List<String> projectList);
 
     int insertAll(List<Project> list);
+
+    List<String> selectAllName();
 }

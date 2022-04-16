@@ -1,6 +1,7 @@
 package com.assistant.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.assistant.constant.AssistantContext;
 import com.assistant.mapper.DoctorMapper;
 import com.assistant.model.dto.DataList;
@@ -12,12 +13,15 @@ import com.assistant.service.intf.UserService;
 import com.assistant.utils.SecurityUtils;
 import com.github.pagehelper.PageHelper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.data.util.Pair;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -51,37 +55,42 @@ public class DoctorController {
         return String.valueOf(b);
     }
 
-    @RequestMapping("/queue.check_{project}")
+    @RequestMapping("/queue.check")
     @ResponseBody
-    public String checkQueue(@PathVariable("project") String project) {
+    public String checkQueue(@RequestParam("project") String project) {
         return JSON.toJSONString(queueService.check(project));
     }
 
-    @RequestMapping("/project.create")
+    @RequestMapping("/project.append")
     @ResponseBody
-    public String createProjects(@RequestParam("username") String username, @RequestBody List<String> projectIdList) {
-        boolean b = projectService.create(username, projectIdList);
+    public String appendProjects(@RequestBody JSONObject req) {
+        String patient = req.getString("patient");
+        List<String> projectIdList = (List<String>) req.get("projectIdList");
+        if (CollectionUtils.isEmpty(projectIdList)) {
+            System.out.println("empty projectList");
+            return null;
+        }
+        boolean b = projectService.appendOrFix(patient, projectIdList);
         return String.valueOf(b);
     }
 
     @RequestMapping("/project.check")
     @ResponseBody
-    public String checkProjects(@RequestParam("username") String username) {
-        DataList b = projectService.check(username);
+    public String checkProjects(@RequestParam("patient") String patient) {
+        DataList b = projectService.check(patient);
         return JSON.toJSONString(b);
+    }
+
+    @RequestMapping("/project.checkAllName")
+    @ResponseBody
+    public Set<String> checkProjectsAllName(@RequestParam("patient") String patient) {
+        return projectService.checkProjectsAllName(patient);
     }
 
     @RequestMapping("/project.del")
     @ResponseBody
     public String delProjects(@RequestParam("username") String username) {
         boolean b = projectService.delete(username);
-        return JSON.toJSONString(b);
-    }
-
-    @RequestMapping("/project.append")
-    @ResponseBody
-    public String appendProjects(@RequestParam("username") String username, @RequestBody List<String> projectIdList) {
-        boolean b = projectService.append(username, projectIdList);
         return JSON.toJSONString(b);
     }
 
@@ -99,7 +108,7 @@ public class DoctorController {
         return JSON.toJSONString(b);
     }
 
-    @RequestMapping("/getActivityPatient")
+    @RequestMapping("/getActivityPatients")
     @ResponseBody
     public String getActivityPatient(
             @RequestParam(value = "page", defaultValue = "1") int page,
@@ -115,4 +124,18 @@ public class DoctorController {
     public List<String> getProjects() {
         return doctorMapper.getProject(SecurityUtils.getUsername());
     }
+
+    @RequestMapping("/getActivityPatientNames")
+    @ResponseBody
+    public List<Pair<String, String>> getActivityPatientNames(HttpServletRequest request) {
+        return userService.getActivityPatientNames(request);
+    }
+
+    @RequestMapping("/getAllProjectName")
+    @ResponseBody
+    public List<Pair<String, String>> getAllProjectName() {
+        return projectService.getAllProjectName();
+    }
+
+
 }

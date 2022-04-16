@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -538,4 +539,19 @@ class AssistantApplicationTests {
         System.out.println(name.getRole());
     }
 
+    @Test
+    public void test11(){
+        Set<String> set1 = new HashSet<>(){{
+            add("123");
+            add("234");
+        }};
+        Set<String> set2 = new HashSet<>(){{
+            add("234");
+            add("345");
+        }};
+        System.out.println(CollectionUtils.disjunction(set1, set2));
+        System.out.println(CollectionUtils.removeAll(set1, set2));
+        System.out.println(set1);
+        System.out.println(set2);
+    }
 }

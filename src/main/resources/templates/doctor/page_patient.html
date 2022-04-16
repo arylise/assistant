@@ -7,44 +7,228 @@
 </head>
 <body>
 
-<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-patientProjects">
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-patientProjects" lay-allowclose="true">
     <ul class="layui-tab-title">
-        <li class="layui-this">患者管理</li>
+        <li class="layui-this unshow-i">患者管理</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
+            <div class="layui-inline layui-form">
+                <label class="layui-form-label">搜索选择框</label>
+                <div class="layui-input-inline">
+                    <select name="modules" lay-verify="required" lay-search="" id="patients">
+                        <option value="">还没有患者！</option>
+                    </select>
+                </div>
+            </div>
             <div class="patientProjects-button">
-                <button class="layui-btn patientProjects-button" data-type="addPage" page="check">查看检查清单</button>
-                <button class="layui-btn patientProjects-button" data-type="addPage" page="create">创建检查清单</button>
-                <button class="layui-btn patientProjects-button" data-type="addPage" page="update">修改检查清单</button>
-                <button class="layui-btn patientProjects-button" data-type="addPage" page="delete">删除检查清单</button>
+                <button class="layui-btn patientProjects-button" data-type="check">&nbsp;&nbsp;查看检查清单&nbsp;&nbsp;</button>
+                <button class="layui-btn patientProjects-button" data-type="append">&nbsp;&nbsp;创建/修改检查清单&nbsp;&nbsp;</button>
+                <!--                <button class="layui-btn patientProjects-button" data-type="addPage" page="append">修改检查清单</button>-->
+                <!--                <button class="layui-btn patientProjects-button" data-type="addPage" page="delete">删除检查清单</button>-->
             </div>
         </div>
     </div>
 </div>
-
+<script type="text/html" id="bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
 <script src="/layui/layui.js"></script>
 <script>
+    let data
     const element = layui.element,
-        active = { // TODO
-        addPage: function (othis) {
-            const page = othis.attr('page');
-            if ($('#page-' + page).length <= 0) {
-                element.tabAdd('map', {
-                    title: floor + '楼地图'
-                    , content: ''
+        table = layui.table,
+        transfer = layui.transfer,
+        util = layui.util,
+        $ = layui.jquery,
+        loadActive = function () {
+            console.log('active do')
+            const othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        },
+        active = {
+            check: function () {
+                const o = $('#patients option:selected'),
+                    userId = o.val(),
+                    username = o.text()
+                if (userId.length <= 0) {
+                    return
+                }
+                if ($('#checkList-' + userId).length > 0) {
+                    element.tabDelete('management-patientProjects', 'check-' + userId)
+                }
 
-                    , id: 'floor' + floor
+                element.tabAdd('management-patientProjects', {
+                    title: '&nbsp;&nbsp;' + username + '的清单&nbsp;&nbsp;'
+                    , content: '<table id="checkList-' + userId + '" lay-filter="list-listener"></table>'
+                    , id: 'check-' + userId
+                })
+                table.render({
+                    elem: '#checkList-' + userId
+                    , toolbar: '#toolbar'
+                    , title: '清单'
+                    , url: '/doctor/project.check'
+                    , where: {patient: userId}
+                    , page: false
+                    , cols: [
+                        [
+                            {fixed: 'left', type: 'checkbox'}
+                            , {type: 'numbers', fixed: "left"}
+                            , {field: 'state', title: '状态', width: 100, sort: true, fixed: "left"}
+                            , {field: 'project', title: '项目', width: 100}
+                            , {field: 'department', title: '科室', width: 180}
+                            , {field: 'nodeId', title: '科室地址', width: 80}
+                            , {field: 'avetime', title: '平均时间', width: 80}
+                            , {field: 'msg', title: '描述', width: 300}
+                            , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
+                        ]
+                    ]
+                    , defaultToolbar: [
+                        {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
+                        , {title: '获取选中数目', layEvent: 'getCheckLength', icon: 'layui-icon-tips'}
+                        , {title: '验证是否全选', layEvent: 'isAll', icon: 'layui-icon-tips'}
+                        , 'filter'
+                        , 'exports'
+                        , 'print'
+                    ]
+                    , even: true
+                    , skin: 'row'
+                })
+                //监听工具条
+                table.on('tool(list-listener)', function (obj) {
+                    var data = obj.data;
+                    if (obj.event === 'detail') {
+                        layer.msg('ID：' + data.username + ' 的查看操作');
+                    } else if (obj.event === 'del') {
+                        layer.confirm('test', function (index) {
+                            obj.del();
+                            layer.close(index);
+                            layui.$.ajax({
+                                type: 'GET',
+                                url: '/' + data.username,
+                                async: false
+                            })
+                        });
+                    } else if (obj.event === 'edit') {
+                        layer.alert('编辑行：<br>' + JSON.stringify(data))
+                    }
+                });
+                element.tabChange('management-patientProjects', 'check-' + userId);
+            },
+            append: function () {
+                const o = $('#patients option:selected'),
+                    userId = o.val(),
+                    username = o.text()
+                if (userId.length <= 0) {
+                    return
+                }
+                if ($('#createList-' + userId).length > 0) {
+                    element.tabDelete('management-patientProjects', 'append-' + userId)
+                }
+                element.tabAdd('management-patientProjects', {
+                    title: '&nbsp;&nbsp;创建' + username + '的清单&nbsp;&nbsp;',
+                    content:
+                        '<button class="layui-btn patientProjects-button" id="' + userId + '" data-type="do">创建检查清单</button>' +
+                        '<div id="createList-' + userId + '" class="my-transfer"></div>',
+                    id: 'createList-' + userId
+                })
+                $('#' + userId).on('click', loadActive);
+                let curData;
+                $.ajax({
+                    url: '/doctor/project.checkAllName?patient=' + userId,
+                    type: 'POST',
+                    async: false,
+                    success: function (res) {
+                        if (res.length > 0) {
+                            curData = res
+                        }
+                    }
+                })
+                transfer.render({
+                    elem: '#createList-' + userId,
+                    data: data,
+                    title: ['检查项目', '已选择项目'],
+                    showSearch: true,
+                    value: curData,
+                    parseData: function (res) {
+                        return {
+                            'value': res.first, 'title': res.second
+                        }
+                    },
+                    id: 'projectName-' + userId
+                })
+                util.event('lay-demo', {
+                    getData: function () {
+                        let getData = transfer.getData('projectName-' + userId);
+                        layer.alert(JSON.stringify(getData))
+                    },
+                    reload: function () {
+                        transfer.reload('projectName-' + userId, {
+                            showSearch: true
+                        })
+                    }
+                })
+                element.tabChange('management-patientProjects', 'createList-' + userId);
+            },
+            do: function (othis) {
+                let patientId = othis.attr('id'),
+                    list = transfer.getData('projectName-' + patientId),
+                    reqList = []
+                for (let i = 0; i < list.length; i++) {
+                    reqList.push(list[i].value)
+                }
+                console.log('do do')
+                console.log(list)
+                // let request = new JSON()
+                // request.patient=patientId
+                $.ajax({
+                    url: '/doctor/project.append',
+                    dataType: "json",
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify({
+                        'patient': patientId,
+                        'projectIdList': reqList
+                    }),
+                    type: 'POST',
+                    async: false,
+                    success: function (res) {
+                        if (res.length > 0) {
+                            let str = '<option value="">选择患者</option>'
+                            for (let i = 0; i < res.length; i++) {
+                                str += '<option value="' + res[i].first + '">' + res[i].second + '</option>'
+                            }
+                            $('#patients').html(str)
+                        }
+                    }
                 })
             }
-            element.tabChange('map', 'floor' + floor);
-
         }
-    }
-    $('.patientProjects-button').on('click', function () {
-        const othis = $(this), type = othis.data('type');
-        active[type] ? active[type].call(this, othis) : '';
-    });
+
+    $.ajax({
+        url: '/doctor/getActivityPatientNames',
+        type: 'GET',
+        async: false,
+        success: function (res) {
+            if (res.length > 0) {
+                let str = '<option value="">选择患者</option>'
+                for (let i = 0; i < res.length; i++) {
+                    str += '<option value="' + res[i].first + '">' + res[i].second + '</option>'
+                }
+                $('#patients').html(str)
+            }
+        }
+    })
+    $.ajax({
+        url: '/doctor/getAllProjectName',
+        type: 'GET',
+        async: false,
+        success: function (res) {
+            data = res
+        }
+    })
+    $('.patientProjects-button').on('click', loadActive);
 </script>
 </body>
 </html>

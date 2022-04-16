@@ -9,16 +9,17 @@ import com.assistant.service.intf.ProjectService;
 import com.assistant.utils.CacheUtils;
 import com.github.pagehelper.PageHelper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.MapUtils;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
     private final CacheUtils cacheUtils;
-    private ProjectMapper projectMapper;
+    private final ProjectMapper projectMapper;
 
     /**
      * 患者体检清单
@@ -41,10 +42,14 @@ public class ProjectServiceImpl implements ProjectService {
     public DataList check(String username) {
         try {
             ProjectCache cache = cacheUtils.getProjectList(username);
+            if (cache == null) {
+                return DataList.builder().count(0).build();
+            }
             List<Project> projects = projectMapper.selectByIds(new ArrayList<>(cache.getProjectMap().keySet()));
             List<ProjectDTO> trans = ProjectDTO.trans(projects, new ArrayList<>(cache.getProjectMap().values()));
             return DataList.builder().data(trans).count(trans.size()).build();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
+        } finally {
             PageHelper.clearPage();
         }
         return null;
@@ -61,10 +66,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public boolean append(String username, List<String> projectIdList) {
+    public boolean appendOrFix(String username, List<String> projectIdList) {
         try {
             ProjectCache cache = cacheUtils.getProjectList(username);
-            boolean b = cache.append(projectIdList);
+            if (cache == null) {
+                cache = ProjectCache.builder().projectMap(new HashMap<>()).build();
+            }
+            boolean b = cache.appendOrFix(projectIdList);
             return b && cacheUtils.putProjectList(username, cache);
         } catch (Exception e) {
             return false;
@@ -91,5 +99,28 @@ public class ProjectServiceImpl implements ProjectService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public List<Pair<String, String>> getAllProjectName() {
+        List<String> list = projectMapper.selectAllName();
+        return new ArrayList<>() {{
+            for (String s : list) {
+                add(Pair.of(s, s));
+            }
+        }};
+    }
+
+    @Override
+    public Set<String> checkProjectsAllName(String patient) {
+        try {
+            ProjectCache cache = cacheUtils.getProjectList(patient);
+            if (cache == null || MapUtils.isEmpty(cache.getProjectMap())) {
+                return new HashSet<>();
+            }
+            return cache.getProjectMap().keySet();
+        } catch (Exception ignored) {
+        }
+        return null;
     }
 }

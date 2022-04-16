@@ -7,12 +7,12 @@
 </head>
 <body>
 
-<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-activity">
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-activity" lay-allowclose="true">
     <ul class="layui-tab-title">
-        <li class="layui-this">在线患者用户</li>
+        <li class="layui-this">&nbsp;&nbsp;在线患者用户&nbsp;&nbsp;</li>
     </ul>
     <div class="layui-tab-content">
-        <div class="layui-tab-item">
+        <div class="layui-tab-item layui-show">
             <table id="activity-list" lay-filter="list-listener"></table>
         </div>
     </div>
@@ -20,11 +20,10 @@
 
 <script src="/layui/layui.js"></script>
 <script>
-    layui.table.render({ // TODO 无效?
+    layui.table.render({
         elem: '#activity-list'
-        , toolbar: '#toolbar'
         , title: '用户数据表'
-        , url: '/doctor/getActivityPatient'
+        , url: '/doctor/getActivityPatients'
         , page: true
         , cols: [
             [
@@ -42,9 +41,6 @@
             {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
             , {title: '获取选中数目', layEvent: 'getCheckLength', icon: 'layui-icon-tips'}
             , {title: '验证是否全选', layEvent: 'isAll', icon: 'layui-icon-tips'}
-            , 'filter'
-            , 'exports'
-            , 'print'
         ]
         , even: true
         , skin: 'row'

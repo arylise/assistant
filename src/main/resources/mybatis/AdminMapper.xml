@@ -33,4 +33,7 @@
         FROM patient
         WHERE FIND_IN_SET(#{usernaem}, patient.username);
     </select>
+    <select id="getByNameFromtAll" resultType="org.springframework.security.core.userdetails.UserDetails">
+
+    </select>
 </mapper>

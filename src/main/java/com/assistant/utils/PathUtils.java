@@ -7,7 +7,6 @@ import com.assistant.model.enity.Project;
 import com.assistant.service.intf.ElevatorService;
 import lombok.*;
 import org.springframework.stereotype.Component;
-import org.thymeleaf.util.ListUtils;
 import org.thymeleaf.util.StringUtils;
 
 import java.util.*;
@@ -97,50 +96,24 @@ public class PathUtils {
         return ans;
     }
 
-    private void parseList(List<String> projectIds) {
-        if (ListUtils.isEmpty(projectIds)) {
-            // TODO TEST CODE
-            this.timeMap = new HashMap<>() {{
-                put("0", 0L);
-                put("10011", 1000L);
-                put("10015", 2000L);
-                put("10012", 1000L);
-            }};
+    private void parseList(@NonNull List<String> projectIds) {
+        List<Project> projectList = projectMapper.selectByIds(projectIds);
+        this.idList = new ArrayList<>() {{
+            add("0");
+            for (Project project : projectList) {
+                add(project.getNodeId());
+            }
+        }};
 
-            this.timeList = new ArrayList<>() {{
-                add(0L);
-                add(10000L);
-                add(30000L);
-                add(25000L);
-            }};
-            this.idList = new ArrayList<>() {{
-                add("0");
-                add("10011");
-                add("10015");
-                add("10012");
-//            add(40007);
-            }};
-        } else {
-            // TODO 检查逻辑
-            List<Project> projectList = projectMapper.selectByIds(projectIds);
-            this.idList = new ArrayList<>() {{
-                add("0");
-                for (Project project : projectList) {
-                    add(project.getNodeId());
-                }
-            }};
+        this.timeMap = new HashMap<>();
 
-            this.timeMap = new HashMap<>();
-
-            this.timeList = new ArrayList<>() {{
-                for (Project project : projectList) {
-                    QueueCache cache = cacheUtils.getQueueCache(project.getProject());
-                    add(cache.getNameList().size() * cache.getProject().getAvetime());
-                    timeMap.put(project.getNodeId(), cache.getProject().getAvetime());
-                }
-            }};
-
-        }
+        this.timeList = new ArrayList<>() {{
+            for (Project project : projectList) {
+                QueueCache cache = cacheUtils.getQueueCache(project.getProject());
+                add(cache.getNameList().size() * cache.getProject().getAvetime());
+                timeMap.put(project.getNodeId(), cache.getProject().getAvetime());
+            }
+        }};
     }
 
 

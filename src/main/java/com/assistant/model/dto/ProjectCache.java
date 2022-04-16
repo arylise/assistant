@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,11 +21,16 @@ import java.util.stream.Collectors;
 public class ProjectCache {
     private Map<String, ProjectDTO.State> projectMap;
 
-    public boolean append(List<String> projectList) {
-        for (String s : projectList) {
-            if (projectMap.containsKey(s)) {
-                return false;
-            }
+    public boolean appendOrFix(List<String> projectList) {
+        if (CollectionUtils.isEmpty(projectList)){
+            return false;
+        }
+        Collection<String> strings = CollectionUtils.removeAll(projectMap.keySet(), projectList);
+        Collection<String> inc = CollectionUtils.removeAll(projectList, projectMap.keySet());
+        for (String string : strings) {
+            projectMap.remove(string);
+        }
+        for (String s : inc) {
             projectMap.put(s, ProjectDTO.State.uncheck);
         }
         return true;

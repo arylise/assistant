@@ -56,7 +56,7 @@
 }
 
 .my-tab ul li {
-    width: 100px;
+    width: auto;
     padding: 0;
 }
 
@@ -88,4 +88,11 @@
     width: fit-content;
     max-width: 1500px;
     margin: 0 auto;
+}
+.layui-transfer-box{
+    width: 400px !important;
+    height: auto;
+}
+.layui-transfer-data{
+    width: 400px !important;
 }

@@ -9,7 +9,7 @@
 
 <div class="layui-tab layui-tab-brief my-tab" lay-filter="element-filter" lay-allowclose="true">
     <ul class="layui-tab-title">
-        <li class="layui-this unshow-i">项目队列管理</li>
+        <li class="layui-this unshow-i">&nbsp;&nbsp;项目队列管理&nbsp;&nbsp;</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
@@ -124,7 +124,8 @@
                     elem: '#page-' + project
                     , toolbar: '#toolbar'
                     , title: '用户数据表'
-                    , url: '/doctor/queue.check_' + project
+                    , url: '/doctor/queue.check'
+                    , where: {project: project}
                     , page: false
                     , cols: [
                         [ // TODO
@@ -140,19 +141,19 @@
                             , {field: 'msg', title: '描述', width: 300}
                             , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
                         ]
-                            // [
-                            // {fixed: 'left', type: 'checkbox'}
-                            //     , {type: 'numbers', fixed: "left"}
-                            //     , {field: 'patient.username', title: '用户名', width: 100, sort: true, fixed: "left"}
-                            //     , {field: 'date', title: '排队时间', width: 200}
-                            //     , {field: 'patient.name', title: '姓名', width: 100}
-                            //     , {field: 'patient.sex', title: '性别', width: 80}
-                            //     , {field: 'patient.age', title: '年龄', width: 80}
-                            //     , {field: 'patient.phone', title: '电话', width: 135}
-                            //     , {field: 'patient.exception', title: '备注', width: 80}
-                            //     , {field: 'patient.msg', title: '描述', width: 300}
-                            //     , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
-                            // ]
+                        // [
+                        // {fixed: 'left', type: 'checkbox'}
+                        //     , {type: 'numbers', fixed: "left"}
+                        //     , {field: 'patient.username', title: '用户名', width: 100, sort: true, fixed: "left"}
+                        //     , {field: 'date', title: '排队时间', width: 200}
+                        //     , {field: 'patient.name', title: '姓名', width: 100}
+                        //     , {field: 'patient.sex', title: '性别', width: 80}
+                        //     , {field: 'patient.age', title: '年龄', width: 80}
+                        //     , {field: 'patient.phone', title: '电话', width: 135}
+                        //     , {field: 'patient.exception', title: '备注', width: 80}
+                        //     , {field: 'patient.msg', title: '描述', width: 300}
+                        //     , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
+                        // ]
                     ]
                     , defaultToolbar: [
                         {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
@@ -171,7 +172,7 @@
                 let project = obj.attr('project').toString()
                 if ($('#page-' + project).length <= 0) {
                     element.tabAdd('element-filter', {
-                        title: project
+                        title: '&nbsp;&nbsp;' + project + '&nbsp;&nbsp;'
                         , content:
                             $('#patientInfo').html() +
                             '<div class="layui-input-block">\n' +
