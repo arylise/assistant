@@ -65,9 +65,14 @@ public class AssistantContext {
     }
 
 
-    public static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+    private static final SimpleDateFormat yyyyMMdd = new SimpleDateFormat();
+    private static final SimpleDateFormat HHmmss = new SimpleDateFormat("mm分");
 
-    public static String getDateStr(Long time){
-        return simpleDateFormat.format(new Date(time));
+    public static String getDateStr(Long time) {
+        return yyyyMMdd.format(new Date(time));
+    }
+
+    public static String getMinStr(Long time) {
+        return String.format("%d分钟", time / 1000 / 60);
     }
 }

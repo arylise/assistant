@@ -9,19 +9,19 @@ import java.util.List;
 import java.util.Set;
 
 public interface ProjectService {
-    boolean create(String username, List<String> projectIdList);
+    boolean create(String patient, List<String> projectIdList);
 
-    boolean delete(String username);
+    boolean delete(String patient);
 
-    DataList check(String username);
+    DataList check(String patient);
 
-    ProjectCache checkProjectList(String username);
+    ProjectCache checkProjectList(String patient);
 
-    boolean appendOrFix(String username, List<String> projectOdList);
+    boolean appendOrFix(String patient, List<String> projectOdList);
 
-    boolean updateState(String username, String project, ProjectDTO.State state);
+    boolean updateState(String patient, String project, ProjectDTO.State state);
 
-    boolean remove(String username, List<String> projectIdList);
+    boolean remove(String patient, List<String> projectIdList);
 
     List<Pair<String, String>> getAllProjectName();
 

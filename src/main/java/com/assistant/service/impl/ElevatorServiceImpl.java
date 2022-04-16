@@ -60,11 +60,10 @@ public class ElevatorServiceImpl implements ElevatorService {
 
     @Override
     public Map<String, int[]> getElevatorTimeMap(List<String> elevatorIdList) {
-        Map<String, int[]> map = new HashMap<>() {{
+        return new HashMap<>() {{
             for (String id : elevatorIdList) {
                 put(id, getElevatorTimes(id));
             }
         }};
-        return map;
     }
 }

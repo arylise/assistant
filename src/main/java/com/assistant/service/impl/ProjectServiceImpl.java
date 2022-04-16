@@ -21,27 +21,20 @@ public class ProjectServiceImpl implements ProjectService {
     private final CacheUtils cacheUtils;
     private final ProjectMapper projectMapper;
 
-    /**
-     * 患者体检清单
-     *
-     * @param username
-     * @param projectIdList
-     * @return
-     */
     @Override
-    public boolean create(String username, List<String> projectIdList) {
-        return cacheUtils.putProjectList(username, ProjectCache.initCache(projectIdList));
+    public boolean create(String patient, List<String> projectIdList) {
+        return cacheUtils.putProjectList(patient, ProjectCache.initCache(projectIdList));
     }
 
     @Override
-    public boolean delete(String username) {
-        return cacheUtils.delProjectList(username);
+    public boolean delete(String patient) {
+        return cacheUtils.delProjectList(patient);
     }
 
     @Override
-    public DataList check(String username) {
+    public DataList check(String patient) {
         try {
-            ProjectCache cache = cacheUtils.getProjectList(username);
+            ProjectCache cache = cacheUtils.getProjectList(patient);
             if (cache == null) {
                 return DataList.builder().count(0).build();
             }
@@ -56,9 +49,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectCache checkProjectList(String username) {
+    public ProjectCache checkProjectList(String patient) {
         try {
-            return cacheUtils.getProjectList(username);
+            return cacheUtils.getProjectList(patient);
         } catch (Exception e) {
             PageHelper.clearPage();
         }
@@ -66,36 +59,36 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public boolean appendOrFix(String username, List<String> projectIdList) {
+    public boolean appendOrFix(String patient, List<String> projectIdList) {
         try {
-            ProjectCache cache = cacheUtils.getProjectList(username);
+            ProjectCache cache = cacheUtils.getProjectList(patient);
             if (cache == null) {
                 cache = ProjectCache.builder().projectMap(new HashMap<>()).build();
             }
             boolean b = cache.appendOrFix(projectIdList);
-            return b && cacheUtils.putProjectList(username, cache);
+            return b && cacheUtils.putProjectList(patient, cache);
         } catch (Exception e) {
             return false;
         }
     }
 
     @Override
-    public boolean updateState(String username, String project, ProjectDTO.State state) {
+    public boolean updateState(String patient, String project, ProjectDTO.State state) {
         try {
-            ProjectCache cache = cacheUtils.getProjectList(username);
+            ProjectCache cache = cacheUtils.getProjectList(patient);
             cache.getProjectMap().put(project, state);
-            return cacheUtils.putProjectList(username, cache);
+            return cacheUtils.putProjectList(patient, cache);
         } catch (Exception e) {
             return false;
         }
     }
 
     @Override
-    public boolean remove(String username, List<String> projectIdList) {
+    public boolean remove(String patient, List<String> projectIdList) {
         try {
-            ProjectCache cache = cacheUtils.getProjectList(username);
+            ProjectCache cache = cacheUtils.getProjectList(patient);
             boolean b = cache.remove(projectIdList);
-            return b && cacheUtils.putProjectList(username, cache);
+            return b && cacheUtils.putProjectList(patient, cache);
         } catch (Exception e) {
             return false;
         }

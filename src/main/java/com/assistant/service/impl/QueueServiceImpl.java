@@ -32,10 +32,8 @@ public class QueueServiceImpl implements QueueService {
             if (!ListUtils.isEmpty(cache.getNameList()) && cache.getNameList().contains(username)) {
                 return false;
             }
-            if (ListUtils.isEmpty(cache.getNameList())) {
-                projectService.updateState(username, project,
-                        cache.getNameList().size() == 1 ? ProjectDTO.State.onCall : ProjectDTO.State.checking);
-            }
+            projectService.updateState(username, project,
+                    ListUtils.isEmpty(cache.getNameList()) ? ProjectDTO.State.checking : ProjectDTO.State.onCall);
             cache.add(username, System.currentTimeMillis());
             return cacheUtils.putQueueCache(project, cache);
         } catch (Exception e) {
@@ -61,9 +59,6 @@ public class QueueServiceImpl implements QueueService {
                     Patient patient = (Patient) patientMapper.getByName(s);
                     Long time = cache.getTimestamp().get(0);
                     projectService.updateState(s, project, ProjectDTO.State.checking);
-                    if (cache.getNameList().size() >= 2) {
-                        projectService.updateState(cache.getNameList().get(1), project, ProjectDTO.State.onCall);
-                    }
                     return new PatientDTO(patient, time);
                 }
             }

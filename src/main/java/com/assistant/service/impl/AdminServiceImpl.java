@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
-    private final AdminMapper adminMapper;
     private final DoctorMapper doctorMapper;
     private final PatientMapper patientMapper;
     private final ProjectMapper projectMapper;

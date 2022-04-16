@@ -1,10 +1,15 @@
 package com.assistant;
 
+import com.assistant.constant.AssistantContext;
 import com.assistant.mapper.DoctorMapper;
 import com.assistant.mapper.MapNodeMapper;
 import com.assistant.mapper.PatientMapper;
 import com.assistant.mapper.ProjectMapper;
-import com.assistant.model.enity.*;
+import com.assistant.model.dto.ProjectDTO;
+import com.assistant.model.enity.Doctor;
+import com.assistant.model.enity.MapNode;
+import com.assistant.model.enity.Patient;
+import com.assistant.model.enity.Project;
 import com.assistant.model.intf.AssistantUser;
 import com.assistant.utils.CacheUtils;
 import com.assistant.utils.MapNodeUtils;
@@ -508,7 +513,7 @@ class AssistantApplicationTests {
 
     @Test
     public void test07() {
-        PathUtils.TspResult bestPath = pathUtils.getBestPath(null, 1, 1);
+        PathUtils.TspResult bestPath = pathUtils.getBestPath(null, 1, 1, AssistantContext.FLOYD_MATRIX_ALL);
         System.out.println(bestPath);
     }
 
@@ -553,5 +558,21 @@ class AssistantApplicationTests {
         System.out.println(CollectionUtils.removeAll(set1, set2));
         System.out.println(set1);
         System.out.println(set2);
+    }
+
+    @Test
+    public void test12(){
+        int weight =  switch (ProjectDTO.State.onCall) {
+            case checking -> 100;
+            case onCall -> 50;
+            case uncheck -> 25;
+            case checked -> 0;
+        };
+        System.out.println(weight);
+    }
+
+    @Test
+    public void test13(){
+        System.out.println(AssistantContext.getMinStr(6000000L));
     }
 }

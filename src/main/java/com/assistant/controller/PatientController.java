@@ -9,12 +9,12 @@ import com.assistant.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,9 +25,9 @@ public class PatientController {
     private final ProjectService projectService;
     private final PathUtils pathUtils;
 
-    @RequestMapping("/queue.reg_{project}")
+    @RequestMapping("/queue.reg")
     @ResponseBody
-    public boolean regQue(@PathVariable("project") String project) {
+    public boolean regQue(@RequestParam("project") String project) {
         return queueService.push(project, SecurityUtils.getUsername());
     }
 
@@ -39,9 +39,9 @@ public class PatientController {
 
     @RequestMapping("/getPath")
     @ResponseBody
-    public String getPath(@RequestParam int weightPath, @RequestParam int weightTime) {
+    public String getPath() {
         List<String> list = null;
-        return pathUtils.getBestPath(list, weightPath, weightTime).toString();
+        return null;
     }
 
     @RequestMapping("/project.check")
@@ -49,5 +49,11 @@ public class PatientController {
     public String checkProjects() {
         DataList b = projectService.check(SecurityUtils.getUsername());
         return JSON.toJSONString(b);
+    }
+
+    @RequestMapping("/project.checkProjectsAllName")
+    @ResponseBody
+    public Set<String> checkProjectsAllName() {
+        return projectService.checkProjectsAllName(SecurityUtils.getUsername());
     }
 }

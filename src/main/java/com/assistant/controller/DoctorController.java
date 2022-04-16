@@ -63,15 +63,14 @@ public class DoctorController {
 
     @RequestMapping("/project.append")
     @ResponseBody
-    public String appendProjects(@RequestBody JSONObject req) {
+    public Boolean appendProjects(@RequestBody JSONObject req) {
         String patient = req.getString("patient");
         List<String> projectIdList = (List<String>) req.get("projectIdList");
         if (CollectionUtils.isEmpty(projectIdList)) {
             System.out.println("empty projectList");
             return null;
         }
-        boolean b = projectService.appendOrFix(patient, projectIdList);
-        return String.valueOf(b);
+        return projectService.appendOrFix(patient, projectIdList);
     }
 
     @RequestMapping("/project.check")

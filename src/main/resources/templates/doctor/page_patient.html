@@ -22,8 +22,10 @@
                 </div>
             </div>
             <div class="patientProjects-button">
-                <button class="layui-btn patientProjects-button" data-type="check">&nbsp;&nbsp;查看检查清单&nbsp;&nbsp;</button>
-                <button class="layui-btn patientProjects-button" data-type="append">&nbsp;&nbsp;创建/修改检查清单&nbsp;&nbsp;</button>
+                <button class="layui-btn patientProjects-button" data-type="check">&nbsp;&nbsp;查看检查清单&nbsp;&nbsp;
+                </button>
+                <button class="layui-btn patientProjects-button" data-type="append">&nbsp;&nbsp;创建/修改检查清单&nbsp;&nbsp;
+                </button>
                 <!--                <button class="layui-btn patientProjects-button" data-type="addPage" page="append">修改检查清单</button>-->
                 <!--                <button class="layui-btn patientProjects-button" data-type="addPage" page="delete">删除检查清单</button>-->
             </div>
@@ -125,12 +127,12 @@
                     return
                 }
                 if ($('#createList-' + userId).length > 0) {
-                    element.tabDelete('management-patientProjects', 'append-' + userId)
+                    element.tabDelete('management-patientProjects', 'createList-' + userId)
                 }
                 element.tabAdd('management-patientProjects', {
-                    title: '&nbsp;&nbsp;创建' + username + '的清单&nbsp;&nbsp;',
+                    title: '&nbsp;&nbsp;创建/修改' + username + '的清单&nbsp;&nbsp;',
                     content:
-                        '<button class="layui-btn patientProjects-button" id="' + userId + '" data-type="do">创建检查清单</button>' +
+                        '<button class="layui-btn layui-btn-warm patientProjects-button" id="' + userId + '" data-type="do">确定</button>' +
                         '<div id="createList-' + userId + '" class="my-transfer"></div>',
                     id: 'createList-' + userId
                 })
@@ -194,13 +196,7 @@
                     type: 'POST',
                     async: false,
                     success: function (res) {
-                        if (res.length > 0) {
-                            let str = '<option value="">选择患者</option>'
-                            for (let i = 0; i < res.length; i++) {
-                                str += '<option value="' + res[i].first + '">' + res[i].second + '</option>'
-                            }
-                            $('#patients').html(str)
-                        }
+                        layer.msg(res ? '成功' : '失败');
                     }
                 })
             }

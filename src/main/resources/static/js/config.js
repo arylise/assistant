@@ -61,6 +61,13 @@ const admin = [
             "url": "/test_4"
         }]
     }, {
+        "name": "评论专区",
+        "icon": "&#xe609;",
+        "list": [{
+            "name": "查看评论",
+            "url": "/message"
+        }]
+    }, {
         "name": "退出登录",
         "icon": "&#xe65c;",
         "url": "/logout",
@@ -87,7 +94,7 @@ const doctor = [
         "list": [{
             "name": "患者清单管理",
             "url": "/page_patient"
-        },{
+        }, {
             "name": "在线患者",
             "url": "/page_activity"
         }]
@@ -97,6 +104,13 @@ const doctor = [
         "list": [{
             "name": "科室排队",
             "url": "/page_queue"
+        }]
+    }, {
+        "name": "评论专区",
+        "icon": "&#xe609;",
+        "list": [{
+            "name": "查看评论",
+            "url": "/message"
         }]
     }, {
         "name": "退出登录",
@@ -114,32 +128,35 @@ const patient = [
         "url": "/index",
         "list": [],
     }, {
-        "name": "测试页面",
+        "name": "清单管理",
         "icon": "&#xe612;",
-        "baseUrl": "/test",
         "list": [{
-            "name": "register",
-            "url": ""
+            "name": "查看清单",
+            "url": "/page_projects"
+        }]
+    }, {
+        "name": "挂号管理",
+        "icon": "&#xe612;",
+        "list": [{
+            "name": "挂号管理",
+            "url": "/page_register"
+        }, {
+            "name": "排队情况",
+            "url": "/page_queue"
+        }]
+    }, {
+        "name": "评论专区",
+        "icon": "&#xe609;",
+        "list": [{
+            "name": "查看评论",
+            "url": "/message"
         }]
     }, {
         "name": "测试页面",
         "icon": "&#xe612;",
-        "baseUrl": "/test",
         "list": [{
-            "name": "redis测试",
-            "url": "/test_redis"
-        }, {
-            "name": "测试1",
-            "url": "/test_1"
-        }, {
-            "name": "测试2",
-            "url": "/test_2"
-        }, {
-            "name": "测试3",
-            "url": "/test_3"
-        }, {
-            "name": "测试4",
-            "url": "/test_4"
+            "name": "10017",
+            "url": "/patient/queue.reg?project=project10017"
         }]
     }, {
         "name": "退出登录",
@@ -202,7 +219,7 @@ $.ajax({
 
 const config = {
     name: "检查助手",
-    hello: "你好" + name + role
+    hello: "你好" + role + name
 };
 
 // try {

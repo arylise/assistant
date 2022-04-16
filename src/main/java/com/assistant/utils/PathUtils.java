@@ -1,5 +1,6 @@
 package com.assistant.utils;
 
+import com.assistant.constant.AssistantContext;
 import com.assistant.mapper.ProjectMapper;
 import com.assistant.model.dto.QueueCache;
 import com.assistant.model.enity.MapNode;
@@ -117,10 +118,22 @@ public class PathUtils {
     }
 
 
-    public TspResult getBestPath(List<String> projectIds, int weightPath, int weightTime) {
+    public TspResult getBestPath(List<String> projectIds, int weightPath, int weightTime, String action) {
         parseList(projectIds);
-
-        MapNodeUtils.FloydResult floydResult = cacheUtils.getFloydMatrix();
+        MapNodeUtils.FloydResult floydResult;
+        switch (action) {
+            case AssistantContext.FLOYD_MATRIX_ALL:
+                floydResult = cacheUtils.getFloydMatrix();
+                break;
+            case AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_STAIR:
+                floydResult = cacheUtils.getFloydMatrixWithoutStair();
+                break;
+            case AssistantContext.FLOYD_MATRIX_ALL_WITHOUT_ELEVATOR:
+                floydResult = cacheUtils.getFloydMatrixWithoutElevator();
+                break;
+            default:
+                return null;
+        }
         this.elevatorMap = cacheUtils.getElevatorMap();
         List<String> elevatorIdList = elevatorMap.values().stream().map(MapNode::getElevatorId).collect(Collectors.toList());
         this.elevatorTimeMap = elevatorService.getElevatorTimeMap(elevatorIdList);

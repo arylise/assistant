@@ -25,7 +25,7 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping(value = {"/index", "/login", "/signup", "/login_error"})
+    @RequestMapping(value = {"/index", "/login", "/signup", "/login_error", "/message"})
     public String index(HttpServletRequest request) {
         return request.getRequestURI();
     }
@@ -55,7 +55,7 @@ public class IndexController {
         return ans ? "signup_success" : "signup_error";
     }
 
-    @RequestMapping("/writeMessage")
+    @RequestMapping("/message.write")
     @ResponseBody
     public void writeMessage(@RequestParam("message") String message, @RequestParam(value = "answerId", required = false, defaultValue = "") String answerId, @RequestParam("incognito") Boolean incognito) {
         Message msg = new Message();
