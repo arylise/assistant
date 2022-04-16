@@ -2,7 +2,7 @@ package com.assistant.service.intf;
 
 import com.assistant.model.dto.DataList;
 import com.assistant.model.dto.ProjectCache;
-import com.assistant.model.dto.ProjectDTO;
+import com.assistant.model.dto.State;
 import org.springframework.data.util.Pair;
 
 import java.util.List;
@@ -19,11 +19,13 @@ public interface ProjectService {
 
     boolean appendOrFix(String patient, List<String> projectOdList);
 
-    boolean updateState(String patient, String project, ProjectDTO.State state);
+    boolean updateState(String patient, String project, State state);
 
     boolean remove(String patient, List<String> projectIdList);
 
     List<Pair<String, String>> getAllProjectName();
 
     Set<String> checkProjectsAllName(String patient);
+
+    DataList getQue(String patient);
 }

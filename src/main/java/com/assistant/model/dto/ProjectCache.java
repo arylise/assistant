@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 public class ProjectCache {
-    private Map<String, ProjectDTO.State> projectMap;
+    private Map<String, State> projectMap;
 
     public boolean appendOrFix(List<String> projectList) {
         if (CollectionUtils.isEmpty(projectList)){
@@ -31,7 +31,7 @@ public class ProjectCache {
             projectMap.remove(string);
         }
         for (String s : inc) {
-            projectMap.put(s, ProjectDTO.State.uncheck);
+            projectMap.put(s, State.uncheck);
         }
         return true;
     }
@@ -48,7 +48,7 @@ public class ProjectCache {
     }
 
     public static ProjectCache initCache(List<String> projectList) {
-        Map<String, ProjectDTO.State> collect = projectList.stream().collect(Collectors.toMap(String::toString, o -> ProjectDTO.State.uncheck));
+        Map<String, State> collect = projectList.stream().collect(Collectors.toMap(String::toString, o -> State.uncheck));
         return ProjectCache.builder().projectMap(collect).build();
     }
 }

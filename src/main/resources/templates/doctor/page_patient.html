@@ -13,7 +13,7 @@
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            <div class="layui-inline layui-form">
+            <div class="layui-inline layui-form" style="margin: 20px">
                 <label class="layui-form-label">搜索选择框</label>
                 <div class="layui-input-inline">
                     <select name="modules" lay-verify="required" lay-search="" id="patients">
@@ -21,22 +21,13 @@
                     </select>
                 </div>
             </div>
-            <div class="patientProjects-button">
-                <button class="layui-btn patientProjects-button" data-type="check">&nbsp;&nbsp;查看检查清单&nbsp;&nbsp;
-                </button>
-                <button class="layui-btn patientProjects-button" data-type="append">&nbsp;&nbsp;创建/修改检查清单&nbsp;&nbsp;
-                </button>
-                <!--                <button class="layui-btn patientProjects-button" data-type="addPage" page="append">修改检查清单</button>-->
-                <!--                <button class="layui-btn patientProjects-button" data-type="addPage" page="delete">删除检查清单</button>-->
+            <div class="list-active">
+                <button class="layui-btn list-active" data-type="check">&nbsp;&nbsp;查看检查清单&nbsp;&nbsp;</button>
+                <button class="layui-btn layui-btn-warm list-active" data-type="append">&nbsp;&nbsp;创建/修改检查清单&nbsp;&nbsp;</button>
             </div>
         </div>
     </div>
 </div>
-<script type="text/html" id="bar">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
 <script src="/layui/layui.js"></script>
 <script>
     let data
@@ -84,16 +75,7 @@
                             , {field: 'nodeId', title: '科室地址', width: 80}
                             , {field: 'avetime', title: '平均时间', width: 80}
                             , {field: 'msg', title: '描述', width: 300}
-                            , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
                         ]
-                    ]
-                    , defaultToolbar: [
-                        {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
-                        , {title: '获取选中数目', layEvent: 'getCheckLength', icon: 'layui-icon-tips'}
-                        , {title: '验证是否全选', layEvent: 'isAll', icon: 'layui-icon-tips'}
-                        , 'filter'
-                        , 'exports'
-                        , 'print'
                     ]
                     , even: true
                     , skin: 'row'
@@ -132,7 +114,7 @@
                 element.tabAdd('management-patientProjects', {
                     title: '&nbsp;&nbsp;创建/修改' + username + '的清单&nbsp;&nbsp;',
                     content:
-                        '<button class="layui-btn layui-btn-warm patientProjects-button" id="' + userId + '" data-type="do">确定</button>' +
+                        '<button class="layui-btn layui-btn-warm list-active" id="' + userId + '" data-type="do">确定</button>' +
                         '<div id="createList-' + userId + '" class="my-transfer"></div>',
                     id: 'createList-' + userId
                 })
@@ -224,7 +206,7 @@
             data = res
         }
     })
-    $('.patientProjects-button').on('click', loadActive);
+    $('.list-active').on('click', loadActive);
 </script>
 </body>
 </html>

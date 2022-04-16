@@ -13,8 +13,11 @@
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            <div class="map-button" id="buttons">
-            </div>
+            <fieldset class="layui-elem-field layui-field-title"
+                      style="margin-top: 30px;width: 50%;text-align: left; margin-right: auto;  margin-left: auto;">
+                <legend>选择科室项目</legend>
+            </fieldset>
+            <div class="map-button" id="buttons"></div>
         </div>
     </div>
 </div>
@@ -117,12 +120,23 @@
                 return false;
             },
             getList: function (project) {
-                table.render(active.getConfig.call(this, project));
-            },
-            getConfig: function (project) {
-                return {
-                    elem: '#page-' + project
-                    , toolbar: '#toolbar'
+                if ($('#list-' + project).length > 0) {
+                    element.tabDelete('element-filter', 'list-' + project)
+                }
+                element.tabAdd('element-filter', {
+                    title: '&nbsp;&nbsp;' + project + '排队列表&nbsp;&nbsp;'
+                    , content:
+                        '<fieldset class="layui-elem-field layui-field-title"' +
+                        'style="margin-top: 30px;width: 50%;text-align: left; margin-right: auto;  margin-left: auto;">' +
+                        '<legend>患者信息</legend>' +
+                        '</fieldset>' +
+                        '<table id="list-' + project + '" lay-filter="table-filter"></table>'
+                    , id: 'list-' + project
+                })
+
+                element.tabChange('element-filter', 'list-' + project);
+                table.render({
+                    elem: '#list-' + project
                     , title: '用户数据表'
                     , url: '/doctor/queue.check'
                     , where: {project: project}
@@ -141,32 +155,11 @@
                             , {field: 'msg', title: '描述', width: 300}
                             , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
                         ]
-                        // [
-                        // {fixed: 'left', type: 'checkbox'}
-                        //     , {type: 'numbers', fixed: "left"}
-                        //     , {field: 'patient.username', title: '用户名', width: 100, sort: true, fixed: "left"}
-                        //     , {field: 'date', title: '排队时间', width: 200}
-                        //     , {field: 'patient.name', title: '姓名', width: 100}
-                        //     , {field: 'patient.sex', title: '性别', width: 80}
-                        //     , {field: 'patient.age', title: '年龄', width: 80}
-                        //     , {field: 'patient.phone', title: '电话', width: 135}
-                        //     , {field: 'patient.exception', title: '备注', width: 80}
-                        //     , {field: 'patient.msg', title: '描述', width: 300}
-                        //     , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
-                        // ]
-                    ]
-                    , defaultToolbar: [
-                        {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
-                        , {title: '获取选中数目', layEvent: 'getCheckLength', icon: 'layui-icon-tips'}
-                        , {title: '验证是否全选', layEvent: 'isAll', icon: 'layui-icon-tips'}
-                        , 'filter'
-                        , 'exports'
-                        , 'print'
                     ]
                     , even: true
                     , skin: 'row'
                     , limit: 20
-                }
+                });
             },
             addPage: function (obj) {
                 let project = obj.attr('project').toString()
@@ -174,7 +167,15 @@
                     element.tabAdd('element-filter', {
                         title: '&nbsp;&nbsp;' + project + '&nbsp;&nbsp;'
                         , content:
+                            '<fieldset class="layui-elem-field layui-field-title"' +
+                            'style="margin-top: 30px;width: 50%;text-align: left; margin-right: auto;  margin-left: auto;">' +
+                            '<legend>患者信息</legend>' +
+                            '</fieldset>' +
                             $('#patientInfo').html() +
+                            '<fieldset class="layui-elem-field layui-field-title"' +
+                            'style="margin-top: 30px;width: 50%;text-align: left; margin-right: auto;  margin-left: auto;">' +
+                            '<legend>检查操作</legend>' +
+                            '</fieldset>' +
                             '<div class="layui-input-block">\n' +
                             '<button class="layui-btn layui-btn-normal project-active" project = "' + project + '" data-type="peek">刷新</button>\n' +
                             '<button class="layui-btn layui-btn-warm project-active" project = "' + project + '" data-type="pop">完成当前检查</button>\n' +

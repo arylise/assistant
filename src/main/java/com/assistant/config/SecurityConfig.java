@@ -36,7 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/") //成功登陆后跳转页面
                 .failureUrl("/login_error")
                 .permitAll()
-                .and().csrf().disable();
+                .and().csrf().disable()
+                .sessionManagement()
+                .maximumSessions(1);
         http
                 .authorizeRequests() // 授权配置
                 //无需权限访问

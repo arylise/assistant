@@ -49,10 +49,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
                 cacheUtils.putQueueCache(d.getProject(), proCache);
             }
         }
-
-
         List<MapNode> collect = all.stream().filter(o -> StringUtil.isNotEmpty(o.getElevatorId())).collect(Collectors.toList());
-        System.out.println(collect);
         cacheUtils.putElevatorMap(collect);
         TestClass.showMe("overLoad!");
     }

@@ -97,9 +97,8 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
         List<UserDetails> userList = new ArrayList<>();
         Session[] sessions = manager.findSessions();
         for (Session session : sessions) {
-            StandardSession sessioni = (StandardSession) session;
-            if (sessioni.isValid()) {
-                SecurityContext attribute = (SecurityContext) sessioni.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+            if (session.isValid()) {
+                SecurityContext attribute = (SecurityContext) ((StandardSession) session).getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
                 if (attribute == null) {
                     continue;
                 }

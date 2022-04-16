@@ -6,7 +6,7 @@ import com.assistant.constant.AssistantContext;
 import com.assistant.mapper.DoctorMapper;
 import com.assistant.model.dto.DataList;
 import com.assistant.model.dto.PatientDTO;
-import com.assistant.model.dto.ProjectDTO;
+import com.assistant.model.dto.State;
 import com.assistant.service.intf.ProjectService;
 import com.assistant.service.intf.QueueService;
 import com.assistant.service.intf.UserService;
@@ -17,7 +17,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.util.Pair;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -103,7 +106,7 @@ public class DoctorController {
     @RequestMapping("/project.update")
     @ResponseBody
     public String updateProjects(@RequestParam("username") String username, @RequestParam String project, @RequestParam String state) {
-        boolean b = projectService.updateState(username, project, ProjectDTO.State.valueOf(state));
+        boolean b = projectService.updateState(username, project, State.valueOf(state));
         return JSON.toJSONString(b);
     }
 

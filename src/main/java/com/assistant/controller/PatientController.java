@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,10 +30,10 @@ public class PatientController {
         return queueService.push(project, SecurityUtils.getUsername());
     }
 
-    @RequestMapping("/getTime")
+    @RequestMapping("/queue.del")
     @ResponseBody
-    public Long getTime(@RequestParam("project") String project) {
-        return queueService.getWaitTime(project);
+    public boolean delQue(@RequestParam("project") String project) {
+        return queueService.delPatient(project, SecurityUtils.getUsername());
     }
 
     @RequestMapping("/getPath")
@@ -51,9 +50,10 @@ public class PatientController {
         return JSON.toJSONString(b);
     }
 
-    @RequestMapping("/project.checkProjectsAllName")
+    @RequestMapping("/project.getque")
     @ResponseBody
-    public Set<String> checkProjectsAllName() {
-        return projectService.checkProjectsAllName(SecurityUtils.getUsername());
+    public String getQue() {
+        DataList b = projectService.getQue(SecurityUtils.getUsername());
+        return JSON.toJSONString(b);
     }
 }

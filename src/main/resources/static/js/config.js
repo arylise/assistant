@@ -128,21 +128,22 @@ const patient = [
         "url": "/index",
         "list": [],
     }, {
-        "name": "清单管理",
+
+        "name": "挂号管理",
         "icon": "&#xe612;",
         "list": [{
             "name": "查看清单",
             "url": "/page_projects"
-        }]
-    }, {
-        "name": "挂号管理",
-        "icon": "&#xe612;",
-        "list": [{
-            "name": "挂号管理",
-            "url": "/page_register"
         }, {
             "name": "排队情况",
             "url": "/page_queue"
+        }]
+    }, {
+        "name": "排队推荐",
+        "icon": "&#xe612;",
+        "list": [{
+            "name": "推荐路径",
+            "url": "/page_path"
         }]
     }, {
         "name": "评论专区",

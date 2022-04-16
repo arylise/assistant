@@ -3,8 +3,8 @@ package com.assistant.service.impl;
 import com.assistant.mapper.PatientMapper;
 import com.assistant.model.dto.DataList;
 import com.assistant.model.dto.PatientDTO;
-import com.assistant.model.dto.ProjectDTO;
 import com.assistant.model.dto.QueueCache;
+import com.assistant.model.dto.State;
 import com.assistant.model.enity.Patient;
 import com.assistant.model.intf.AssistantUser;
 import com.assistant.service.intf.ProjectService;
@@ -12,6 +12,9 @@ import com.assistant.service.intf.QueueService;
 import com.assistant.utils.CacheUtils;
 import com.assistant.utils.TestClass;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.ListUtils;
 
@@ -23,18 +26,20 @@ public class QueueServiceImpl implements QueueService {
 
     private final CacheUtils cacheUtils;
     private final PatientMapper patientMapper;
-    private final ProjectService projectService;
+    @Lazy
+    @Autowired
+    private ProjectService projectService;
 
     @Override
-    public boolean push(String project, String username) {
+    public boolean push(String project, String patient) {
         try {
             QueueCache cache = cacheUtils.getQueueCache(project);
-            if (!ListUtils.isEmpty(cache.getNameList()) && cache.getNameList().contains(username)) {
+            if (!ListUtils.isEmpty(cache.getNameList()) && cache.getNameList().contains(patient)) {
                 return false;
             }
-            projectService.updateState(username, project,
-                    ListUtils.isEmpty(cache.getNameList()) ? ProjectDTO.State.checking : ProjectDTO.State.onCall);
-            cache.add(username, System.currentTimeMillis());
+            projectService.updateState(patient, project,
+                    ListUtils.isEmpty(cache.getNameList()) ? State.checking : State.onCall);
+            cache.add(patient, System.currentTimeMillis());
             return cacheUtils.putQueueCache(project, cache);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
@@ -49,7 +54,7 @@ public class QueueServiceImpl implements QueueService {
             if (ListUtils.isEmpty(cache.getNameList())) {
                 return null;
             }
-            projectService.updateState(cache.getNameList().get(0), project, ProjectDTO.State.checked);
+            projectService.updateState(cache.getNameList().get(0), project, State.checked);
             cache.del(0);
             boolean result = cacheUtils.putQueueCache(project, cache);
 
@@ -58,7 +63,7 @@ public class QueueServiceImpl implements QueueService {
                     String s = cache.getNameList().get(0);
                     Patient patient = (Patient) patientMapper.getByName(s);
                     Long time = cache.getTimestamp().get(0);
-                    projectService.updateState(s, project, ProjectDTO.State.checking);
+                    projectService.updateState(s, project, State.checking);
                     return new PatientDTO(patient, time);
                 }
             }
@@ -69,14 +74,15 @@ public class QueueServiceImpl implements QueueService {
     }
 
     @Override
-    public boolean delPatient(String project, String username) {
+    public boolean delPatient(String project, String patient) {
         try {
             QueueCache cache = cacheUtils.getQueueCache(project);
-            if (ListUtils.isEmpty(cache.getNameList()) || !cache.getNameList().contains(username)) {
+            if (ListUtils.isEmpty(cache.getNameList()) || !cache.getNameList().contains(patient)) {
                 return false;
             }
-            cache.del(username);
-            return cacheUtils.putQueueCache(project, cache);
+            cache.del(patient);
+            boolean b = projectService.updateState(patient, project, State.uncheck);
+            return b && cacheUtils.putQueueCache(project, cache);
         } catch (Exception e) {
             TestClass.showMe(e.toString());
         }
@@ -84,12 +90,18 @@ public class QueueServiceImpl implements QueueService {
     }
 
     @Override
-    public Long getWaitTime(String project) {
+    public Pair<Integer, Long> getWaitTime(String project, String patient) {
         try {
             QueueCache cache = cacheUtils.getQueueCache(project);
-            return cache.getNameList().size() * cache.getProject().getAvetime();
+            int index;
+            if (cache.getNameList().contains(patient)) {
+                index = cache.indexOf(patient);
+            } else {
+                index = cache.getNameList().size();
+            }
+            return Pair.of(index, cache.getProject().getAvetime());
         } catch (Exception e) {
-            return Long.MAX_VALUE;
+            return Pair.of(0, Long.MAX_VALUE);
         }
     }
 

@@ -23,18 +23,7 @@ public class ProjectDTO {
     private String msg;
     private State state;
 
-    public enum State {
-        uncheck(50),
-        checked(100),
-        checking(0),
-        onCall(25);
 
-        private final int weight;
-
-        State(int weight){
-            this.weight = weight;
-        }
-    }
 
     public ProjectDTO(Project project, State state) {
         this.project = project.getProject();

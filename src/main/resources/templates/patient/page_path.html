@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/assistant.css">
+    <style>
+        .line {
+            fill: none;
+            stroke: black;
+            stroke-width: 3;
+        }
+
+        .svgStyle {
+            position: absolute;
+            width: 1133px;
+            height: 743px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="map" lay-allowclose="true">
+    <ul class="layui-tab-title">
+        <li class="layui-this unshow-i">&nbsp;&nbsp;路线查看&nbsp;&nbsp;</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+
+            <fieldset class="layui-elem-field layui-field-title"
+                      style="margin-top: 30px;width: 50%;text-align: left; margin-right: auto;  margin-left: auto;">
+                <legend>生成新路线</legend>
+            </fieldset>
+
+            <div class="map-button" style="margin: 30px">
+                <button class="layui-btn layui-btn-normal map-active" data-type="path" action="best">生成最佳路线</button>
+                <button class="layui-btn layui-btn-normal map-active" data-type="path" action="path">生成路径最短路线</button>
+                <button class="layui-btn layui-btn-normal map-active" data-type="path" action="time">生成时间最短路线</button>
+                <button class="layui-btn layui-btn-normal map-active" data-type="path" action="notair">生成无楼梯路线</button>
+            </div>
+
+            <fieldset class="layui-elem-field layui-field-title"
+                      style="margin-top: 30px;width: 50%;text-align: left; margin-right: auto;  margin-left: auto;">
+                <legend>当前路线</legend>
+            </fieldset>
+
+            <div class="map-button" style="margin: 30px">
+                <button class="layui-btn layui-btn-disabled" data-type="path" action="thisway">当前推荐路径</button>
+                <button class="layui-btn map-active" data-type="path" action="Weight">生成路径最短路线</button>
+                <button class="layui-btn map-active" data-type="path" action="best">生成最佳路线</button>
+                <button class="layui-btn map-active" data-type="path" action="withoutStair">生成无楼梯路线</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/layui/layui.js"></script>
+<script th:inline="none">
+    const element = layui.element,
+        $ = layui.jquery,
+        active = {
+            path: function (othis) {
+                const action = parseInt(othis.attr('action')),
+                    text = othis.text()
+                if ($('#page-' + action).length <= 0) {
+                    element.tabAdd('map', {
+                        title: '&nbsp;&nbsp;' + text + '&nbsp;&nbsp;'
+                        , content:
+                            '<div>'
+                            + '<svg class="svgStyle map-active-showMeXY" xmlns="http://www.w3.org/2000/svg" version="1.1" data-type="showXY"">'
+                            + active.getNodeStr(action)
+                            + '</svg>'
+                            + '<img id="floor' + action + '" src="/img/floor' + action + '.png" style="-webkit-user-drag:none"/>'
+                            + '</div>'
+                            + ' <div className = "layui-btn-group">'
+                            + ((action === 1) ? '' : '<button class = "layui-btn map-active-0" data-type="addFloor" floor="' + (action - 1) + '">下一层</button>')
+                            + ((action === 3) ? '' : '<button class = "layui-btn map-active-0" data-type="addFloor" floor="' + (action + 1) + '">上一层</button>')
+                            + '</div>'
+                        , id: 'floor' + action
+                    })
+                    $('.map-active-showMeXY').on('click', function () {
+                        active.showXY.call(this, event);
+                    });
+                    $('.map-active-0').on('click', function () {
+                        let othis = $(this), type = othis.data('type');
+                        active[type] ? active[type].call(this, othis) : '';
+                    });
+                }
+                element.tabChange('map', 'floor' + action);
+            },
+            clear: function () {
+                for (let i = 1; i <= 3; i++) {
+                    element.tabDelete('map', 'floor' + i)
+                }
+            },
+            getNodeStr: function (level) {
+                let str
+                $.ajax({
+                    url: "/admin/nodes_" + level,
+                    type: "GET",
+                    async: false,
+                    success: function (response) {
+                        str = JSON.parse(response)
+                    }
+                });
+                const index = str['index'],
+                    matrix = str['adjacencyMatrix'],
+                    mapNodes = str['mapNodes'];
+                let text = '';
+                for (let i = 0; i < index.length; i++) {
+                    for (let j = 0; j <= i; j++) {
+                        let d;
+                        let id;
+                        if (i === j) {
+                            text += '<circle id="point-' + index[i] + '" cx="' + mapNodes[i].x + '" cy="' + mapNodes[i].y + '"  r="5" stroke="#009688" fill="#009688"/>'
+                        } else if (matrix[i][j]) {
+                            id = '' + index[i] + '-' + index[j];
+                            d = 'M ' + mapNodes[i].x + ' ' + mapNodes[i].y + ' L ' + mapNodes[j].x + ' ' + mapNodes[j].y;
+                            if (matrix[j][i]) {
+                                text += '<path id="line-' + id + '" d="' + d + '" stroke="#009688" stroke-linecap="round" stroke-width="2"/>';
+                            } else {
+                                text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
+                                text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
+                            }
+                        } else if (matrix[j][i]) {
+                            id = '' + index[j] + '-' + index[i];
+                            d = 'M ' + mapNodes[j].x + ' ' + mapNodes[j].y + ' L ' + mapNodes[i].x + ' ' + mapNodes[i].y;
+                            text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
+                            text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
+                        }
+                    }
+                }
+                return text;
+            },
+            showXY: function (event) {
+                layer.alert('x:' + event.clientX + "  y:" + event.clientY)
+            }
+        }
+
+    $('.map-active').on('click', function () {
+        const othis = $(this), type = othis.data('type');
+        active[type] ? active[type].call(this, othis) : '';
+    });
+</script>
+</body>
+</html>

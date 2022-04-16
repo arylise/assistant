@@ -5,7 +5,7 @@ import com.assistant.mapper.DoctorMapper;
 import com.assistant.mapper.MapNodeMapper;
 import com.assistant.mapper.PatientMapper;
 import com.assistant.mapper.ProjectMapper;
-import com.assistant.model.dto.ProjectDTO;
+import com.assistant.model.dto.State;
 import com.assistant.model.enity.Doctor;
 import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Patient;
@@ -562,7 +562,7 @@ class AssistantApplicationTests {
 
     @Test
     public void test12(){
-        int weight =  switch (ProjectDTO.State.onCall) {
+        int weight =  switch (State.onCall) {
             case checking -> 100;
             case onCall -> 50;
             case uncheck -> 25;

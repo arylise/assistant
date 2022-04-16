@@ -7,6 +7,7 @@ import com.assistant.model.dto.QueueCache;
 import com.assistant.model.enity.MapNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -85,21 +86,24 @@ public class CacheUtils {
         }
     }
 
-    public ProjectCache getProjectList(String username) {
+    public ProjectCache getProjectList(String patient) {
         try {
-            String s = redisUtils.get(AssistantContext.appendProjectPrefix(username));
+            String s = redisUtils.get(AssistantContext.appendProjectPrefix(patient));
+            if (StringUtils.isEmpty(s)){
+                return ProjectCache.builder().projectMap(new HashMap<>()).build();
+            }
             return JSON.parseObject(s, ProjectCache.class);
         } catch (Exception ignored) {
             return null;
         }
     }
 
-    public boolean putProjectList(String username, ProjectCache projectCache) {
-        return redisUtils.set(AssistantContext.appendProjectPrefix(username), JSON.toJSONString(projectCache));
+    public boolean putProjectList(String patient, ProjectCache projectCache) {
+        return redisUtils.set(AssistantContext.appendProjectPrefix(patient), JSON.toJSONString(projectCache));
     }
 
-    public boolean delProjectList(String username) {
-        return redisUtils.del(AssistantContext.appendProjectPrefix(username));
+    public boolean delProjectList(String patient) {
+        return redisUtils.del(AssistantContext.appendProjectPrefix(patient));
     }
 
 }

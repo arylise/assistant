@@ -13,21 +13,26 @@
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
+            <fieldset class="layui-elem-field layui-field-title"
+                      style="margin-top: 30px;width: 50%;text-align: left; margin-right: auto;  margin-left: auto;">
+                <legend>您的项目排队情况</legend>
+            </fieldset>
             <table id="checkList" lay-filter="list-listener"></table>
         </div>
     </div>
 </div>
 <script type="text/html" id="bar">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="reg">挂号</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="unreg">退号</a>
 </script>
 <script src="/layui/layui.js"></script>
 <script>
-    layui.table.render({
+    const table = layui.table,
+        $ = layui.jquery
+    table.render({
         elem: '#checkList'
         , title: '清单'
-        , url: '/patient/project.check'
+        , url: '/patient/project.getque'
         , page: false
         , cols: [
             [
@@ -35,10 +40,8 @@
                 , {type: 'numbers', fixed: "left"}
                 , {field: 'state', title: '状态', width: 100, sort: true, fixed: "left"}
                 , {field: 'project', title: '项目', width: 200}
-                , {field: 'department', title: '科室', width: 180}
-                , {field: 'nodeId', title: '科室地址', width: 100}
-                , {field: 'avetime', title: '平均时间', width: 100}
-                , {field: 'msg', title: '描述', width: 100}
+                , {field: 'waitTime', title: '等待时间', width: 180}
+                , {field: 'waitCount', title: '排队人数', width: 100}
                 , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
             ]
         ]
@@ -47,22 +50,36 @@
     })
 
     //监听工具条
-    layui.table.on('tool(list-listener)', function (obj) {
-        var data = obj.data;
-        if (obj.event === 'detail') {
-            layer.msg('ID：' + data.username + ' 的查看操作');
-        } else if (obj.event === 'del') {
-            layer.confirm('test', function (index) {
-                obj.del();
-                layer.close(index);
-                layui.$.ajax({
+    table.on('tool(list-listener)', function (obj) {
+        let data = obj.data;
+        if (obj.event === 'reg') {
+            $.ajax({
+                url: '/patient/queue.reg?project=' + data.project,
+                type: 'GET',
+                async: false,
+                success: function (res) {
+                    if (res) {
+                        location.reload();
+                    } else {
+                        layer.msg('失败');
+                    }
+                }
+            })
+        } else if (obj.event === 'unreg') {
+            layer.confirm('确定退号吗?', function () {
+                $.ajax({
+                    url: '/patient/queue.del?project=' + data.project,
                     type: 'GET',
-                    url: '/' + data.username,
-                    async: false
+                    async: false,
+                    success: function (res) {
+                        if (res) {
+                            location.reload();
+                        } else {
+                            layer.msg('失败');
+                        }
+                    }
                 })
-            });
-        } else if (obj.event === 'edit') {
-            layer.alert('编辑行：<br>' + JSON.stringify(data))
+            })
         }
     });
 </script>
