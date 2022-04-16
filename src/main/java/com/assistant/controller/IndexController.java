@@ -1,5 +1,6 @@
 package com.assistant.controller;
 
+import com.assistant.constant.AssistantContext;
 import com.assistant.mapper.MessageMapper;
 import com.assistant.model.enity.Message;
 import com.assistant.service.intf.UserService;
@@ -47,6 +48,12 @@ public class IndexController {
             put("role", SecurityUtils.getRole());
             put("name", SecurityUtils.getUsername());
         }};
+    }
+
+    @RequestMapping("/getLevel")
+    @ResponseBody
+    public int getLevel(){
+        return AssistantContext.level;
     }
 
     @PostMapping("/signup.do")

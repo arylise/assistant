@@ -7,6 +7,10 @@ import java.util.Map;
 
 public class AssistantContext {
 
+    public static int level = 3;
+    public static int pathWeight = 1;
+    public static int timeWeight = 1;
+
     public static final String UPPER_ADMIN = "ADMIN";
     public static final String UPPER_DOCTOR = "DOCTOR";
     public static final String UPPER_PATIENT = "PATIENT";

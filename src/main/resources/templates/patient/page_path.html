@@ -43,11 +43,9 @@
                 <legend>当前路线</legend>
             </fieldset>
 
-            <div class="map-button" style="margin: 30px">
-                <button class="layui-btn layui-btn-disabled" data-type="path" action="thisway">当前推荐路径</button>
-                <button class="layui-btn map-active" data-type="path" action="Weight">生成路径最短路线</button>
-                <button class="layui-btn map-active" data-type="path" action="best">生成最佳路线</button>
-                <button class="layui-btn map-active" data-type="path" action="withoutStair">生成无楼梯路线</button>
+            <div class="map-button" style="margin: 30px" id="floor-btn">
+                <button class="layui-btn layui-btn-warm map-active" data-type="clear">清空TAG</button>
+                <button class="layui-btn layui-btn-normal map-active" data-type="check">当前推荐路径</button>
             </div>
         </div>
     </div>
@@ -55,47 +53,47 @@
 
 <script src="/layui/layui.js"></script>
 <script th:inline="none">
+    let n
     const element = layui.element,
         $ = layui.jquery,
         active = {
-            path: function (othis) {
-                const action = parseInt(othis.attr('action')),
-                    text = othis.text()
-                if ($('#page-' + action).length <= 0) {
+            check: function () {
+                layer.msg('最佳路径');
+            },
+            addFloor: function (othis) {
+                const floor = parseInt(othis.attr('floor'))
+                if ($('#floor-' + floor).length <= 0) {
                     element.tabAdd('map', {
-                        title: '&nbsp;&nbsp;' + text + '&nbsp;&nbsp;'
+                        title: '&nbsp;&nbsp;' + floor + '楼地图&nbsp;&nbsp;'
                         , content:
-                            '<div>'
-                            + '<svg class="svgStyle map-active-showMeXY" xmlns="http://www.w3.org/2000/svg" version="1.1" data-type="showXY"">'
-                            + active.getNodeStr(action)
+                            '<div id="floor-' + floor + '">'
+                            + '<svg class="svgStyle map-active-showMeXY" xmlns="http://www.w3.org/2000/svg" version="1.1">'
+                            + active.getNodeStr(floor)
                             + '</svg>'
-                            + '<img id="floor' + action + '" src="/img/floor' + action + '.png" style="-webkit-user-drag:none"/>'
+                            + '<img src="/img/floor' + floor + '.png" style="-webkit-user-drag:none"/>'
                             + '</div>'
                             + ' <div className = "layui-btn-group">'
-                            + ((action === 1) ? '' : '<button class = "layui-btn map-active-0" data-type="addFloor" floor="' + (action - 1) + '">下一层</button>')
-                            + ((action === 3) ? '' : '<button class = "layui-btn map-active-0" data-type="addFloor" floor="' + (action + 1) + '">上一层</button>')
+                            + ((floor === 1) ? '' : '<button class = "layui-btn map-active-0" data-type="addFloor" floor="' + (floor - 1) + '">下一层</button>')
+                            + ((floor === n) ? '' : '<button class = "layui-btn map-active-0" data-type="addFloor" floor="' + (floor + 1) + '">上一层</button>')
                             + '</div>'
-                        , id: 'floor' + action
+                        , id: 'floor-' + floor
                     })
-                    $('.map-active-showMeXY').on('click', function () {
-                        active.showXY.call(this, event);
-                    });
                     $('.map-active-0').on('click', function () {
                         let othis = $(this), type = othis.data('type');
                         active[type] ? active[type].call(this, othis) : '';
                     });
                 }
-                element.tabChange('map', 'floor' + action);
+                element.tabChange('map', 'floor-' + floor);
             },
             clear: function () {
-                for (let i = 1; i <= 3; i++) {
-                    element.tabDelete('map', 'floor' + i)
+                for (let i = 1; i <= n; i++) {
+                    element.tabDelete('map', 'floor-' + i)
                 }
             },
             getNodeStr: function (level) {
                 let str
                 $.ajax({
-                    url: "/admin/nodes_" + level,
+                    url: "/patient/nodes_" + level,
                     type: "GET",
                     async: false,
                     success: function (response) {
@@ -130,12 +128,22 @@
                     }
                 }
                 return text;
-            },
-            showXY: function (event) {
-                layer.alert('x:' + event.clientX + "  y:" + event.clientY)
             }
         }
 
+    $.ajax({
+        url: "/getLevel",
+        type: "GET",
+        async: false,
+        success: function (response) {
+            n = response;
+            let str = ''
+            for (let i = 1; i <= n; i++) {
+                str += '<button class="layui-btn map-active" data-type="addFloor" floor="' + i + '">' + i + '楼地图</button>'
+            }
+            $('#floor-btn').append(str);
+        }
+    });
     $('.map-active').on('click', function () {
         const othis = $(this), type = othis.data('type');
         active[type] ? active[type].call(this, othis) : '';
