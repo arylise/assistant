@@ -11,10 +11,7 @@ import com.assistant.model.enity.MapNode;
 import com.assistant.model.enity.Patient;
 import com.assistant.model.enity.Project;
 import com.assistant.model.intf.AssistantUser;
-import com.assistant.utils.CacheUtils;
-import com.assistant.utils.MapNodeUtils;
-import com.assistant.utils.PathUtils;
-import com.assistant.utils.TestClass;
+import com.assistant.utils.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -170,7 +167,7 @@ class AssistantApplicationTests {
 
     @Test
     public void insertMapNode() {
-        String str1 = "315,230 441,230 567,230 693,230 819,230 819,322 819,414 819,506 693,506 567,506 441,506 315,506 315,414 315,322 315,230";
+        String str1 = "315,230 441,230 567,230 693,230 819,230 819,322 819,414 819,506 693,506 567,506 441,506 315,506 315,414 315,322";
 //        int level1 = 1;
         insertMapNodeFun(str1, 1);
         insertMapNodeFun(str1, 2);
@@ -284,8 +281,8 @@ class AssistantApplicationTests {
         List<Project> list = new ArrayList<>();
         List<MapNode> all = mapNodeMapper.findAll();
         for (MapNode mapNode : all) {
-            if (Integer.parseInt(mapNode.getNodeId()) % 100 > 16) {
-
+            int i1 = Integer.parseInt(mapNode.getNodeId()) % 100;
+            if (i1 > 16 && i1 != 22 && i1 != 23) {
                 Project project = new Project();
                 project.setProject("project" + mapNode.getNodeId());
                 int i = (int) (Math.random() * 9) + 1;
@@ -296,7 +293,7 @@ class AssistantApplicationTests {
                 list.add(project);
             }
         }
-        projectMapper.insertAll(list);
+        System.out.println(projectMapper.insertAll(list));
     }
 
     @Data
@@ -525,32 +522,33 @@ class AssistantApplicationTests {
     }
 
     @Test
-    public void test09(){
+    public void test09() {
         System.out.println(doctorMapper.getProject("doctor01"));
     }
 
-    public abstract class NameAB{
-        public String getRole(){
+    public abstract class NameAB {
+        public String getRole() {
             return this.getClass().getSimpleName();
         }
     }
 
-    public class Name extends NameAB{
+    public class Name extends NameAB {
 
     }
+
     @Test
-    public void test10(){
+    public void test10() {
         Name name = new Name();
         System.out.println(name.getRole());
     }
 
     @Test
-    public void test11(){
-        Set<String> set1 = new HashSet<>(){{
+    public void test11() {
+        Set<String> set1 = new HashSet<>() {{
             add("123");
             add("234");
         }};
-        Set<String> set2 = new HashSet<>(){{
+        Set<String> set2 = new HashSet<>() {{
             add("234");
             add("345");
         }};
@@ -561,8 +559,8 @@ class AssistantApplicationTests {
     }
 
     @Test
-    public void test12(){
-        int weight =  switch (State.onCall) {
+    public void test12() {
+        int weight = switch (State.onCall) {
             case checking -> 100;
             case onCall -> 50;
             case uncheck -> 25;
@@ -572,7 +570,37 @@ class AssistantApplicationTests {
     }
 
     @Test
-    public void test13(){
+    public void test13() {
         System.out.println(AssistantContext.getMinStr(6000000L));
+    }
+
+    @Test
+    public void test14() {
+        String str = "project10017,project10018,project10019,project10030,project10031,project10032,project20020,project20021,project20024,project2025,project20026,project20027,project20028,project20029,project30030,project30031,project30032";
+//        str = "project10017,project10018,project10030,project10032,project20024,project20029,project30032";
+//        str = "project10032,project20020,project20021,project20024,project2025,project20026,project20027,project20028,project20029";
+        List<String> collect = Arrays.stream(str.split(",")).toList();
+        System.out.println(collect);
+        long l1 = System.currentTimeMillis();
+        System.out.println(pathUtils.getBestPath(collect, 1, 0, AssistantContext.FLOYD_MATRIX_ALL));
+        long l2 = System.currentTimeMillis();
+        System.out.println(l2 - l1);
+    }
+
+    @Test
+    public void test15() {
+        MapNodeUtils.FloydResult floydMatrix = cacheUtils.getFloydMatrix();
+        String[][] floydMatrix1 = floydMatrix.getPathMatrix();
+        List<String> index = floydMatrix.getIndex();
+        System.out.println(floydMatrix1[index.indexOf("0")][index.indexOf("30023")]);
+    }
+
+    @Test
+    public void test16() {
+        long i = 1;
+        for (int j = 0; j < 39; j++) {
+            i *= 2;
+        }
+        System.out.println(i);
     }
 }

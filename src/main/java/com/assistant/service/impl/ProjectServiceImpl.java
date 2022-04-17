@@ -136,6 +136,7 @@ public class ProjectServiceImpl implements ProjectService {
                             .state(cache.getProjectMap().get(s))
                             .build());
                 }
+                sort(Comparator.comparingInt(o -> o.getState().weight));
             }};
 
             return DataList.builder().data(list).count(list.size()).build();

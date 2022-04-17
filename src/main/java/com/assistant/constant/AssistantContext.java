@@ -54,6 +54,7 @@ public class AssistantContext {
 
     public static final String PROJECT_QUEUE_CACHE_KEY = "projectQueue_%s";
     public static final String PROJECT_LIST_CACHE_KEY = "projectList_%s";
+    public static final String PATIENT_PATH_KEY = "patientPath_%s";
 
     public static final String CONTEXT_LIST = "contextList";
     public static final String NODE_ID = "nodeId";
@@ -78,5 +79,9 @@ public class AssistantContext {
 
     public static String getMinStr(Long time) {
         return String.format("%d分钟", time / 1000 / 60);
+    }
+
+    public static String appendPatientPathPrefix(String patient) {
+        return String.format(PATIENT_PATH_KEY, patient);
     }
 }

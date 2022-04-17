@@ -89,7 +89,7 @@ public class CacheUtils {
     public ProjectCache getProjectList(String patient) {
         try {
             String s = redisUtils.get(AssistantContext.appendProjectPrefix(patient));
-            if (StringUtils.isEmpty(s)){
+            if (StringUtils.isEmpty(s)) {
                 return ProjectCache.builder().projectMap(new HashMap<>()).build();
             }
             return JSON.parseObject(s, ProjectCache.class);
@@ -106,4 +106,19 @@ public class CacheUtils {
         return redisUtils.del(AssistantContext.appendProjectPrefix(patient));
     }
 
+    public boolean putPatientPath(String patient, PathUtils.TspResult bestPath) {
+        return redisUtils.set(AssistantContext.appendPatientPathPrefix(patient), JSON.toJSONString(bestPath));
+    }
+
+    public PathUtils.TspResult getPatientPath(String patient) {
+        try {
+            String s = redisUtils.get(AssistantContext.appendPatientPathPrefix(patient));
+            if (StringUtils.isEmpty(s)) {
+                return null;
+            }
+            return JSON.parseObject(s, PathUtils.TspResult.class);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
 }

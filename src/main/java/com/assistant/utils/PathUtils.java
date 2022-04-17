@@ -35,31 +35,58 @@ public class PathUtils {
     private int n;
     private boolean[] v;
 
+    private TspResult[][] dp;
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
     public static class TspResult {
+        String action;
         long path;
         long time;
         long score;
         String resultPath;
         String mainPath;
 
-        public List<String> parsePath() {
+        public List<String> getResultPath() {
             if (StringUtils.isEmpty(resultPath)) {
                 return null;
             }
             return Arrays.stream(resultPath.split(",")).toList();
         }
+
+        public List<String> getMainPath() {
+            if (StringUtils.isEmpty(mainPath)) {
+                return null;
+            }
+            return Arrays.stream(mainPath.split(",")).toList();
+        }
+    }
+
+    private int parseV() {
+        int ans = 1;
+        for (int i = 0; i < n; i++) {
+            ans = ans << 1;
+            if (v[i]) {
+                ans--;
+            }
+        }
+        return ans-1;
     }
 
     private TspResult tsp(int index, int count, long cost, String path, String mainPath, long time, TspResult ans) {
+        int i1 = parseV();
+
+        if (dp[index][i1] != null) {
+            return dp[index][i1];
+        }
+
+
         int currPos = floydIndex.indexOf(idList.get(index));
         int index_0 = floydIndex.indexOf(idList.get(0));
 
         if (count == n) {
-            String[] ids = path.split(",");
             long score = weightPath * (cost + floydMatrix[currPos][index_0]) + (long) weightTime * time;
             if (ans.score > score) {
                 ans.resultPath = path;
@@ -77,7 +104,7 @@ public class PathUtils {
          * cost + floydMatrix[currPos][i]
          */
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i < n; i++) {
             int index_i = floydIndex.indexOf(idList.get(i));
             if (!v[i]) {
                 // 标记结点被访问过
@@ -94,6 +121,11 @@ public class PathUtils {
                 v[i] = false;
             }
         }
+
+        if (dp[index][i1] == null) {
+            dp[index][i1] = ans;
+        }
+
         return ans;
     }
 
@@ -106,9 +138,12 @@ public class PathUtils {
             }
         }};
 
-        this.timeMap = new HashMap<>();
+        this.timeMap = new HashMap<>() {{
+            put("0", 0L);
+        }};
 
         this.timeList = new ArrayList<>() {{
+            add(0L);
             for (Project project : projectList) {
                 QueueCache cache = cacheUtils.getQueueCache(project.getProject());
                 add(cache.getNameList().size() * cache.getProject().getAvetime());
@@ -148,9 +183,11 @@ public class PathUtils {
         this.v = new boolean[n];
         // 标记第 0 个 结点已经被访问过，所以v[0]=true
         v[0] = true;
+        int m = 1 << (n - 1);
+        dp = new TspResult[n][m];
 
         // 查找最小权重的汉密尔顿回路 Hamiltonian Cycle
         // 输出结果ans就是最小权重的汉密尔顿回路（ Hamiltonian Cycle）
-        return tsp(0, 1, 0, "", "0", 0, TspResult.builder().score(Long.MAX_VALUE).build());
+        return tsp(0, 1, 0, "", "0", 0, TspResult.builder().action(action).score(Long.MAX_VALUE).build());
     }
 }

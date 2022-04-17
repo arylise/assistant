@@ -5,7 +5,7 @@ public enum State {
     checking(0),
     onCall(25);
 
-    final int weight;
+    public final int weight;
 
     State(int weight){
         this.weight = weight;

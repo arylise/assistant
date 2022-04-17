@@ -35,7 +35,7 @@
                 <button class="layui-btn layui-btn-normal map-active" data-type="path" action="best">生成最佳路线</button>
                 <button class="layui-btn layui-btn-normal map-active" data-type="path" action="path">生成路径最短路线</button>
                 <button class="layui-btn layui-btn-normal map-active" data-type="path" action="time">生成时间最短路线</button>
-                <button class="layui-btn layui-btn-normal map-active" data-type="path" action="notair">生成无楼梯路线</button>
+                <button class="layui-btn layui-btn-normal map-active" data-type="path" action="nostair">生成无楼梯路线</button>
             </div>
 
             <fieldset class="layui-elem-field layui-field-title"
@@ -45,7 +45,7 @@
 
             <div class="map-button" style="margin: 30px" id="floor-btn">
                 <button class="layui-btn layui-btn-warm map-active" data-type="clear">清空TAG</button>
-                <button class="layui-btn layui-btn-normal map-active" data-type="check">当前推荐路径</button>
+                <button class="layui-btn layui-btn-disabled">当前推荐路径</button>
             </div>
         </div>
     </div>
@@ -53,12 +53,26 @@
 
 <script src="/layui/layui.js"></script>
 <script th:inline="none">
-    let n
+    let n,tspResult
     const element = layui.element,
         $ = layui.jquery,
         active = {
-            check: function () {
-                layer.msg('最佳路径');
+            path: function (othis) {
+                const action = othis.attr('action'),
+                    text = othis.text()
+                layer.confirm('确定要' + text + '吗？此操作会丢失您之前的路线推荐！', function (index) {
+                    layer.close(index);
+                    layui.$.ajax({
+                        type: 'GET',
+                        url: '/patient/createPath?action=' + action,
+                        async: false,
+                        success: function (res) {
+                            tspResult = res
+                            console.log(tspResult)
+                        }
+                    })
+                    active.clear.call()
+                });
             },
             addFloor: function (othis) {
                 const floor = parseInt(othis.attr('floor'))
