@@ -2,10 +2,13 @@ package com.assistant.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.assistant.constant.AssistantContext;
-import com.assistant.mapper.*;
+import com.assistant.mapper.DoctorMapper;
+import com.assistant.mapper.MapNodeMapper;
+import com.assistant.mapper.PatientMapper;
+import com.assistant.mapper.ProjectMapper;
 import com.assistant.model.dto.DataList;
-import com.assistant.model.enity.MapNode;
 import com.assistant.service.intf.AdminService;
+import com.assistant.utils.CacheUtils;
 import com.assistant.utils.MapNodeUtils;
 import com.github.pagehelper.PageHelper;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ public class AdminServiceImpl implements AdminService {
     private final ProjectMapper projectMapper;
     private final MapNodeMapper mapNodeMapper;
     private final MapNodeUtils mapNodeUtils;
+    private final CacheUtils cacheUtils;
 
     @Override
     public DataList findList(String listName) {
@@ -57,10 +61,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public String getMapNodesByLevel(int level) {
-        List<MapNode> list = mapNodeMapper.getNodesByLevel(level);
-
-        MapNodeUtils.AdjacencyResult adjacencyResult = mapNodeUtils.adjacencyMatrix(list);
-        adjacencyResult.setMapNodes(list);
+        MapNodeUtils.AdjacencyResult adjacencyResult = cacheUtils.getAdjacencyMatrixByLevel(level);
         return JSON.toJSONString(adjacencyResult);
     }
 

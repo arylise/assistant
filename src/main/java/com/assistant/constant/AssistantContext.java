@@ -55,6 +55,7 @@ public class AssistantContext {
     public static final String PROJECT_QUEUE_CACHE_KEY = "projectQueue_%s";
     public static final String PROJECT_LIST_CACHE_KEY = "projectList_%s";
     public static final String PATIENT_PATH_KEY = "patientPath_%s";
+    public static final String ADJACENCY_KEY = "adjacency_%d";
 
     public static final String CONTEXT_LIST = "contextList";
     public static final String NODE_ID = "nodeId";
@@ -83,5 +84,9 @@ public class AssistantContext {
 
     public static String appendPatientPathPrefix(String patient) {
         return String.format(PATIENT_PATH_KEY, patient);
+    }
+
+    public static String appenfAdjacencyPrefix(int i) {
+        return String.format(ADJACENCY_KEY, i);
     }
 }

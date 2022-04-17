@@ -121,4 +121,20 @@ public class CacheUtils {
             return null;
         }
     }
+
+    public boolean putAdjacencyMatrixByLevel(int i, MapNodeUtils.AdjacencyResult adjacencyResult) {
+        return redisUtils.set(AssistantContext.appenfAdjacencyPrefix(i), JSON.toJSONString(adjacencyResult));
+    }
+
+    public MapNodeUtils.AdjacencyResult getAdjacencyMatrixByLevel(int i) {
+        try {
+            String s = redisUtils.get(AssistantContext.appenfAdjacencyPrefix(i));
+            if (StringUtils.isEmpty(s)) {
+                return null;
+            }
+            return JSON.parseObject(s, MapNodeUtils.AdjacencyResult.class);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
 }

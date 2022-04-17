@@ -89,7 +89,6 @@ public class MapNodeUtils {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 matrix[i][j] = i == j ? 0 : inf;
-                pathMatrix[i][j] = "";
             }
         }
 
@@ -101,7 +100,7 @@ public class MapNodeUtils {
                     long x = m.getX() - list.get(j).getX();
                     long y = m.getY() - list.get(j).getY();
                     matrix[i][j] = x * x + y * y;
-                    pathMatrix[i][j] = id + ",";
+                    pathMatrix[i][j] = "," + id;
                 }
             }
         }
@@ -115,7 +114,7 @@ public class MapNodeUtils {
                         long x = m.getX() - list.get(j).getX();
                         long y = m.getY() - list.get(j).getY();
                         matrix[i][j] = x * x + y * y;
-                        pathMatrix[i][j] = id + ",";
+                        pathMatrix[i][j] = "," + id;
                     }
                 }
             }
@@ -130,7 +129,7 @@ public class MapNodeUtils {
                         long x = m.getX() - list.get(j).getX();
                         long y = m.getY() - list.get(j).getY();
                         matrix[i][j] = x * x + y * y;
-                        pathMatrix[i][j] = id + ",";
+                        pathMatrix[i][j] = "," + id;
                     }
                 }
             }

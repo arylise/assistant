@@ -1,5 +1,6 @@
 package com.assistant.service.function;
 
+import com.assistant.constant.AssistantContext;
 import com.assistant.mapper.MapNodeMapper;
 import com.assistant.mapper.ProjectMapper;
 import com.assistant.model.dto.QueueCache;
@@ -51,6 +52,14 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         }
         List<MapNode> collect = all.stream().filter(o -> StringUtil.isNotEmpty(o.getElevatorId())).collect(Collectors.toList());
         cacheUtils.putElevatorMap(collect);
+
+        for (int i = 1; i <= AssistantContext.level; i++) {
+            List<MapNode> list = mapNodeMapper.getNodesByLevel(i);
+            MapNodeUtils.AdjacencyResult adjacencyResult = mapNodeUtils.adjacencyMatrix(list);
+            adjacencyResult.setMapNodes(mapNodeMapper.getNodesByLevel(i));
+            cacheUtils.putAdjacencyMatrixByLevel(i, adjacencyResult);
+        }
+
         TestClass.showMe("overLoad!");
     }
 }

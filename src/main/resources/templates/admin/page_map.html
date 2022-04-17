@@ -26,6 +26,10 @@
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
             <div class="map-button">
+                <fieldset class="layui-elem-field layui-field-title"
+                          style="margin-top: 30px;width: 50%;text-align: left; margin-right: auto;  margin-left: auto;">
+                    <legend>地图总览</legend>
+                </fieldset>
                 <button class="layui-btn map-active" data-type="clear">清空地图</button>
                 <button class="layui-btn map-active" data-type="addFloor" floor="1">1楼地图</button>
                 <button class="layui-btn map-active" data-type="addFloor" floor="2">2楼地图</button>
@@ -46,13 +50,9 @@
                     element.tabAdd('map', {
                         title: '&nbsp;&nbsp;' + floor + '楼地图&nbsp;&nbsp;'
                         , content:
-                            '<div>'
-                            + '<svg class="svgStyle map-active-showMeXY" xmlns="http://www.w3.org/2000/svg" version="1.1" data-type="showXY"">'
+                            '<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;width: 50%;text-align: left; margin-right: auto;  margin-left: auto;"><legend>' + floor + '楼地图总览</legend></fieldset><div><svg class="svgStyle map-active-showMeXY" xmlns="http://www.w3.org/2000/svg" version="1.1" data-type="showXY"">'
                             + active.getNodeStr(floor)
-                            + '</svg>'
-                            + '<img id="floor' + floor + '" src="/img/floor' + floor + '.png" style="-webkit-user-drag:none"/>'
-                            + '</div>'
-                            + ' <div className = "layui-btn-group">'
+                            + '</svg><img id="floor' + floor + '" src="/img/floor' + floor + '.png" style="-webkit-user-drag:none"/></div><div className = "layui-btn-group">'
                             + ((floor === 1) ? '' : '<button class = "layui-btn map-active-0" data-type="addFloor" floor="' + (floor - 1) + '">下一层</button>')
                             + ((floor === 3) ? '' : '<button class = "layui-btn map-active-0" data-type="addFloor" floor="' + (floor + 1) + '">上一层</button>')
                             + '</div>'
@@ -99,14 +99,12 @@
                             if (matrix[j][i]) {
                                 text += '<path id="line-' + id + '" d="' + d + '" stroke="#009688" stroke-linecap="round" stroke-width="2"/>';
                             } else {
-                                text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
-                                text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
+                                text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/><circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>'
                             }
                         } else if (matrix[j][i]) {
                             id = '' + index[j] + '-' + index[i];
                             d = 'M ' + mapNodes[j].x + ' ' + mapNodes[j].y + ' L ' + mapNodes[i].x + ' ' + mapNodes[i].y;
-                            text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
-                            text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
+                            text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/><circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>'
                         }
                     }
                 }

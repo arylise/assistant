@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/assistant.css">
+</head>
+<body>
+<!--TODO-->
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-activity" lay-allowclose="true">
+  <ul class="layui-tab-title">
+    <li class="layui-this unshow-i">&nbsp;&nbsp;在线医生用户&nbsp;&nbsp;</li>
+  </ul>
+  <div class="layui-tab-content">
+    <div class="layui-tab-item layui-show">
+      <fieldset class="layui-elem-field layui-field-title"
+                style="margin-top: 30px;width: 50%;text-align: left; margin-right: auto;  margin-left: auto;">
+        <legend>在线医生</legend>
+      </fieldset>
+      <table id="activity-list" lay-filter="list-listener"></table>
+    </div>
+  </div>
+</div>
+
+<script src="/layui/layui.js"></script>
+<script>
+  layui.table.render({
+    elem: '#activity-list'
+    , title: '用户数据表'
+    , url: '/doctor/getActivityPatients'
+    , page: true
+    , cols: [
+      [
+        {type: 'numbers', fixed: "left"}
+        , {field: 'username', title: '用户名', width: 100, sort: true, fixed: "left"}
+        , {field: 'name', title: '姓名', width: 100}
+        , {field: 'sex', title: '性别', width: 80}
+        , {field: 'age', title: '年龄', width: 80}
+        , {field: 'phone', title: '电话', width: 135}
+        , {field: 'exception', title: '备注', width: 80}
+        , {field: 'msg', title: '描述', width: 300}
+      ]
+    ]
+    , defaultToolbar: [
+      {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
+      , {title: '获取选中数目', layEvent: 'getCheckLength', icon: 'layui-icon-tips'}
+      , {title: '验证是否全选', layEvent: 'isAll', icon: 'layui-icon-tips'}
+    ]
+    , even: true
+    , skin: 'row'
+    , limit: 20
+  })
+
+  //头工具栏事件
+  layui.table.on('toolbar(list-listener)', function (obj) {
+    var checkStatus = table.checkStatus(obj.config.id);
+    switch (obj.event) {
+      case 'getCheckData':
+        var data = checkStatus.data;
+        layer.alert(JSON.stringify(data));
+        break;
+      case 'getCheckLength':
+        var data = checkStatus.data;
+        layer.msg('选中了：' + data.length + ' 个');
+        break;
+      case 'isAll':
+        layer.msg(checkStatus.isAll ? '全选' : '未全选');
+        break;
+
+            //自定义头工具栏右侧图标 - 提示
+      case 'LAYTABLE_TIPS':
+        layer.alert('这是工具栏右侧自定义的一个图标按钮');
+        break;
+    }
+
+  });
+
+  //监听工具条
+  layui.table.on('tool(list-listener)', function (obj) {
+    var data = obj.data;
+    if (obj.event === 'detail') {
+      layer.msg('ID：' + data.username + ' 的查看操作');
+    } else if (obj.event === 'del') {
+      layer.confirm('test', function (index) {
+        obj.del();
+        layer.close(index);
+        layui.$.ajax({
+          type: 'GET',
+          url: '/' + data.username,
+          async: false
+        })
+      });
+    } else if (obj.event === 'edit') {
+      layer.alert('编辑行：<br>' + JSON.stringify(data))
+    }
+  });
+</script>
+</body>
+</html>

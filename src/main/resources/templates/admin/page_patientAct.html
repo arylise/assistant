@@ -6,39 +6,32 @@
     <link rel="stylesheet" href="/css/assistant.css">
 </head>
 <body>
-
-<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-patient">
+<!--TODO-->
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-activity" lay-allowclose="true">
     <ul class="layui-tab-title">
-        <li class="layui-this">&nbsp;&nbsp;患者列表&nbsp;&nbsp;</li>
+        <li class="layui-this unshow-i">&nbsp;&nbsp;在线患者用户&nbsp;&nbsp;</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
             <fieldset class="layui-elem-field layui-field-title"
                       style="margin-top: 30px;width: 50%;text-align: left; margin-right: auto;  margin-left: auto;">
-                <legend>用户总览表</legend>
+                <legend>在线患者</legend>
             </fieldset>
-            <table id="patient-list" lay-filter="list-listener"></table>
+            <table id="activity-list" lay-filter="list-listener"></table>
         </div>
     </div>
 </div>
 
-<script type="text/html" id="bar">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
-
 <script src="/layui/layui.js"></script>
 <script>
     layui.table.render({
-        elem: '#patient-list'
-        , toolbar: '#toolbar'
+        elem: '#activity-list'
         , title: '用户数据表'
-        , url: '/admin/list_patient'
+        , url: '/doctor/getActivityPatients'
+        , page: true
         , cols: [
             [
-                {fixed: 'left', type: 'checkbox'}
-                , {type: 'numbers', fixed: "left"}
+                {type: 'numbers', fixed: "left"}
                 , {field: 'username', title: '用户名', width: 100, sort: true, fixed: "left"}
                 , {field: 'name', title: '姓名', width: 100}
                 , {field: 'sex', title: '性别', width: 80}
@@ -46,16 +39,12 @@
                 , {field: 'phone', title: '电话', width: 135}
                 , {field: 'exception', title: '备注', width: 80}
                 , {field: 'msg', title: '描述', width: 300}
-                , {fixed: 'right', title: '操作', width: 178, align: 'center', toolbar: '#bar'}
             ]
         ]
         , defaultToolbar: [
             {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
             , {title: '获取选中数目', layEvent: 'getCheckLength', icon: 'layui-icon-tips'}
             , {title: '验证是否全选', layEvent: 'isAll', icon: 'layui-icon-tips'}
-            , 'filter'
-            , 'exports'
-            , 'print'
         ]
         , even: true
         , skin: 'row'
@@ -87,7 +76,7 @@
     });
 
     //监听工具条
-    layui.table.on('tool(list-listener)',  function (obj) {
+    layui.table.on('tool(list-listener)', function (obj) {
         var data = obj.data;
         if (obj.event === 'detail') {
             layer.msg('ID：' + data.username + ' 的查看操作');
@@ -106,6 +95,5 @@
         }
     });
 </script>
-
 </body>
 </html>

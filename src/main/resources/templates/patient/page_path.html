@@ -53,7 +53,7 @@
 
 <script src="/layui/layui.js"></script>
 <script th:inline="none">
-    let n,tspResult
+    let n, resultPath, mainPath, adjacency
     const element = layui.element,
         $ = layui.jquery,
         active = {
@@ -62,13 +62,15 @@
                     text = othis.text()
                 layer.confirm('确定要' + text + '吗？此操作会丢失您之前的路线推荐！', function (index) {
                     layer.close(index);
-                    layui.$.ajax({
+                    $.ajax({
                         type: 'GET',
-                        url: '/patient/createPath?action=' + action,
+                        url: '/patient/path.create?action=' + action,
                         async: false,
                         success: function (res) {
-                            tspResult = res
-                            console.log(tspResult)
+                            if (res !== null) {
+                                resultPath = JSON.parse(res.resultPath)
+                                mainPath = JSON.parse(res.mainPath)
+                            }
                         }
                     })
                     active.clear.call()
@@ -105,52 +107,68 @@
                 }
             },
             getNodeStr: function (level) {
-                let str
-                $.ajax({
-                    url: "/patient/nodes_" + level,
-                    type: "GET",
-                    async: false,
-                    success: function (response) {
-                        str = JSON.parse(response)
-                    }
-                });
-                const index = str['index'],
-                    matrix = str['adjacencyMatrix'],
-                    mapNodes = str['mapNodes'];
-                let text = '';
-                for (let i = 0; i < index.length; i++) {
-                    for (let j = 0; j <= i; j++) {
-                        let d;
-                        let id;
-                        if (i === j) {
-                            text += '<circle id="point-' + index[i] + '" cx="' + mapNodes[i].x + '" cy="' + mapNodes[i].y + '"  r="5" stroke="#009688" fill="#009688"/>'
-                        } else if (matrix[i][j]) {
-                            id = '' + index[i] + '-' + index[j];
-                            d = 'M ' + mapNodes[i].x + ' ' + mapNodes[i].y + ' L ' + mapNodes[j].x + ' ' + mapNodes[j].y;
-                            if (matrix[j][i]) {
-                                text += '<path id="line-' + id + '" d="' + d + '" stroke="#009688" stroke-linecap="round" stroke-width="2"/>';
-                            } else {
-                                text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
-                                text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
-                            }
-                        } else if (matrix[j][i]) {
-                            id = '' + index[j] + '-' + index[i];
-                            d = 'M ' + mapNodes[j].x + ' ' + mapNodes[j].y + ' L ' + mapNodes[i].x + ' ' + mapNodes[i].y;
-                            text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
-                            text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
+                console.log(adjacency[level]);
+                const
+                    index = adjacency[level]['index'],
+                    matrix = adjacency[level]['adjacencyMatrix'],
+                    mapNodes = adjacency[level]['mapNodes']
+                let text = ''
+                console.log(resultPath);
+                console.log(mainPath);
+                for (let i = 0; i < resultPath.length; i++) {
+                    let ii = index.indexOf(resultPath[i])
+                    if (mapNodes[ii] != null && mapNodes[ii].level === level) {
+                        if (mainPath.indexOf(resultPath[i]) >= 0) {
+                            text += '<circle id="point-' + resultPath[i] + '" cx="' + mapNodes[ii].x + '" cy="' + mapNodes[ii].y + '"  r="20" stroke="#61AFEF" fill="#61AFEF"/>' +
+                                '<text style="text-anchor: middle;dominant-baseline: middle" x="' + mapNodes[ii].x + '" y="' + mapNodes[ii].y + '" fill="black">S' + (mainPath.indexOf(resultPath[i]) + 1) + '</text>'
+                        } else {
+                            text += '<circle id="point-' + resultPath[i] + '" cx="' + mapNodes[ii].x + '" cy="' + mapNodes[ii].y + '"  r="5" stroke="#009688" fill="#009688"/>'
+                        }
+                        let iip = index.indexOf(resultPath[i + 1])
+                        if (i + 1 < resultPath.length && mapNodes[iip] != null) {
+                            let d = 'M ' + mapNodes[ii].x + ' ' + mapNodes[ii].y + ' L ' + mapNodes[iip].x + ' ' + mapNodes[iip].y;
+                            text += '<path id="line-' + resultPath[i] + '-' + resultPath[i + 1] + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
+                            text += '<circle id="point-' + resultPath[i] + '" r="5" stroke="#61AFEF" fill="#61AFEF"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
                         }
                     }
+
                 }
+                // for (let i = 0; i < index.length; i++) {
+                //     for (let j = 0; j <= i; j++) {
+                //         if (resultPath.indexOf(index[i]) >= 0 && resultPath.indexOf(index[j]) >= 0) {
+                //             let d;
+                //             let id;
+                //             if (i === j) {
+                //                 text += '<circle id="point-' + index[i] + '" cx="' + mapNodes[i].x + '" cy="' + mapNodes[i].y + '"  r="5" stroke="#009688" fill="#009688"/>'
+                //             } else if (matrix[i][j]) {
+                //                 id = '' + index[i] + '-' + index[j];
+                //                 d = 'M ' + mapNodes[i].x + ' ' + mapNodes[i].y + ' L ' + mapNodes[j].x + ' ' + mapNodes[j].y;
+                //                 if (matrix[j][i]) {
+                //                     text += '<path id="line-' + id + '" d="' + d + '" stroke="#009688" stroke-linecap="round" stroke-width="2"/>';
+                //                 } else {
+                //                     text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
+                //                     text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
+                //                 }
+                //             } else if (matrix[j][i]) {
+                //                 id = '' + index[j] + '-' + index[i];
+                //                 d = 'M ' + mapNodes[j].x + ' ' + mapNodes[j].y + ' L ' + mapNodes[i].x + ' ' + mapNodes[i].y;
+                //                 text += '<path id="line-' + id + '" d="' + d + '" stroke-dasharray="5,5" stroke="#009688" stroke-linecap="round" stroke-width="2" fill="none"/>';
+                //                 text += '<circle id="point-' + id + '" r="5" stroke="#009688" fill="#009688"><animateMotion path="' + d + '" dur="5s" fill="freeze" repeatCount="indefinite"/></circle>';
+                //             }
+                //         }
+                //     }
+                // }
                 return text;
             }
         }
-
     $.ajax({
-        url: "/getLevel",
+        url: "/patient/path.nodes",
         type: "GET",
         async: false,
-        success: function (response) {
-            n = response;
+        success: function (res) {
+            adjacency = res
+
+            n = Object.keys(res).length;
             let str = ''
             for (let i = 1; i <= n; i++) {
                 str += '<button class="layui-btn map-active" data-type="addFloor" floor="' + i + '">' + i + '楼地图</button>'
@@ -158,6 +176,19 @@
             $('#floor-btn').append(str);
         }
     });
+
+    $.ajax({
+        url: "/patient/path.check",
+        type: "GET",
+        async: false,
+        success: function (res) {
+            if (res !== null) {
+                resultPath = JSON.parse(res.resultPath)
+                mainPath = JSON.parse(res.mainPath)
+            }
+        }
+    })
+
     $('.map-active').on('click', function () {
         const othis = $(this), type = othis.data('type');
         active[type] ? active[type].call(this, othis) : '';

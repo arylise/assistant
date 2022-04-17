@@ -12,14 +12,14 @@ const admin = [
         "url": "/index",
         "list": [],
     }, {
-        "name": "用户管理",
+        "name": "线上管理",
         "icon": "&#xe612;",
         "list": [{
-            "name": "医生用户",
-            "url": "/page_doctor"
+            "name": "医生在线用户",
+            "url": "/page_doctorAct"
         }, {
-            "name": "患者用户",
-            "url": "/page_patient"
+            "name": "患者在线用户",
+            "url": "/page_patientAct "
         }]
     }, {
         "name": "医院管理",
@@ -31,9 +31,31 @@ const admin = [
             "name": "节点管理",
             "url": "/page_mapnode"
         }, {
-            "name": "地图管理",
+            "name": "地图查看",
             "url": "/page_map"
         }]
+    }, {
+        "name": "用户管理",
+        "icon": "&#xe612;",
+        "list": [{
+            "name": "医生用户",
+            "url": "/page_doctor"
+        }, {
+            "name": "患者用户",
+            "url": "/page_patient"
+        }]
+    }, {
+        "name": "评论专区",
+        "icon": "&#xe609;",
+        "list": [{
+            "name": "查看评论",
+            "url": "/message"
+        }]
+    }, {
+        "name": "退出登录",
+        "icon": "&#xe65c;",
+        "url": "/logout",
+        "list": []
     }, {
         "name": "测试页面",
         "icon": "&#xe612;",
@@ -60,18 +82,6 @@ const admin = [
             "name": "测试4",
             "url": "/test_4"
         }]
-    }, {
-        "name": "评论专区",
-        "icon": "&#xe609;",
-        "list": [{
-            "name": "查看评论",
-            "url": "/message"
-        }]
-    }, {
-        "name": "退出登录",
-        "icon": "&#xe65c;",
-        "url": "/logout",
-        "list": []
     }
 ];
 
@@ -151,13 +161,6 @@ const patient = [
         "list": [{
             "name": "查看评论",
             "url": "/message"
-        }]
-    }, {
-        "name": "测试页面",
-        "icon": "&#xe612;",
-        "list": [{
-            "name": "10017",
-            "url": "/patient/queue.reg?project=project10017"
         }]
     }, {
         "name": "退出登录",

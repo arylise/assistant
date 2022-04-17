@@ -132,14 +132,14 @@ public class PathUtils {
     private void parseList(@NonNull List<String> projectIds) {
         List<Project> projectList = projectMapper.selectByIds(projectIds);
         this.idList = new ArrayList<>() {{
-            add("0");
+            add("10000");
             for (Project project : projectList) {
                 add(project.getNodeId());
             }
         }};
 
         this.timeMap = new HashMap<>() {{
-            put("0", 0L);
+            put("10000", 0L);
         }};
 
         this.timeList = new ArrayList<>() {{
@@ -188,6 +188,6 @@ public class PathUtils {
 
         // 查找最小权重的汉密尔顿回路 Hamiltonian Cycle
         // 输出结果ans就是最小权重的汉密尔顿回路（ Hamiltonian Cycle）
-        return tsp(0, 1, 0, "", "0", 0, TspResult.builder().action(action).score(Long.MAX_VALUE).build());
+        return tsp(0, 1, 0, "10000", "10000", 0, TspResult.builder().action(action).score(Long.MAX_VALUE).build());
     }
 }

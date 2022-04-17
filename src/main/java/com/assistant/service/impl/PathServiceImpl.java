@@ -5,12 +5,14 @@ import com.assistant.model.dto.State;
 import com.assistant.service.intf.PathService;
 import com.assistant.service.intf.ProjectService;
 import com.assistant.utils.CacheUtils;
+import com.assistant.utils.MapNodeUtils;
 import com.assistant.utils.PathUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,5 +66,20 @@ public class PathServiceImpl implements PathService {
         PathUtils.TspResult bestPath = pathUtils.getBestPath(projectList, path, time, act);
         cacheUtils.putPatientPath(patient, bestPath);
         return bestPath;
+    }
+
+    @Override
+    public PathUtils.TspResult checkPath(String patient) {
+        return cacheUtils.getPatientPath(patient);
+    }
+
+    @Override
+    public Map<Integer, MapNodeUtils.AdjacencyResult> node() {
+        return new HashMap<>() {{
+            for (int i = 1; i <= AssistantContext.level; i++) {
+                MapNodeUtils.AdjacencyResult adjacencyMatrixByLevel = cacheUtils.getAdjacencyMatrixByLevel(i);
+                put(i, adjacencyMatrixByLevel);
+            }
+        }};
     }
 }
