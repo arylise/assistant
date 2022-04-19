@@ -20,6 +20,9 @@
             )
         </foreach>
     </insert>
+    <update id="update">
+
+    </update>
     <delete id="delete">
         delete
         from doctor

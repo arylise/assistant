@@ -2,10 +2,106 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/assistant.css">
 </head>
 <body>
-page_info
-<!--TODO pageInfo-->
+
+<div class="layui-tab layui-tab-brief my-tab" lay-filter="management-patientProjects" lay-allowclose="true">
+    <ul class="layui-tab-title">
+        <li class="layui-this unshow-i">信息管理</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">    <div class="layui-form" lay-filter="patient" id="pageInfo">
+            <div class="layui-form-item">
+                <label class="layui-form-label">我的姓名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" placeholder="我的姓名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="m" title="男" checked="">
+                    <input type="radio" name="sex" value="f" title="女">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">联系方式</label>
+                <div class="layui-input-block">
+                    <input type="text" name="phone" placeholder="联系方式" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">年龄</label>
+                <div class="layui-input-block">
+                    <input type="text" name="age" placeholder="年龄" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">附加</label>
+                <div class="layui-input-block">
+                    <input type="text" name="exception" placeholder="附加" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<script src="/layui/layui.js"></script>
+<script>
+    const $ = layui.jquery,
+        form = layui.form,
+        active = {
+            pop: function (project) {
+                let data;
+                $.ajax({
+                    type: 'GET',
+                    url: '/doctor/queue.pop',
+                    data: {"project": project},
+                    async: false,
+                    success: function (response) {
+                        data = JSON.parse(response);
+                    }
+                })
+                if (data != null) {
+                    form.val('patient', data);
+                } else {
+                    form.val('patient', {
+                        "name": ""
+                        , "sex": ""
+                        , "phone": ""
+                        , "age": ""
+                        , "exception": ""
+                    });
+                }
+                return false;
+            },
+            peek: function (project) {
+                let data;
+                $.ajax({
+                    type: 'GET',
+                    url: '/doctor/queue.peek',
+                    data: {"project": project},
+                    async: false,
+                    success: function (response) {
+                        data = JSON.parse(response);
+                    }
+                })
+                form.val('patient', data);
+                return false;
+            }
+        }
+
+    $.ajax({
+        type: 'GET',
+        url: '/doctor/queue.peek',
+        data: {"project": project},
+        async: false,
+        success: function (response) {
+            data = JSON.parse(response);
+        }
+    })
+</script>
 </body>
 </html>

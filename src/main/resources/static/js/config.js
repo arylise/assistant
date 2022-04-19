@@ -49,7 +49,10 @@ const admin = [
         "icon": "&#xe609;",
         "list": [{
             "name": "查看评论",
-            "url": "/message"
+            "url": "/message_check"
+        },{
+            "name": "写评论",
+            "url": "/message_write"
         }]
     }, {
         "name": "退出登录",
@@ -120,7 +123,10 @@ const doctor = [
         "icon": "&#xe609;",
         "list": [{
             "name": "查看评论",
-            "url": "/message"
+            "url": "/message_check"
+        },{
+            "name": "写评论",
+            "url": "/message_write"
         }]
     }, {
         "name": "退出登录",
@@ -160,7 +166,10 @@ const patient = [
         "icon": "&#xe609;",
         "list": [{
             "name": "查看评论",
-            "url": "/message"
+            "url": "/message_check"
+        },{
+            "name": "写评论",
+            "url": "/message_write"
         }]
     }, {
         "name": "退出登录",

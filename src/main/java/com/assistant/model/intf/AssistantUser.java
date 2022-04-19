@@ -20,6 +20,8 @@ public interface AssistantUser extends Serializable, UserDetails {
         }};
     }
 
+    String getName();
+
     @Override
     @JSONField(serialize = false)
     default boolean isAccountNonExpired() {

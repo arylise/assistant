@@ -5,12 +5,11 @@
 <mapper namespace="com.assistant.mapper.MessageMapper">
 
     <insert id="insert">
-        insert into message
-            value (#{messageId}, #{answerId}, #{speakerName}, #{speakerUsername}, #{speakerRole}, #{msg})
+        insert into message(speakerUsername, speakerName, speakerRole, msg, datestr)
+            value (#{speakerUsername}, #{speakerName}, #{speakerRole}, #{msg}, #{datestr})
     </insert>
-    <select id="selectById" resultType="com.assistant.model.enity.Message">
+    <select id="select" resultType="com.assistant.model.enity.Message">
         select *
         from message
-        where messageId = #{messageId}
     </select>
 </mapper>

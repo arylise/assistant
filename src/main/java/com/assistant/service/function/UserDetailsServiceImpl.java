@@ -20,7 +20,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
@@ -57,7 +56,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     public boolean insertPatient(String username, String password) {
         List<String> list = adminMapper.checkUserName(username);
         if (CollectionUtils.isEmpty(list)) {
-            boolean ans = patientMapper.insert(username, new BCryptPasswordEncoder().encode(password));
+            boolean ans = patientMapper.insert(username, AssistantContext.encode(password));
             if (ans) {
                 return true;
                 // TODO 实现注册后立即登录

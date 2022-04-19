@@ -7,6 +7,7 @@ import com.assistant.mapper.DoctorMapper;
 import com.assistant.model.dto.DataList;
 import com.assistant.model.dto.PatientDTO;
 import com.assistant.model.dto.State;
+import com.assistant.model.enity.Doctor;
 import com.assistant.service.intf.ProjectService;
 import com.assistant.service.intf.QueueService;
 import com.assistant.service.intf.UserService;
@@ -139,5 +140,19 @@ public class DoctorController {
         return projectService.getAllProjectName();
     }
 
+    @RequestMapping("info.get")
+    @ResponseBody
+    public Doctor getMyself() {
+        return (Doctor) SecurityUtils.getMyself();
+    }
+
+    @RequestMapping("/info.update")
+    public String update(@RequestBody Doctor doctor) {
+        String password = doctor.getPassword();
+        String encode = AssistantContext.encode(password);
+        doctor.setPassword(encode);
+        doctorMapper.update(doctor);
+        return "/logout";
+    }
 
 }

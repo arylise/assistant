@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/assistant.css">
+</head>
+<body>
+<table id="msg-list"></table>
+<script src="/layui/layui.js"></script>
+<script>
+    layui.table.render({
+        elem: '#msg-list'
+        , url: '/message.check'
+        , page: true
+        , cols: [
+            [
+                {field: 'speakerUsername', title: '用户名', width: 100}
+                , {field: 'speakerName', title: '姓名', width: 100}
+                , {field: 'speakerRole', title: '用户', width: 100}
+                , {field: 'msg', title: '留言', width: 400}
+                , {field: 'datestr', title: '日期', width: 200}
+            ]
+        ]
+        , even: true
+        , skin: 'row'
+        , limit: 20
+    });
+</script>
+</body>
+</html>

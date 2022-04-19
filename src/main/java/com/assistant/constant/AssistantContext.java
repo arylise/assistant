@@ -1,5 +1,7 @@
 package com.assistant.constant;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -88,5 +90,9 @@ public class AssistantContext {
 
     public static String appenfAdjacencyPrefix(int i) {
         return String.format(ADJACENCY_KEY, i);
+    }
+
+    public static String encode(String str){
+        return new BCryptPasswordEncoder().encode(str);
     }
 }

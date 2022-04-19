@@ -1,5 +1,6 @@
 package com.assistant.mapper;
 
+import com.assistant.model.enity.Doctor;
 import com.assistant.model.intf.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,4 +13,6 @@ public interface DoctorMapper extends BaseMapper {
     String getDepartment(String username);
 
     List<String> getProject(String username);
+
+    void update(Doctor doctor);
 }

@@ -1,10 +1,13 @@
 package com.assistant.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.assistant.constant.AssistantContext;
 import com.assistant.mapper.MessageMapper;
+import com.assistant.model.dto.DataList;
 import com.assistant.model.enity.Message;
 import com.assistant.service.intf.UserService;
 import com.assistant.utils.SecurityUtils;
+import com.github.pagehelper.PageHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -26,7 +30,7 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping(value = {"/index", "/login", "/signup", "/login_error", "/message"})
+    @RequestMapping(value = {"/index", "/login", "/signup", "/login_error"})
     public String index(HttpServletRequest request) {
         return request.getRequestURI();
     }
@@ -52,7 +56,7 @@ public class IndexController {
 
     @RequestMapping("/getLevel")
     @ResponseBody
-    public int getLevel(){
+    public int getLevel() {
         return AssistantContext.level;
     }
 
@@ -63,15 +67,36 @@ public class IndexController {
     }
 
     @RequestMapping("/message.write")
-    @ResponseBody
-    public void writeMessage(@RequestParam("message") String message, @RequestParam(value = "answerId", required = false, defaultValue = "") String answerId, @RequestParam("incognito") Boolean incognito) {
-        Message msg = new Message();
-        msg.setMsg(message);
-        msg.setAnswerId(answerId);
-        if (incognito) {
-            msg.setSpeakerUsername(SecurityUtils.getUsername());
-            msg.setSpeakerRole(SecurityUtils.getRole());
+    public String writeMessage(@RequestBody String message) {
+        String role = SecurityUtils.getRole();
+        if (StringUtils.isEmpty(role)) {
+            return "/";
         }
-//        return messageMapper.insert();
+        Message msg = new Message(SecurityUtils.getUsername(), SecurityUtils.getName(), SecurityUtils.getRole(), message);
+        messageMapper.insert(msg);
+        return "/message_check.html";
+    }
+
+    @RequestMapping("/message.check")
+    @ResponseBody
+    public DataList writeMessage(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "limit", defaultValue = "20") int limit) {
+        String role = SecurityUtils.getRole();
+        if (StringUtils.isEmpty(role)) {
+            return null;
+        }
+        PageHelper.startPage(page, limit);
+        List<Message> msgList = messageMapper.select();
+        return DataList.builder().data(msgList).count(msgList.size()).build();
+    }
+
+    @RequestMapping("/message_{act}")
+    public String gotoMessage(@PathVariable("act") String act) {
+        String role = SecurityUtils.getRole();
+        if (StringUtils.isEmpty(role)) {
+            return null;
+        }
+        return MessageFormat.format("/message_{0}.html", act);
     }
 }

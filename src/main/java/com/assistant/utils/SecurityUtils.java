@@ -1,6 +1,7 @@
 package com.assistant.utils;
 
 import com.assistant.constant.AssistantContext;
+import com.assistant.model.intf.AssistantUser;
 import org.apache.catalina.Manager;
 import org.apache.catalina.Session;
 import org.apache.catalina.connector.Request;
@@ -24,6 +25,12 @@ public class SecurityUtils {
     public static String getUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
+    }
+
+    public static String getName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AssistantUser user = (AssistantUser) authentication.getPrincipal();
+        return user.getName();
     }
 
     public static String getRole() {
@@ -124,5 +131,10 @@ public class SecurityUtils {
             return null;
         }
         return null;
+    }
+
+    public static AssistantUser getMyself() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (AssistantUser) authentication.getPrincipal();
     }
 }
