@@ -25,7 +25,7 @@ const admin = [
         "name": "医院管理",
         "icon": "&#xe612;",
         "list": [{
-            "name": "检查科室",
+            "name": "检查项目",
             "url": "/page_project"
         }, {
             "name": "节点管理",
@@ -45,13 +45,13 @@ const admin = [
             "url": "/page_patient"
         }]
     }, {
-        "name": "评论专区",
+        "name": "留言专区",
         "icon": "&#xe609;",
         "list": [{
-            "name": "查看评论",
+            "name": "查看留言",
             "url": "/message_check"
         },{
-            "name": "写评论",
+            "name": "写留言",
             "url": "/message_write"
         }]
     }, {
@@ -59,32 +59,6 @@ const admin = [
         "icon": "&#xe65c;",
         "url": "/logout",
         "list": []
-    }, {
-        "name": "测试页面",
-        "icon": "&#xe612;",
-        "baseUrl": "/test",
-        "list": [{
-            "name": "redis测试",
-            "url": "/test_redis"
-        }, {
-            "name": "医生管理测试",
-            "url": "/test_page_doctor"
-        }, {
-            "name": "科室管理测试",
-            "url": "/test_page_project"
-        }, {
-            "name": "测试1",
-            "url": "/test_1"
-        }, {
-            "name": "测试2",
-            "url": "/test_2"
-        }, {
-            "name": "测试3",
-            "url": "/test_3"
-        }, {
-            "name": "测试4",
-            "url": "/test_4"
-        }]
     }
 ];
 
@@ -119,13 +93,13 @@ const doctor = [
             "url": "/page_queue"
         }]
     }, {
-        "name": "评论专区",
+        "name": "留言专区",
         "icon": "&#xe609;",
         "list": [{
-            "name": "查看评论",
+            "name": "查看留言",
             "url": "/message_check"
         },{
-            "name": "写评论",
+            "name": "写留言",
             "url": "/message_write"
         }]
     }, {
@@ -162,13 +136,13 @@ const patient = [
             "url": "/page_path"
         }]
     }, {
-        "name": "评论专区",
+        "name": "留言专区",
         "icon": "&#xe609;",
         "list": [{
-            "name": "查看评论",
+            "name": "查看留言",
             "url": "/message_check"
         },{
-            "name": "写评论",
+            "name": "写留言",
             "url": "/message_write"
         }]
     }, {

@@ -48,7 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/js/**",
                         "/layui/**",
                         "/signup**",
-                        "/test/**").permitAll()
+                        "/test/**",
+                        "/images/**").permitAll()
 //                .antMatchers(
 //                        "/admin/**").hasRole("ADMIN")
                 //其他接口需要登录后才能访问

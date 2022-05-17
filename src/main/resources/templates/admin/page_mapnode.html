@@ -23,7 +23,6 @@
 </div>
 
 <script type="text/html" id="bar">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -66,10 +65,7 @@
             ]
         ]
         , defaultToolbar: [
-            {title: '获取选中行数据', layEvent: 'getCheckData', icon: 'layui-icon-tips'}
-            , {title: '获取选中数目', layEvent: 'getCheckLength', icon: 'layui-icon-tips'}
-            , {title: '验证是否全选', layEvent: 'isAll', icon: 'layui-icon-tips'}
-            , 'filter'
+            'filter'
             , 'exports'
             , 'print'
         ]
@@ -92,11 +88,6 @@
             case 'isAll':
                 layer.msg(checkStatus.isAll ? '全选' : '未全选');
                 break;
-
-            //自定义头工具栏右侧图标 - 提示
-            case 'LAYTABLE_TIPS':
-                layer.alert('这是工具栏右侧自定义的一个图标按钮');
-                break;
         }
 
     });
@@ -104,15 +95,13 @@
 
     layui.table.on('tool(list-listener)', function (obj) {
         const data = obj.data;
-        if (obj.event === 'detail') {
-            layer.msg('ID：' + data.nodeId + ' 的查看操作');
-        } else if (obj.event === 'del') {
-            layer.confirm('真的删除行么', function (index) {
+        if (obj.event === 'del') {
+            layer.confirm('真的删除节点么', function (index) {
                 obj.del();
                 layer.close(index);
             });
         } else if (obj.event === 'edit') {
-            layer.alert($('#node-form').html())
+            layer.alert(layui.jquery('#node-form').html())
             layui.form.val('example', {
                 'desc': JSON.stringify(data, null, 4)
             })

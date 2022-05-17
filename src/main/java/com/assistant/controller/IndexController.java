@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +74,16 @@ public class IndexController {
         if (StringUtils.isEmpty(role)) {
             return "/";
         }
-        Message msg = new Message(SecurityUtils.getUsername(), SecurityUtils.getName(), SecurityUtils.getRole(), message);
+        String[] split = message.split("=");
+        if (split[1] == null){
+            return "/";
+        }
+        String msgStr = null;
+        msgStr = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
+        if (StringUtils.isEmpty(msgStr)){
+            return "/";
+        }
+        Message msg = new Message(SecurityUtils.getUsername(), SecurityUtils.getName(), SecurityUtils.getRole(), msgStr);
         messageMapper.insert(msg);
         return "/message_check.html";
     }
