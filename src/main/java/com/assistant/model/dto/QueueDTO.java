@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class QueueDTO {
-    private State state;
+    private String state;
+    private Integer weight;
     private String project;
     private Long waitTime;
     private Integer waitCount;

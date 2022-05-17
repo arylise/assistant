@@ -45,15 +45,42 @@ const admin = [
             "url": "/page_patient"
         }]
     }, {
+        "name": "测试页面",
+        "icon": "&#xe612;",
+        "baseUrl": "/test",
+        "list": [{
+            "name": "redis测试",
+            "url": "/test_redis"
+        }, {
+            "name": "医生管理测试",
+            "url": "/test_page_doctor"
+        }, {
+            "name": "科室管理测试",
+            "url": "/test_page_project"
+        }, {
+            "name": "测试1",
+            "url": "/test_1"
+        }, {
+            "name": "测试2",
+            "url": "/test_2"
+        }, {
+            "name": "测试3",
+            "url": "/test_3"
+        }, {
+            "name": "测试4",
+            "url": "/test_4"
+        }]
+    }, {
         "name": "留言专区",
         "icon": "&#xe609;",
         "list": [{
             "name": "查看留言",
             "url": "/message_check"
-        },{
+        }, {
             "name": "写留言",
             "url": "/message_write"
         }]
+
     }, {
         "name": "退出登录",
         "icon": "&#xe65c;",
@@ -98,7 +125,7 @@ const doctor = [
         "list": [{
             "name": "查看留言",
             "url": "/message_check"
-        },{
+        }, {
             "name": "写留言",
             "url": "/message_write"
         }]
@@ -141,7 +168,7 @@ const patient = [
         "list": [{
             "name": "查看留言",
             "url": "/message_check"
-        },{
+        }, {
             "name": "写留言",
             "url": "/message_write"
         }]
@@ -206,7 +233,7 @@ $.ajax({
 
 const config = {
     name: "检查助手",
-    hello: "你好" + role + name
+    hello: "你好！" + role + "：" + name
 };
 
 // try {

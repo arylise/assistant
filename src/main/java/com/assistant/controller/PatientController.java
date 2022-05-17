@@ -1,7 +1,6 @@
 package com.assistant.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.assistant.mapper.MapNodeMapper;
 import com.assistant.model.dto.DataList;
 import com.assistant.service.intf.AdminService;
 import com.assistant.service.intf.PathService;
@@ -29,7 +28,6 @@ public class PatientController {
     private final ProjectService projectService;
     private final AdminService adminService;
     private final PathService pathService;
-    private final MapNodeMapper mapNodeMapper;
 
     @RequestMapping("/queue.reg")
     @ResponseBody

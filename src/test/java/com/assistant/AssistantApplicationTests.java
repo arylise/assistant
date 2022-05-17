@@ -61,6 +61,209 @@ class AssistantApplicationTests {
     }
 
     @Test
+    void createDocTest2() {
+        List<AssistantUser> doctors = new ArrayList<>();
+        String username = "doctor";
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        int i = 1;
+        String namestr;
+
+        {
+            namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(
+                    new Doctor(
+                            namestr,
+                            encoder.encode(namestr),
+                            "潘柏临",
+                            "内分泌",
+                            Math.random() > 0.5 ? "男" : "女",
+                            i,
+                            i,
+                            null
+                    )
+            );
+            i++;
+        }
+        {
+            namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(
+                    new Doctor(
+                            namestr,
+                            encoder.encode(namestr),
+                            "王启程",
+                            "化验科",
+                            Math.random() > 0.5 ? "男" : "女",
+                            i,
+                            i,
+                            null
+                    )
+            );
+            i++;
+        }
+        {
+            namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(
+                    new Doctor(
+                            namestr,
+                            encoder.encode(namestr),
+                            "林宥嘉",
+                            "骨科",
+                            Math.random() > 0.5 ? "男" : "女",
+                            i,
+                            i,
+                            null
+                    )
+            );
+            i++;
+        }
+        {
+            namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(
+                    new Doctor(
+                            namestr,
+                            encoder.encode(namestr),
+                            "何林星",
+                            "口腔科",
+                            Math.random() > 0.5 ? "男" : "女",
+                            i,
+                            i,
+                            null
+                    )
+            );
+            i++;
+        }
+        {
+            namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(
+                    new Doctor(
+                            namestr,
+                            encoder.encode(namestr),
+                            "李奕辰",
+                            "肿瘤科",
+                            Math.random() > 0.5 ? "男" : "女",
+                            i,
+                            i,
+                            null
+                    )
+            );
+            i++;
+        }
+        {
+            namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(
+                    new Doctor(
+                            namestr,
+                            encoder.encode(namestr),
+                            "赵久盛",
+                            "血液科",
+                            Math.random() > 0.5 ? "男" : "女",
+                            i,
+                            i,
+                            null
+                    )
+            );
+            i++;
+        }
+        {
+            namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(
+                    new Doctor(
+                            namestr,
+                            encoder.encode(namestr),
+                            "陆正",
+                            "外科",
+                            Math.random() > 0.5 ? "男" : "女",
+                            i,
+                            i,
+                            null
+                    )
+            );
+            i++;
+        }
+        {
+            namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(
+                    new Doctor(
+                            namestr,
+                            encoder.encode(namestr),
+                            "郭嘉佑",
+                            "营养科",
+                            Math.random() > 0.5 ? "男" : "女",
+                            i,
+                            i,
+                            null
+                    )
+            );
+            i++;
+        }
+        {
+            namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(
+                    new Doctor(
+                            namestr,
+                            encoder.encode(namestr),
+                            "林美辛",
+                            "妇科",
+                            Math.random() > 0.5 ? "男" : "女",
+                            i,
+                            i,
+                            null
+                    )
+            );
+            i++;
+        }
+        {
+            namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(
+                    new Doctor(
+                            namestr,
+                            encoder.encode(namestr),
+                            "程心",
+                            "检验科",
+                            Math.random() > 0.5 ? "男" : "女",
+                            i,
+                            i,
+                            null
+                    )
+            );
+            i++;
+        }
+        {
+            namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(
+                    new Doctor(
+                            namestr,
+                            encoder.encode(namestr),
+                            "汪淼",
+                            "内科",
+                            Math.random() > 0.5 ? "男" : "女",
+                            i,
+                            i,
+                            null
+                    )
+            );
+            i++;
+        }
+        {
+            namestr = username + (i < 10 ? "0" + i : i);
+            doctors.add(
+                    new Doctor(
+                            namestr,
+                            encoder.encode(namestr),
+                            "史强",
+                            "眼科",
+                            Math.random() > 0.5 ? "男" : "女",
+                            i,
+                            i,
+                            null
+                    )
+            );
+            i++;
+        }
+        System.out.println(doctorMapper.insertAll(doctors));
+    }
+
+    @Test
     void createPatTest() {
         List<AssistantUser> patients = new ArrayList<>();
         String username = "patient";
@@ -70,6 +273,45 @@ class AssistantApplicationTests {
             double random = Math.random();
             String namestr = username + (i < 10 ? "0" + i : i);
             patients.add(new Patient(namestr, encoder.encode(namestr), namestr, random > 0.5 ? "m" : "f", i, i, 0, null));
+        }
+        System.out.println(patientMapper.insertAll(patients));
+    }
+
+    @Test
+    void createPatTest2() {
+        List<AssistantUser> patients = new ArrayList<>();
+        String username = "patient";
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        int i = 1;
+        {
+            String namestr = username + (i < 10 ? "0" + i : i);
+            patients.add(new Patient(namestr, encoder.encode(namestr),
+                    "杨丽清",  Math.random() > 0.5 ? "男" : "女", i, i, 0, null));
+            i++;
+        }
+        {
+            String namestr = username + (i < 10 ? "0" + i : i);
+            patients.add(new Patient(namestr, encoder.encode(namestr),
+                    "何欢",  Math.random() > 0.5 ? "男" : "女", i, i, 0, null));
+            i++;
+        }
+        {
+            String namestr = username + (i < 10 ? "0" + i : i);
+            patients.add(new Patient(namestr, encoder.encode(namestr),
+                    "马春雪",  Math.random() > 0.5 ? "男" : "女", i, i, 0, null));
+            i++;
+        }
+        {
+            String namestr = username + (i < 10 ? "0" + i : i);
+            patients.add(new Patient(namestr, encoder.encode(namestr),
+                    "邓德政",  Math.random() > 0.5 ? "男" : "女", i, i, 0, null));
+            i++;
+        }
+        {
+            String namestr = username + (i < 10 ? "0" + i : i);
+            patients.add(new Patient(namestr, encoder.encode(namestr),
+                    "王一仁", Math.random() > 0.5 ? "男" : "女", i, i, 0, null));
+            i++;
         }
         System.out.println(patientMapper.insertAll(patients));
     }

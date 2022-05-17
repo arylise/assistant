@@ -133,10 +133,11 @@ public class ProjectServiceImpl implements ProjectService {
                             .project(s)
                             .waitCount(waitTime.getFirst())
                             .waitTime(waitTime.getSecond() * waitTime.getFirst())
-                            .state(cache.getProjectMap().get(s))
+                            .state(cache.getProjectMap().get(s).desc)
+                            .weight(cache.getProjectMap().get(s).weight)
                             .build());
                 }
-                sort(Comparator.comparingInt(o -> o.getState().weight));
+                sort(Comparator.comparingInt(QueueDTO::getWeight));
             }};
 
             return DataList.builder().data(list).count(list.size()).build();

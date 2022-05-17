@@ -52,7 +52,7 @@ public class IndexController {
     public Map<String, String> checkRole() {
         return new HashMap<>() {{
             put("role", SecurityUtils.getRole());
-            put("name", SecurityUtils.getUsername());
+            put("name", SecurityUtils.getName());
         }};
     }
 
