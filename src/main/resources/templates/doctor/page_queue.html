@@ -58,9 +58,7 @@
     </div>
 </script>
 <script type="text/html" id="bar">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">踢出队列</a>
 </script>
 
 <script src="/layui/layui.js"></script>
@@ -134,7 +132,6 @@
                     , id: 'list-' + project
                 })
 
-                element.tabChange('element-filter', 'list-' + project);
                 table.render({
                     elem: '#list-' + project
                     , title: '用户数据表'
@@ -142,7 +139,7 @@
                     , where: {project: project}
                     , page: false
                     , cols: [
-                        [ // TODO
+                        [
                             {fixed: 'left', type: 'checkbox'}
                             , {type: 'numbers', fixed: "left"}
                             , {field: 'username', title: '用户名', width: 100, sort: true, fixed: "left"}
@@ -160,6 +157,24 @@
                     , skin: 'row'
                     , limit: 20
                 });
+                console.log("ok")
+                table.on('tool(table-filter)', function (obj) {
+                    var data = obj.data;
+                    console.log(obj)
+                    if (obj.event === 'del') {
+                        layer.confirm('确定将他踢出队伍？', function (index) {
+                            obj.del();
+                            layer.close(index);
+                            $.ajax({
+                                type: 'GET',
+                                url: '/doctor/queue.del_' + data.username,
+                                async: false
+                            })
+                        });
+                    }
+                });
+                console.log("done")
+                element.tabChange('element-filter', 'list-' + project);
             },
             addPage: function (obj) {
                 let project = obj.attr('project').toString()
@@ -212,27 +227,6 @@
             });
         }
     })
-
-    table.on('tool(list-listener)', function (obj) {
-        var data = obj.data;
-        if (obj.event === 'detail') {
-            layer.msg('ID：' + data.username + ' 的查看操作');
-        } else if (obj.event === 'del') {
-            layer.confirm('确定将他踢出队伍?', function (index) {
-                obj.del();
-                layer.close(index);
-                layui.$.ajax({
-                    type: 'GET',
-                    url: '/doctor/queue.del_' + data.username,
-                    async: false
-                })
-            });
-
-        } else if (obj.event === 'edit') {
-            layer.alert('编辑行：<br>' + JSON.stringify(data))
-        }
-    });
-
 
 </script>
 </body>

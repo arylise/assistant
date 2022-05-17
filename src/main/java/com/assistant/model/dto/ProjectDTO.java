@@ -21,25 +21,27 @@ public class ProjectDTO {
     private String nodeId;
     private String avetime;
     private String msg;
-    private State state;
+    private String state;
+    private Integer weight;
 
 
 
-    public ProjectDTO(Project project, State state) {
+    public ProjectDTO(Project project, String state, Integer weight) {
         this.project = project.getProject();
         this.department = project.getDepartment();
         this.nodeId = project.getNodeId();
         this.avetime = AssistantContext.getMinStr(project.getAvetime());
         this.msg = project.getMsg();
         this.state = state;
+        this.weight = weight;
     }
 
     public static List<ProjectDTO> trans(List<Project> projectList, List<State> state) {
         return new ArrayList<>() {{
             for (int i = 0; i < projectList.size(); i++) {
-                add(new ProjectDTO(projectList.get(i), state.get(i)));
+                add(new ProjectDTO(projectList.get(i), state.get(i).desc, state.get(i).weight));
             }
-            sort(Comparator.comparingInt(o -> o.state.weight));
+            sort(Comparator.comparingInt(o -> o.weight));
         }};
     }
 }

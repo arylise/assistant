@@ -84,25 +84,6 @@
                     , even: true
                     , skin: 'row'
                 })
-                //监听工具条
-                table.on('tool(list-listener)', function (obj) {
-                    var data = obj.data;
-                    if (obj.event === 'detail') {
-                        layer.msg('ID：' + data.username + ' 的查看操作');
-                    } else if (obj.event === 'del') {
-                        layer.confirm('test', function (index) {
-                            obj.del();
-                            layer.close(index);
-                            layui.$.ajax({
-                                type: 'GET',
-                                url: '/' + data.username,
-                                async: false
-                            })
-                        });
-                    } else if (obj.event === 'edit') {
-                        layer.alert('编辑行：<br>' + JSON.stringify(data))
-                    }
-                });
                 element.tabChange('management-patientProjects', 'check-' + userId);
             },
             append: function () {

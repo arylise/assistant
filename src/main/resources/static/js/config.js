@@ -44,32 +44,32 @@ const admin = [
             "name": "患者用户",
             "url": "/page_patient"
         }]
-    }, {
-        "name": "测试页面",
-        "icon": "&#xe612;",
-        "baseUrl": "/test",
-        "list": [{
-            "name": "redis测试",
-            "url": "/test_redis"
-        }, {
-            "name": "医生管理测试",
-            "url": "/test_page_doctor"
-        }, {
-            "name": "科室管理测试",
-            "url": "/test_page_project"
-        }, {
-            "name": "测试1",
-            "url": "/test_1"
-        }, {
-            "name": "测试2",
-            "url": "/test_2"
-        }, {
-            "name": "测试3",
-            "url": "/test_3"
-        }, {
-            "name": "测试4",
-            "url": "/test_4"
-        }]
+    // }, {
+    //     "name": "测试页面",
+    //     "icon": "&#xe612;",
+    //     "baseUrl": "/test",
+    //     "list": [{
+    //         "name": "redis测试",
+    //         "url": "/test_redis"
+    //     }, {
+    //         "name": "医生管理测试",
+    //         "url": "/test_page_doctor"
+    //     }, {
+    //         "name": "科室管理测试",
+    //         "url": "/test_page_project"
+    //     }, {
+    //         "name": "测试1",
+    //         "url": "/test_1"
+    //     }, {
+    //         "name": "测试2",
+    //         "url": "/test_2"
+    //     }, {
+    //         "name": "测试3",
+    //         "url": "/test_3"
+    //     }, {
+    //         "name": "测试4",
+    //         "url": "/test_4"
+    //     }]
     }, {
         "name": "留言专区",
         "icon": "&#xe609;",
